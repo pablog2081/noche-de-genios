@@ -439,7 +439,7 @@
     <div class="p-tesoro" id="hbTesoro" hidden></div>
     <div class="hb-body">
       <section class="hb-tabla"><h2 class="p-title">Tabla de posiciones</h2><div class="hb-grid" id="hbGrid"></div></section>
-      <aside class="hb-join"><div class="qr" id="joinQr"></div><h3>¡Sumá a tu equipo!</h3><p>Escaneá con la cámara del celu y escribí el nombre del equipo. Toda la mesa usa el mismo nombre.</p><p class="url" id="joinUrl"></p></aside>
+      <aside class="hb-join"><div class="qr" id="joinQr"></div><h3>¡Sumá a tu equipo!</h3><p>Escaneá con la cámara del celu, elegí tu equipo de la lista y escribí tu nombre.</p><p class="url" id="joinUrl"></p></aside>
     </div>
   </div>
   <div class="home-flyer" id="homeFlyer" hidden>
@@ -605,7 +605,7 @@
     document.querySelectorAll('.sport-swatch').forEach(function (b) { b.classList.toggle('active', b.dataset.sport === s.key); });
   }
   function qrSvg(texto, celda) {
-    try { var q = qrcode(0, 'M'); q.addData(texto); q.make(); return q.createSvgTag({ cellSize: celda || 6, margin: 2, scalable: true }); }
+    try { var q = qrcode(0, 'M'); q.addData(texto); q.make(); return q.createSvgTag({ cellSize: celda || 6, margin: 4, scalable: true }); }
     catch (e) { return '<p style="color:#5c6672;font-size:12px">QR no disponible</p>'; }
   }
   function parseNumero(valor) {
@@ -637,6 +637,11 @@
 
   function ahora() { return Date.now() + relojOffset; }
 
+  function integrantesPorCliente() {
+    var m = {};
+    Object.keys(G.equipos).forEach(function (k) { (G.equipos[k].integrantes || []).forEach(function (x) { m[x.cliente] = x.nombre; }); });
+    return m;
+  }
   function vistaPublica() {
     var r = G.ronda != null ? contenido.rondas[G.ronda] : null;
     var it = r ? r.items[G.item] : null;
@@ -644,7 +649,8 @@
     var v = {
       rev: G.rev, ahora: Date.now(), fase: G.fase, titulo: contenido.titulo,
       club: G.club, buffet: G.buffet, precios: G.precios, segundos: G.segundos,
-      ranking: eqs.map(function (e) { return { id: e.id, nombre: e.nombre, puntos: e.puntos }; }),
+      ranking: eqs.map(function (e) { return { id: e.id, nombre: e.nombre, puntos: e.puntos, n: (e.integrantes || []).length }; }),
+      integrante: integrantesPorCliente(),
       clientes: G.clientes, qrActivo: G.qrActivo, qrTotal: contenido.tesoro.length,
       qrEquipo: {}
     };
@@ -782,13 +788,31 @@
     return { ok: true };
   }
 
-  function unirse(nombre, cliente) {
+  function crearEquipo(nombre) {
     nombre = String(nombre || '').trim().replace(/\s+/g, ' ').slice(0, 30);
-    if (nombre.length < 2) return { ok: false, msg: 'El nombre tiene que tener al menos 2 letras.' };
-    var eq = null;
-    Object.keys(G.equipos).forEach(function (k) { if (G.equipos[k].nombre.toLowerCase() === nombre.toLowerCase()) eq = G.equipos[k]; });
-    if (!eq) { var id = uid('e'); eq = G.equipos[id] = { id: id, nombre: nombre, puntos: 0 }; }
-    if (cliente) G.clientes[cliente] = eq.id;
+    if (nombre.length < 2) return { ok: false, msg: 'El nombre del equipo tiene que tener al menos 2 letras.' };
+    var existe = Object.keys(G.equipos).some(function (k) { return G.equipos[k].nombre.toLowerCase() === nombre.toLowerCase(); });
+    if (existe) return { ok: false, msg: 'Ya hay un equipo con ese nombre.' };
+    var id = uid('e'); G.equipos[id] = { id: id, nombre: nombre, puntos: 0, integrantes: [] };
+    publicar();
+    return { ok: true, id: id };
+  }
+  function sacarIntegrante(cliente) {
+    Object.keys(G.equipos).forEach(function (k) {
+      var e = G.equipos[k]; if (e.integrantes) e.integrantes = e.integrantes.filter(function (x) { return x.cliente !== cliente; });
+    });
+    delete G.clientes[cliente];
+  }
+  function unirse(equipoId, persona, cliente) {
+    var eq = G.equipos[equipoId];
+    if (!eq || eq.bot) return { ok: false, msg: 'Elegí tu equipo de la lista.' };
+    persona = String(persona || '').trim().replace(/\s+/g, ' ').slice(0, 30);
+    if (persona.length < 2) return { ok: false, msg: 'Escribí tu nombre (al menos 2 letras).' };
+    if (!cliente) return { ok: false, msg: 'No se pudo identificar este celular.' };
+    sacarIntegrante(cliente);
+    eq.integrantes = eq.integrantes || [];
+    eq.integrantes.push({ cliente: cliente, nombre: persona });
+    G.clientes[cliente] = eq.id;
     publicar();
     return { ok: true, equipoId: eq.id, nombre: eq.nombre };
   }
@@ -823,8 +847,8 @@
   function procesarAccion(a) {
     var eq = a.cliente ? G.clientes[a.cliente] : null;
     switch (a.tipo) {
-      case 'unirse': return unirse(a.nombre, a.cliente);
-      case 'salir': if (a.cliente) { delete G.clientes[a.cliente]; publicar(); } return { ok: true };
+      case 'unirse': return unirse(a.equipoId, a.persona, a.cliente);
+      case 'salir': if (a.cliente) { sacarIntegrante(a.cliente); publicar(); } return { ok: true };
       case 'responder': return responder(eq, a.valor);
       case 'foto': return registrarFoto(eq, a.fotoId);
       case 'qr': return reclamarQR(eq, a.codigo);
@@ -1226,12 +1250,13 @@
     var lista = Object.keys(G.equipos).map(function (k) { return G.equipos[k]; }).sort(function (a, b) { return b.puntos - a.puntos; });
     var hayBots = lista.some(function (e) { return e.bot; });
     $('tabEquipos').innerHTML =
-      '<section class="card"><div class="card-head"><h2>Equipos (' + lista.length + ')</h2><p>Se anotan solos desde el celular. Con +100 / −100 corregís o premiás a mano.</p></div>' +
+      '<section class="card"><div class="card-head"><h2>Equipos (' + lista.length + ')</h2><p>Cargá acá los equipos. En el celular, cada persona elige el suyo de una lista y escribe su nombre.</p></div>' +
+      '<form id="fEquipo" class="row-actions" style="margin:0 0 14px"><span class="field" style="flex:1;min-width:200px"><input type="text" id="inEquipo" maxlength="30" autocomplete="off" placeholder="Nombre del equipo (ej.: Mesa 1, Los Genios)" aria-label="Nombre del equipo nuevo"></span><button type="submit" class="btn btn-gold">＋ Agregar equipo</button></form>' +
       (lista.length ? lista.map(function (e, i) {
-        return '<div class="eq-row"><span class="pos">' + (i + 1) + '</span><span class="nom">' + esc(e.nombre) + (e.bot ? ' 🤖' : '') + '</span><span class="pts">' + fmt(e.puntos) + '</span>' +
+        return '<div class="eq-row"><span class="pos">' + (i + 1) + '</span><span class="nom">' + esc(e.nombre) + (e.bot ? ' 🤖' : '') + '<small style="display:block;font-weight:500;color:var(--ink-soft);font-size:12px;white-space:normal">' + (e.bot ? 'Equipo de prueba' : ((e.integrantes || []).length ? (e.integrantes || []).map(function (x) { return esc(x.nombre); }).join(', ') : 'Todavía no se sumó nadie')) + '</small></span><span class="pts">' + fmt(e.puntos) + '</span>' +
           '<button type="button" class="btn-mini" data-aj="' + e.id + '" data-d="100">+100</button><button type="button" class="btn-mini" data-aj="' + e.id + '" data-d="-100">−100</button>' +
           (confirmando === e.id ? '<button type="button" class="btn-mini danger" data-borrarok="' + e.id + '">¿Borrar?</button>' : '<button type="button" class="btn-mini danger" data-borrar="' + e.id + '" aria-label="Borrar equipo">🗑️</button>') + '</div>';
-      }).join('') : '<p class="muted">Todavía no se anotó nadie. En la pantalla, la cartelera muestra el QR para sumarse.</p>') +
+      }).join('') : '<p class="muted">Todavía no cargaste equipos. Escribí el nombre arriba y tocá "Agregar equipo".</p>') +
       '</section>' +
       '<section class="card"><div class="card-head"><h2>Probar sin celulares</h2><p>Los equipos de prueba 🤖 responden solos (aciertan más o menos 6 de cada 10). Sirven para ensayar la noche.</p></div>' +
       '<div class="row-actions" style="margin:0"><button type="button" class="btn btn-gold" id="bots5">🤖 Agregar 5 equipos de prueba</button>' + (hayBots ? '<button type="button" class="btn-mini danger" id="botsFuera">Sacar los equipos de prueba</button>' : '') +
@@ -1243,6 +1268,13 @@
     T.querySelectorAll('[data-borrar]').forEach(function (b) { b.onclick = function () { confirmando = b.dataset.borrar; renderEquipos(); }; });
     T.querySelectorAll('[data-borrarok]').forEach(function (b) { b.onclick = function () { var id = b.dataset.borrarok; delete G.equipos[id]; delete G.resp[id]; Object.keys(G.clientes).forEach(function (c) { if (G.clientes[c] === id) delete G.clientes[c]; }); confirmando = null; publicar(); }; });
     $('bots5').onclick = function () { agregarBots(5); };
+    $('fEquipo').onsubmit = function (ev) {
+      ev.preventDefault();
+      var r = crearEquipo($('inEquipo').value);
+      if (!r.ok) { toast(esc(r.msg)); return; }
+      toast('Equipo agregado');
+      setTimeout(function () { if ($('inEquipo')) $('inEquipo').focus(); }, 30);
+    };
     if ($('botsFuera')) $('botsFuera').onclick = function () { Object.keys(G.equipos).forEach(function (k) { if (G.equipos[k].bot) { delete G.equipos[k]; delete G.resp[k]; } }); publicar(); };
     if ($('cero')) $('cero').onclick = function () { confirmando = 'puntos'; renderEquipos(); };
     if ($('ceroOk')) $('ceroOk').onclick = function () { Object.keys(G.equipos).forEach(function (k) { G.equipos[k].puntos = 0; }); G.fotos = []; G.qrReclamos = {}; G.hechos = []; confirmando = null; publicar(); };
@@ -1428,7 +1460,7 @@
     var eq = miEquipo();
     var ti = $('jTeam'), te = $('jTesoro');
     ti.hidden = !eq;
-    if (eq) ti.innerHTML = '<div class="j-team"><div><b>' + esc(eq.nombre) + '</b><small>Puesto ' + eq.pos + ' de ' + V.ranking.length + '</small></div><div class="pts">' + fmt(eq.puntos) + '</div></div>';
+    if (eq) ti.innerHTML = '<div class="j-team"><div><b>' + esc(eq.nombre) + '</b><small>' + (V.integrante && V.integrante[cliente] ? esc(V.integrante[cliente]) + ' · ' : '') + 'Puesto ' + eq.pos + ' de ' + V.ranking.length + '</small></div><div class="pts">' + fmt(eq.puntos) + '</div></div>';
     var conTesoro = !!(V && V.qrActivo && eq);
     te.hidden = !conTesoro;
     if (conTesoro && !te.dataset.listo) {
@@ -1450,17 +1482,33 @@
     }
     var yaResp = eq && V.respondieron && V.respondieron.indexOf(eq.id) >= 0;
     var foto = eq && V.fotosEstado ? (V.fotosEstado[eq.id] || '') : '';
-    var k = [eq ? eq.id : 'x', V.fase, V.ronda && V.ronda.num, V.ronda && V.ronda.item, yaResp, foto].join('|');
+    var equiposLista = V.ranking.filter(function (e) { return e.id.charAt(0) !== 'b'; }).map(function (e) { return e.id + ':' + e.nombre; }).sort().join('|');
+    var k = [eq ? eq.id : 'x:' + equiposLista, V.fase, V.ronda && V.ronda.num, V.ronda && V.ronda.item, yaResp, foto].join('|');
     if (eq && tesoroPendiente) { var tp = tesoroPendiente; tesoroPendiente = null; cargarTesoro(tp); }
     if (k === claveJ) return; claveJ = k;
 
     if (!eq) {
-      m.innerHTML = '<div class="j-card"><h2>¡Bienvenidos a la ' + esc(V.titulo) + '!</h2><p class="muted" style="margin:0 0 14px;line-height:1.5">Escribí el nombre de tu equipo. Si alguien de tu mesa ya lo creó, poné <b>el mismo nombre</b> y quedan juntos.</p>' +
-        '<form id="fUnion"><input class="j-input" id="inNombre" maxlength="30" autocomplete="off" placeholder="Nombre del equipo"><button type="submit" class="btn btn-gold" style="width:100%;margin-top:12px;font-size:16px">Entrar a jugar</button></form>' +
-        (V.ranking.length ? '<p class="hint" style="margin-top:14px">Ya anotados: ' + V.ranking.map(function (e) { return esc(e.nombre); }).join(' · ') + '</p>' : '') + '</div>';
+      var elegido = $('selEquipo') ? $('selEquipo').value : '';
+      var escrito = $('inPersona') ? $('inPersona').value : (lsGet('persona') || '');
+      var opciones = V.ranking.filter(function (e) { return e.id.charAt(0) !== 'b'; }).slice().sort(function (a, b) { return a.nombre.localeCompare(b.nombre, 'es'); });
+      if (!opciones.length) {
+        m.innerHTML = '<div class="j-card center"><div class="j-big">⏳</div><h2>¡Bienvenidos a la ' + esc(V.titulo) + '!</h2><p class="muted" style="line-height:1.5">El conductor todavía está cargando los equipos. En un ratito aparecen acá para que elijas el tuyo.</p></div>';
+        return;
+      }
+      m.innerHTML = '<div class="j-card"><h2>¡Bienvenidos a la ' + esc(V.titulo) + '!</h2><p class="muted" style="margin:0 0 14px;line-height:1.5">Elegí tu equipo y escribí tu nombre.</p>' +
+        '<form id="fUnion" style="display:flex;flex-direction:column;gap:12px">' +
+          '<label class="field" style="font-size:13px">Tu equipo<select class="j-input" id="selEquipo" required><option value="">Elegí tu equipo…</option>' +
+            opciones.map(function (e) { return '<option value="' + esc(e.id) + '"' + (e.id === elegido ? ' selected' : '') + '>' + esc(e.nombre) + '</option>'; }).join('') + '</select></label>' +
+          '<label class="field" style="font-size:13px">Tu nombre<input class="j-input" id="inPersona" maxlength="30" autocomplete="given-name" placeholder="Ej.: Sofía" value="' + esc(escrito) + '"></label>' +
+          '<button type="submit" class="btn btn-gold" style="width:100%;font-size:16px">Entrar a jugar</button></form></div>';
       $('fUnion').onsubmit = function (ev) {
-        ev.preventDefault(); var n = $('inNombre').value; var btn = this.querySelector('button'); btn.disabled = true; btn.textContent = 'Anotando…';
-        enviarAccion({ tipo: 'unirse', nombre: n }).then(function (r) { if (!r.ok) { toast(esc(r.msg)); btn.disabled = false; btn.textContent = 'Entrar a jugar'; } });
+        ev.preventDefault();
+        var eqId = $('selEquipo').value, persona = $('inPersona').value.trim();
+        if (!eqId) { toast('Elegí tu equipo de la lista.'); return; }
+        if (persona.length < 2) { toast('Escribí tu nombre.'); return; }
+        lsSet('persona', persona);
+        var btn = this.querySelector('button'); btn.disabled = true; btn.textContent = 'Entrando…';
+        enviarAccion({ tipo: 'unirse', equipoId: eqId, persona: persona }).then(function (r) { if (!r.ok) { toast(esc(r.msg)); btn.disabled = false; btn.textContent = 'Entrar a jugar'; } });
       };
       return;
     }

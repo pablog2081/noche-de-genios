@@ -43,7 +43,7 @@ Así cada uno juega con sus propios datos móviles y no dependés del wifi del c
 
 ## Cómo se juega
 
-1. **Inicio:** abrí el proyector desde la consola. Las mesas escanean el QR y escriben el nombre del equipo. Si varios de la mesa ponen el mismo nombre, quedan juntos.
+1. **Inicio:** abrí el proyector desde la consola. Antes de empezar, cargá los equipos en la pestaña **Equipos**. Cada persona escanea el QR, elige su equipo de la lista y escribe su nombre.
 2. **Juego en vivo:** elegí la ronda y tocá **▶ Lanzar** en cada pregunta.
    - Opción múltiple: 500 puntos por acertar + hasta 500 por velocidad.
    - Más cerca gana: 1000 / 700 / 500 / 300 / 150 para los cinco más cercanos, +500 si es exacto.
