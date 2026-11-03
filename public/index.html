@@ -628,6 +628,8 @@
   var relojOffset = 0;    // diferencia con el reloj de la consola
   var contenido = lsGet('contenido') || clone(CONTENIDO_DEFAULT);
   var G = lsGet('estado') || estadoInicial();
+  // El escudo del GEI pasó a ser el predeterminado: se aplica una vez en las consolas que ya tenían otro guardado
+  if (!lsGet('escudo-gei')) { G.club = 'gei'; lsSet('escudo-gei', 1); }
 
   var socket = io();
   var pinGuardado = null; try { pinGuardado = sessionStorage.getItem('ndg-pin'); } catch (e) { }
