@@ -1,0 +1,17 @@
+{
+  "name": "noche-de-genios",
+  "version": "1.0.0",
+  "description": "Noche de Genios del Club GEI: trivia, desafíos de foto y búsqueda del tesoro por equipos, con consola, proyector y celulares.",
+  "main": "server.js",
+  "scripts": {
+    "start": "node server.js"
+  },
+  "engines": {
+    "node": ">=18"
+  },
+  "dependencies": {
+    "express": "^4.21.2",
+    "qrcode-generator": "^1.4.4",
+    "socket.io": "^4.8.1"
+  }
+}
