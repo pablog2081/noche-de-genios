@@ -5,7 +5,7 @@
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
 <meta name="theme-color" content="#0F5680">
 <title>Noche de Genios</title>
-<link rel="icon" href="club-logo-futbol.png">
+<link rel="icon" href="club-logo-gei.png">
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,500;9..144,600;9..144,700&family=Archivo+Black&family=Libre+Franklin:wght@400;500;600;700;800&family=Fredoka:wght@600;700&display=swap">
 <script src="/vendor/qrcode.js"></script>
 <script src="/socket.io/socket.io.js"></script>
@@ -396,8 +396,8 @@
 <!-- ====== Acceso a la consola ====== -->
 <div id="loginScreen" class="role-screen" hidden>
   <div class="role-card" style="max-width:440px">
-    <img class="club-logo" src="club-logo-futbol.png" alt="Escudo del Club GEI">
-    <p class="eyebrow">Fútbol Club GEI</p>
+    <img class="club-logo" src="club-logo-gei.png" alt="Escudo del Club GEI">
+    <p class="eyebrow">Club GEI</p>
     <h1>Noche de Genios</h1>
     <p class="role-hint">Consola del conductor. Ingresá el PIN para manejar el juego.</p>
     <form id="fLogin" style="display:flex;flex-direction:column;gap:12px">
@@ -432,8 +432,8 @@
 <div id="pantalla" class="pantalla" hidden>
   <div class="home-board" id="homeBoard">
     <div class="p-top">
-      <img class="club-logo" src="club-logo-futbol.png" alt="">
-      <div><p class="eyebrow">Fútbol Club GEI</p><h1>Noche de <span>Genios</span></h1></div>
+      <img class="club-logo" src="club-logo-gei.png" alt="">
+      <div><p class="eyebrow">Club GEI</p><h1>Noche de <span>Genios</span></h1></div>
       <div class="p-ronda"><span class="p-pill" id="hbCount">0 equipos</span></div>
     </div>
     <div class="p-tesoro" id="hbTesoro" hidden></div>
@@ -442,10 +442,25 @@
       <aside class="hb-join"><div class="qr" id="joinQr"></div><h3>¡Sumá a tu equipo!</h3><p>Escaneá con la cámara del celu y escribí el nombre del equipo. Toda la mesa usa el mismo nombre.</p><p class="url" id="joinUrl"></p></aside>
     </div>
   </div>
+  <div class="home-flyer" id="homeFlyer" hidden>
+    <div class="home-slide" data-slide="buffet">
+      <img class="club-logo small" src="club-logo-gei.png" alt="">
+      <h2 class="home-slide-heading">Precios del Buffet</h2>
+      <div class="home-slide-cols">
+        <div class="home-slide-col"><h3 class="home-slide-col-title">🍽️ Comida</h3><div class="home-price-list" id="homeComida"></div></div>
+        <div class="home-slide-col"><h3 class="home-slide-col-title">🥤 Bebida</h3><div class="home-price-list" id="homeBebida"></div></div>
+      </div>
+    </div>
+    <div class="home-slide" data-slide="juegos">
+      <img class="club-logo small" src="club-logo-gei.png" alt="">
+      <h2 class="home-slide-heading">Precios de la Noche</h2>
+      <div class="home-price-list" id="homeJuegos"></div>
+    </div>
+  </div>
   <div class="p-stage" id="pStage" hidden>
     <div class="p-top">
-      <img class="club-logo" src="club-logo-futbol.png" alt="">
-      <div><p class="eyebrow">Fútbol Club GEI</p><h1>Noche de <span>Genios</span></h1></div>
+      <img class="club-logo" src="club-logo-gei.png" alt="">
+      <div><p class="eyebrow">Club GEI</p><h1>Noche de <span>Genios</span></h1></div>
       <div class="p-ronda" id="pRonda"></div>
     </div>
     <div class="p-tesoro" id="pTesoro" hidden></div>
@@ -456,8 +471,8 @@
 <!-- ====== Jugador ====== -->
 <div id="jugador" class="jugador" hidden>
   <div class="j-head">
-    <img class="club-logo" src="club-logo-futbol.png" alt="">
-    <div><p class="eyebrow">Fútbol Club GEI</p><h1>Noche de <span>Genios</span></h1></div>
+    <img class="club-logo" src="club-logo-gei.png" alt="">
+    <div><p class="eyebrow">Club GEI</p><h1>Noche de <span>Genios</span></h1></div>
   </div>
   <div id="jTeam" hidden></div>
   <div id="jTesoro" hidden></div>
@@ -472,6 +487,7 @@
 
   // ================= Datos fijos =================
   var CLUB_SPORTS = [
+    { key: 'gei', label: 'GEI', eyebrow: 'Club GEI', src: 'club-logo-gei.png' },
     { key: 'futbol', label: 'Fútbol', src: 'club-logo-futbol.png' },
     { key: 'basquet', label: 'Básquet', src: 'club-logo-basquet.png' },
     { key: 'handball', label: 'Handball', src: 'club-logo-handball.png' },
@@ -567,7 +583,7 @@
       rev: 0, fase: 'inicio', ronda: null, item: null, inicio: 0,
       equipos: {}, clientes: {}, resp: {}, ultimos: {},
       fotos: [], qrActivo: false, qrReclamos: {}, hechos: [],
-      club: 'futbol', buffet: {}, precios: {}, segundos: 15
+      club: 'gei', buffet: {}, precios: {}, segundos: 15
     };
   }
 
@@ -585,7 +601,7 @@
   function aplicarDeporte(k) {
     var s = sportOf(k);
     document.querySelectorAll('.club-logo').forEach(function (img) { if (img.getAttribute('src') !== s.src) img.src = s.src; });
-    document.querySelectorAll('.eyebrow').forEach(function (p) { if (!p.dataset.fijo) p.textContent = s.label + ' Club GEI'; });
+    document.querySelectorAll('.eyebrow').forEach(function (p) { if (!p.dataset.fijo) p.textContent = s.eyebrow || (s.label + ' Club GEI'); });
     document.querySelectorAll('.sport-swatch').forEach(function (b) { b.classList.toggle('active', b.dataset.sport === s.key); });
   }
   function qrSvg(texto, celda) {
@@ -625,7 +641,7 @@
     var eqs = Object.keys(G.equipos).map(function (k) { return G.equipos[k]; }).sort(function (a, b) { return b.puntos - a.puntos; });
     var v = {
       rev: G.rev, ahora: Date.now(), fase: G.fase, titulo: contenido.titulo,
-      club: G.club,
+      club: G.club, buffet: G.buffet, precios: G.precios, segundos: G.segundos,
       ranking: eqs.map(function (e) { return { id: e.id, nombre: e.nombre, puntos: e.puntos }; }),
       clientes: G.clientes, qrActivo: G.qrActivo, qrTotal: contenido.tesoro.length,
       qrEquipo: {}
@@ -967,10 +983,14 @@
     $('tabInicio').innerHTML =
       '<header class="masthead"><img class="club-logo" src="' + sportOf(G.club).src + '" alt=""><p class="eyebrow">Club GEI</p><h1>Noche de <span>Genios</span></h1><p class="sub">Elegí la ronda que sigue. Mientras tanto, el proyector muestra la tabla de posiciones.</p></header>' +
       '<div class="row-actions" style="justify-content:center;margin:0 0 20px"><button type="button" class="btn btn-gold" id="btnProyector" style="font-size:16px;padding:14px 22px">📺 Abrir la pantalla del proyector</button></div>' +
-      '<p class="hint" style="text-align:center;margin:-10px 0 22px">Se abre en una ventana aparte: arrastrala al proyector y tocá "Pantalla completa". Mientras estás en Inicio, muestra la tabla de posiciones y el QR para sumarse.</p>' +
+      '<p class="hint" style="text-align:center;margin:-10px 0 22px">Se abre en una ventana aparte: arrastrala al proyector y tocá "Pantalla completa". Mientras estás en Inicio, va rotando entre la tabla de posiciones (con el QR para sumarse), el buffet y los precios.</p>' +
       '<div class="role-options">' + cards + '</div>' +
       '<div class="row-actions" style="justify-content:center;margin-top:16px"><button type="button" class="btn btn-amber" id="btnCartelera">🏠 Mostrar la tabla general</button><button type="button" class="btn btn-red" id="btnPodio">🏆 Podio final</button></div>' +
       '<div class="cartelera-panel">' +
+        '<div class="cartelera-section"><h4>📺 Cartelera del proyector</h4><div class="inline-row"><label for="inSeg">Segundos por diapositiva:</label><input type="number" id="inSeg" min="5" max="120" value="' + G.segundos + '"></div><p class="hint">En Inicio, el proyector va rotando entre la tabla de posiciones, el buffet y los precios de la noche. Lo que no tenga precio cargado no se muestra.</p></div>' +
+        '<div class="cartelera-section"><h4>🍽️ Comida</h4><div class="cartelera-items" id="cfgComida"></div></div>' +
+        '<div class="cartelera-section"><h4>🥤 Bebida</h4><div class="cartelera-items" id="cfgBebida"></div></div>' +
+        '<div class="cartelera-section"><h4>🎟️ Precios de la noche</h4><div class="cartelera-items" id="cfgPrecios"></div></div>' +
         '<div class="cartelera-section"><h4>🎵 Música de fondo</h4><div class="inline-row"><button type="button" class="btn-mini" id="btnCarpeta">📁 Elegir carpeta con MP3</button><input type="file" id="inCarpeta" webkitdirectory directory multiple accept="audio/*" hidden><button type="button" class="btn-mini" id="btnSigTema"' + (temas.length ? '' : ' hidden') + '>⏭️ Siguiente</button><button type="button" class="btn-mini danger" id="btnPararMusica"' + (temas.length ? '' : ' hidden') + '>⏹️ Quitar música</button></div>' +
         '<p class="hint" id="musicaEstado">' + (temas.length ? temas.length + ' temas cargados' : 'Sin carpeta elegida todavía.') + '</p><p class="hint">Suena en orden aleatorio mientras la pantalla muestra la tabla general, y baja con un fundido cuando lanzás una pregunta o un desafío. El navegador no guarda la carpeta: hay que elegirla cada vez que abrís la consola.</p></div>' +
       '</div>';
@@ -978,6 +998,10 @@
     $('btnCartelera').onclick = function () { irA('inicio'); toast('La pantalla muestra la tabla general'); };
     $('btnProyector').onclick = abrirProyector;
     $('btnPodio').onclick = function () { irA('fin'); toast('🏆 Podio en pantalla'); };
+    $('inSeg').onchange = function () { var n = parseInt(this.value, 10); G.segundos = (n >= 5 && n <= 120) ? n : 15; publicar(); };
+    filasCartelera($('cfgComida'), BUFFET.filter(function (x) { return x.cat === 'comida'; }), 'buffet');
+    filasCartelera($('cfgBebida'), BUFFET.filter(function (x) { return x.cat === 'bebida'; }), 'buffet');
+    filasCartelera($('cfgPrecios'), PRECIOS_NOCHE, 'precios');
     $('btnCarpeta').onclick = function () { $('inCarpeta').click(); };
     $('inCarpeta').onchange = function () {
       temas.forEach(function (t) { URL.revokeObjectURL(t.url); });
@@ -1267,6 +1291,43 @@
   // ================= PANTALLA =================
   var firmaP = '', firmaT = '';
   function pintarQrUnion() { $('joinQr').innerHTML = qrSvg(BASE + '/jugar', 8); $('joinUrl').textContent = BASE.replace(/^https?:\/\//, '') + '/jugar'; }
+  // Cartelera de Inicio: rota entre la tabla de posiciones, el buffet y los precios
+  var slideIdx = 0, slideTimer = null, segActual = 0;
+  function hayPrecios(obj) { return Object.keys(obj || {}).some(function (k) { return obj[k] && obj[k].on && String(obj[k].precio || '').trim(); }); }
+  function slidesDisponibles() {
+    var ids = ['tabla'];
+    if (V && hayPrecios(V.buffet)) ids.push('buffet');
+    if (V && hayPrecios(V.precios)) ids.push('juegos');
+    return ids;
+  }
+  function mostrarSlide(id) {
+    $('homeBoard').hidden = id !== 'tabla';
+    $('homeFlyer').hidden = id === 'tabla';
+    document.querySelectorAll('.home-slide').forEach(function (s) { s.classList.toggle('active', s.dataset.slide === id); });
+  }
+  function arrancarCartelera() {
+    var seg = (V && V.segundos) || 15;
+    var ids = slidesDisponibles();
+    if (slideIdx >= ids.length) slideIdx = 0;
+    mostrarSlide(ids[slideIdx]);
+    if (slideTimer && seg === segActual) return;
+    clearInterval(slideTimer); segActual = seg;
+    slideTimer = setInterval(function () {
+      var ids2 = slidesDisponibles(); slideIdx = (slideIdx + 1) % ids2.length; mostrarSlide(ids2[slideIdx]);
+    }, seg * 1000);
+  }
+  function pararCartelera() { clearInterval(slideTimer); slideTimer = null; segActual = 0; $('homeFlyer').hidden = true; }
+  function filaPrecio(label, precio, img, emoji) {
+    return '<div class="home-price-row">' + (img ? '<img class="home-price-icon" src="' + img + '" alt="">' : '<span class="home-price-emoji">' + emoji + '</span>') + '<span class="home-price-label">' + esc(label) + '</span><span class="home-price-dots"></span><span class="home-price-value">' + esc(precio) + '</span></div>';
+  }
+  function renderPrecios() {
+    var b = V.buffet || {}, pr = V.precios || {};
+    var ok = function (o, k) { return o[k] && o[k].on && String(o[k].precio || '').trim(); };
+    $('homeComida').innerHTML = BUFFET.filter(function (d) { return d.cat === 'comida' && ok(b, d.key); }).map(function (d) { return filaPrecio(d.label, b[d.key].precio, d.img); }).join('');
+    $('homeBebida').innerHTML = BUFFET.filter(function (d) { return d.cat === 'bebida' && ok(b, d.key); }).map(function (d) { return filaPrecio(d.label, b[d.key].precio, d.img); }).join('');
+    $('homeJuegos').innerHTML = PRECIOS_NOCHE.filter(function (d) { return ok(pr, d.key); }).map(function (d) { return filaPrecio(d.label, pr[d.key].precio, null, d.emoji); }).join('');
+  }
+
   function renderTabla() {
     var lista = V.ranking || [];
     $('hbCount').textContent = lista.length + (lista.length === 1 ? ' equipo' : ' equipos');
@@ -1287,8 +1348,9 @@
   function renderPantalla() {
     if (!V) return;
     var enInicio = V.fase === 'inicio';
-    $('homeBoard').hidden = !enInicio; $('pStage').hidden = enInicio;
-    if (enInicio) { renderTabla(); aplicarDeporte(V.club); firmaP = ''; return; }
+    $('pStage').hidden = enInicio;
+    if (enInicio) { renderTabla(); renderPrecios(); arrancarCartelera(); aplicarDeporte(V.club); firmaP = ''; return; }
+    $('homeBoard').hidden = true; pararCartelera();
     firmaT = '';
     var r = V.ronda, pr = V.pregunta;
     $('pRonda').innerHTML = r && V.fase !== 'fin' && V.fase !== 'ranking' ? '<span class="p-pill">' + esc(r.nombre) + ' · ' + r.item + '/' + r.total + '</span>' + (r.doble ? '<span class="p-pill x2">Puntos x2</span>' : '') : '<span class="p-pill">' + V.ranking.length + ' equipos</span>';
