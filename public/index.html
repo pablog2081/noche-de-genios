@@ -308,6 +308,31 @@
   .hb-join h3 { font-family: var(--font-display); font-weight: 700; font-size: 3.2vh; margin: 0; color: var(--panel-felt); }
   .hb-join p { margin: 0; font-size: 1.9vh; color: var(--ink-soft); line-height: 1.4; }
   .hb-join .url { font-weight: 800; color: var(--ink); word-break: break-all; }
+  /* Juegos con imagen, emoji y música (proyector) */
+  .p-media { flex: 1; min-height: 0; display: flex; align-items: center; justify-content: center; }
+  .p-imgbox { height: 100%; max-width: 100%; display: flex; align-items: center; justify-content: center; background: #fff; border-radius: 1.6vh; padding: 1.2vh; box-shadow: 0 1.2vh 3vh -1.2vh rgba(0,0,0,.5); }
+  .p-img { height: 100%; width: auto; max-width: 100%; object-fit: contain; transition: filter 1.2s ease; }
+  .p-img.sombra { filter: brightness(0); }
+  .p-emojis { font-size: 14vh; line-height: 1.2; letter-spacing: .06em; text-align: center; }
+  .p-musica { display: flex; flex-direction: column; align-items: center; gap: 1vh; color: var(--gold-bright); font-family: var(--font-display); font-size: 3.6vh; font-weight: 700; }
+  .p-musica p { margin: 0; }
+  .p-musica .notas { font-size: 13vh; animation: latido 1.3s ease-in-out infinite; }
+  .p-media video { max-height: 100%; max-width: 100%; border-radius: 1.6vh; background: #000; }
+  .p-felt.con-media { gap: 1.8vh; }
+  .p-felt.con-media .p-question { font-size: 4.2vh; }
+  .p-felt.con-media .p-ops { flex: none; grid-auto-rows: 8vh; gap: 1.2vh 1.2vw; }
+  .p-felt.con-media .p-op { font-size: 2.9vh; padding: .8vh 1.4vw; }
+  .p-felt.con-media .p-op .l { width: 5.4vh; height: 5.4vh; font-size: 2.9vh; }
+  .p-chips { display: flex; flex-wrap: wrap; gap: 1vh; }
+  .p-chip { display: inline-flex; align-items: center; gap: .8vh; padding: .7vh 1.3vw; border-radius: 999px; background: rgba(0,0,0,.25); color: var(--parchment-text); font-weight: 800; font-size: 2.2vh; }
+  .p-chip i { width: 1.6vh; height: 1.6vh; border-radius: 50%; display: inline-block; }
+  .dot-eq { display: inline-block; width: .9em; height: .9em; border-radius: 50%; flex: none; box-shadow: 0 0 0 2px rgba(255,255,255,.55); vertical-align: middle; }
+  .p-rk2 { flex: 1; min-height: 0; display: grid; grid-template-columns: 1fr 1fr; gap: 2.4vw; }
+  .p-rk2 .p-row { font-size: 2.6vh; padding: 1.1vh 1.4vw; }
+  .p-sub { font-family: var(--font-display); font-weight: 700; font-size: 3vh; color: var(--gold-bright); margin: 0 0 1.2vh; }
+  .p-mvp { margin: 2vh 0 0; font-size: 3vh; color: var(--parchment-text); }
+  .p-mvp b { color: var(--gold-bright); }
+  .hb-row .nom small { font-weight: 600; opacity: .7; }
   /* Cartelera de inicio (pantalla) */
   .home-flyer { position: relative; flex: 1; background: var(--cartelera-bg); color: var(--cartelera-ink); overflow: hidden; }
   .home-slide { position: absolute; inset: 0; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 14px; padding: 40px 40px min(150px, 15vh); text-align: center; opacity: 0; visibility: hidden; transition: opacity .6s ease; }
@@ -380,6 +405,19 @@
   .j-state.no { background: rgba(179,59,39,.14); color: var(--ball-red); }
   label.btn { display: block; text-align: center; }
 
+  /* Celular con el color del equipo */
+  body.mode-jugador.con-color { background-color: var(--team, #0F5680); background-image: linear-gradient(180deg, rgba(255,255,255,.10), rgba(0,0,0,.30)); background-attachment: fixed; min-height: 100vh; }
+  .con-color .j-head h1, .con-color .j-head h1 span, .con-color .j-head .eyebrow { color: #fff; }
+  .con-color #jMain > .j-question, .con-color #jMain > .hint, .con-color .j-timer { color: #fff; text-shadow: 0 1px 3px rgba(0,0,0,.35); }
+  .con-color .j-bar { background: rgba(255,255,255,.3); }
+  .con-color .j-bar i { background: #fff; }
+  .con-color .j-team { background: rgba(0,0,0,.28); box-shadow: inset 0 0 0 1px rgba(255,255,255,.25); }
+  .con-color .j-team small { color: rgba(255,255,255,.85); }
+  .con-color .j-team .pts { color: #fff; }
+  .j-media { background: #fff; border-radius: 16px; padding: 10px; display: flex; justify-content: center; }
+  .j-media img { max-height: 30vh; max-width: 100%; object-fit: contain; }
+  .j-media img.sombra { filter: brightness(0); }
+  .j-emojis { font-size: 46px; text-align: center; line-height: 1.3; padding: 12px; }
   .toast { position: fixed; left: 50%; bottom: calc(22px + env(safe-area-inset-bottom, 0px)); transform: translateX(-50%); background: var(--ink); color: var(--bg); padding: 13px 18px; border-radius: 14px; font-weight: 700; font-size: 14px; box-shadow: 0 10px 30px rgba(0,0,0,.35); z-index: 60; max-width: min(92vw, 520px); text-align: center; line-height: 1.4; }
   .zoom { position: fixed; inset: 0; background: rgba(0,0,0,.88); display: grid; place-items: center; z-index: 70; cursor: zoom-out; }
   .zoom img { max-width: 94vw; max-height: 94vh; border-radius: 10px; }
@@ -391,6 +429,7 @@
 <div class="corner-bar">
   <button type="button" id="fullscreenBtn" class="corner-btn" hidden>⛶ Pantalla completa</button>
   <button type="button" id="proyectorBtn" class="corner-btn" hidden>📺 Abrir proyector</button>
+  <button type="button" id="sonidoBtn" class="corner-btn" hidden>🔊 Activar sonido</button>
 </div>
 
 <!-- ====== Acceso a la consola ====== -->
@@ -438,7 +477,7 @@
     </div>
     <div class="p-tesoro" id="hbTesoro" hidden></div>
     <div class="hb-body">
-      <section class="hb-tabla"><h2 class="p-title">Tabla de posiciones</h2><div class="hb-grid" id="hbGrid"></div></section>
+      <section class="hb-tabla"><h2 class="p-title" id="hbTitulo">Tabla por equipos</h2><div class="hb-grid" id="hbGrid"></div></section>
       <aside class="hb-join"><div class="qr" id="joinQr"></div><h3>¡Sumá a tu equipo!</h3><p>Escaneá con la cámara del celu, elegí tu equipo de la lista y escribí tu nombre.</p><p class="url" id="joinUrl"></p></aside>
     </div>
   </div>
@@ -519,6 +558,15 @@
     { key: 'menu', label: 'Menú para la mesa', emoji: '🍕' }
   ];
   var LETRAS = ['A', 'B', 'C', 'D'];
+  var TEMAS = [
+    { key: 'tambo', titulo: 'Tambo Tambo - La Cumbita' },
+    { key: 'startmeup', titulo: 'The Rolling Stones - Start Me Up' },
+    { key: 'violeta', titulo: 'Alcides - Violeta' },
+    { key: 'demusica', titulo: 'Soda Stereo - De Música Ligera' },
+    { key: 'jijiji', titulo: 'Los Redondos - Jijiji' },
+    { key: 'dyanke', titulo: 'Daddy Yankee - BZRP Music Sessions #66' },
+    { key: 'satisfaction', titulo: "The Rolling Stones - (I Can't Get No) Satisfaction" }
+  ];
   var BASE = location.origin;
 
   var uid = function (p) { return (p || '') + Date.now().toString(36) + Math.random().toString(36).slice(2, 7); };
@@ -565,7 +613,45 @@
         { id: 'f2', tipo: 'opcion', texto: '¿Qué elemento químico tiene el símbolo «Au»?', opciones: ['Plata', 'Oro', 'Aluminio', 'Argón'], correcta: 1 },
         { id: 'f3', tipo: 'opcion', texto: '¿Cuántos minutos tiene un día?', opciones: ['1.240', '1.340', '1.440', '1.540'], correcta: 2 },
         { id: 'f4', tipo: 'estimacion', texto: '¿Cuántos países hay en América del Sur?', respuesta: 12, unidad: 'países' }
-      ] }
+      ] },
+      { id: 'r7', nombre: 'Adiviná el emoji', tipo: 'preguntas', tiempo: 25, doble: false, items: [
+        { id: 'm1', tipo: 'emoji', texto: '🐴🎁🚫👀🦷', opciones: ['A caballo regalado no se le miran los dientes', 'Más vale pájaro en mano que cien volando', 'Perro que ladra no muerde', 'Al que madruga, Dios lo ayuda'], correcta: 0 },
+        { id: 'm2', tipo: 'emoji', texto: '➕🐦✋💯✈️', opciones: ['Más vale tarde que nunca', 'Más vale pájaro en mano que cien volando', 'Cría cuervos y te sacarán los ojos', 'Una golondrina no hace verano'], correcta: 1 },
+        { id: 'm3', tipo: 'emoji', texto: '🐒👗🐒✋🐒', opciones: ['Cada mono en su rama', 'El hábito no hace al monje', 'Aunque la mona se vista de seda, mona queda', 'Mono que no salta, se cae'], correcta: 2 },
+        { id: 'm4', tipo: 'emoji', texto: '😟❓🐱💀', opciones: ['Gato encerrado', 'De noche todos los gatos son pardos', 'Cuando el gato no está, los ratones bailan', 'La curiosidad mató al gato'], correcta: 3 },
+        { id: 'm5', tipo: 'emoji', texto: '🦐🚫😴🌊➡️', opciones: ['Camarón que se duerme, se lo lleva la corriente', 'A río revuelto, ganancia de pescadores', 'Agua que no has de beber, déjala correr', 'No hay mal que dure cien años'], correcta: 0 },
+        { id: 'm6', tipo: 'emoji', texto: '🏠🔨✋🔪🪵', opciones: ['Hogar, dulce hogar', 'En casa de herrero, cuchillo de palo', 'Cada casa es un mundo', 'Al mal tiempo, buena cara'], correcta: 1 },
+        { id: 'm7', tipo: 'emoji', texto: '👄💋🔪🐟', opciones: ['El pez grande se come al chico', 'Hay más peces en el mar', 'Por la boca muere el pez', 'En boca cerrada no entran moscas'], correcta: 2 },
+        { id: 'm8', tipo: 'emoji', texto: '🐕😡🚫😷', opciones: ['Muerto el perro, se acabó la rabia', 'Perro viejo no aprende trucos nuevos', 'A otro perro con ese hueso', 'Perro que ladra no muerde'], correcta: 3 },
+        { id: 'm9', tipo: 'emoji', texto: '👀🚫👀❤️💔', opciones: ['Ojos que no ven, corazón que no siente', 'Ojo por ojo, diente por diente', 'El amor es ciego', 'Lejos de los ojos, lejos del corazón'], correcta: 0 },
+        { id: 'm10', tipo: 'emoji', texto: '🚫✨💰💲', opciones: ['El tiempo es oro', 'No es oro todo lo que reluce', 'El dinero no hace la felicidad', 'Más vale maña que fuerza'], correcta: 1 }
+      ] },
+      { id: 'r8', nombre: 'Descubrí el tema', tipo: 'preguntas', tiempo: 30, doble: false, items: [
+        { id: 's1', tipo: 'tema', tema: 'tambo', desde: 0, texto: '¿Qué tema está sonando?', opciones: ['Tambo Tambo - La Cumbita', 'Alcides - Violeta', 'Soda Stereo - De Música Ligera', 'Los Redondos - Jijiji'], correcta: 0 },
+        { id: 's2', tipo: 'tema', tema: 'startmeup', desde: 0, texto: '¿Qué tema está sonando?', opciones: ["The Rolling Stones - (I Can't Get No) Satisfaction", 'The Rolling Stones - Start Me Up', 'Daddy Yankee - BZRP Music Sessions #66', 'Tambo Tambo - La Cumbita'], correcta: 1 },
+        { id: 's3', tipo: 'tema', tema: 'violeta', desde: 0, texto: '¿Qué tema está sonando?', opciones: ['Los Redondos - Jijiji', 'Tambo Tambo - La Cumbita', 'Alcides - Violeta', 'The Rolling Stones - Start Me Up'], correcta: 2 },
+        { id: 's4', tipo: 'tema', tema: 'demusica', desde: 0, texto: '¿Qué tema está sonando?', opciones: ['Alcides - Violeta', 'Los Redondos - Jijiji', 'Daddy Yankee - BZRP Music Sessions #66', 'Soda Stereo - De Música Ligera'], correcta: 3 },
+        { id: 's5', tipo: 'tema', tema: 'jijiji', desde: 0, texto: '¿Qué tema está sonando?', opciones: ['Los Redondos - Jijiji', 'Soda Stereo - De Música Ligera', "The Rolling Stones - (I Can't Get No) Satisfaction", 'Alcides - Violeta'], correcta: 0 },
+        { id: 's6', tipo: 'tema', tema: 'dyanke', desde: 0, texto: '¿Qué tema está sonando?', opciones: ['Tambo Tambo - La Cumbita', 'Daddy Yankee - BZRP Music Sessions #66', 'The Rolling Stones - Start Me Up', 'Soda Stereo - De Música Ligera'], correcta: 1 },
+        { id: 's7', tipo: 'tema', tema: 'satisfaction', desde: 0, texto: '¿Qué tema está sonando?', opciones: ['The Rolling Stones - Start Me Up', 'Los Redondos - Jijiji', "The Rolling Stones - (I Can't Get No) Satisfaction", 'Daddy Yankee - BZRP Music Sessions #66'], correcta: 2 }
+      ] },
+      { id: 'r9', nombre: 'Banderas', tipo: 'preguntas', tiempo: 15, doble: false, tipoNuevo: 'imagen', items: [
+        { id: 'b1', tipo: 'imagen', img: '/banderas/ar.svg', texto: '¿De qué país es esta bandera?', opciones: ['Argentina', 'Uruguay', 'Nicaragua', 'Grecia'], correcta: 0 },
+        { id: 'b2', tipo: 'imagen', img: '/banderas/uy.svg', texto: '¿De qué país es esta bandera?', opciones: ['Grecia', 'Uruguay', 'Argentina', 'Israel'], correcta: 1 },
+        { id: 'b3', tipo: 'imagen', img: '/banderas/it.svg', texto: '¿De qué país es esta bandera?', opciones: ['Irlanda', 'México', 'Italia', 'Hungría'], correcta: 2 },
+        { id: 'b4', tipo: 'imagen', img: '/banderas/ie.svg', texto: '¿De qué país es esta bandera?', opciones: ['Costa de Marfil', 'Italia', 'India', 'Irlanda'], correcta: 3 },
+        { id: 'b5', tipo: 'imagen', img: '/banderas/ro.svg', texto: '¿De qué país es esta bandera?', opciones: ['Rumania', 'Chad', 'Andorra', 'Moldavia'], correcta: 0 },
+        { id: 'b6', tipo: 'imagen', img: '/banderas/id.svg', texto: '¿De qué país es esta bandera?', opciones: ['Polonia', 'Indonesia', 'Mónaco', 'Singapur'], correcta: 1 },
+        { id: 'b7', tipo: 'imagen', img: '/banderas/jp.svg', texto: '¿De qué país es esta bandera?', opciones: ['Bangladés', 'Corea del Sur', 'Japón', 'Palaos'], correcta: 2 },
+        { id: 'b8', tipo: 'imagen', img: '/banderas/ch.svg', texto: '¿De qué país es esta bandera?', opciones: ['Dinamarca', 'Austria', 'Georgia', 'Suiza'], correcta: 3 },
+        { id: 'b9', tipo: 'imagen', img: '/banderas/no.svg', texto: '¿De qué país es esta bandera?', opciones: ['Noruega', 'Islandia', 'Dinamarca', 'Finlandia'], correcta: 0 },
+        { id: 'b10', tipo: 'imagen', img: '/banderas/br.svg', texto: '¿De qué país es esta bandera?', opciones: ['Portugal', 'Brasil', 'Jamaica', 'Bolivia'], correcta: 1 },
+        { id: 'b11', tipo: 'imagen', img: '/banderas/ca.svg', texto: '¿De qué país es esta bandera?', opciones: ['Perú', 'Líbano', 'Canadá', 'Austria'], correcta: 2 },
+        { id: 'b12', tipo: 'imagen', img: '/banderas/nz.svg', texto: '¿De qué país es esta bandera?', opciones: ['Australia', 'Reino Unido', 'Fiyi', 'Nueva Zelanda'], correcta: 3 }
+      ] },
+      { id: 'r10', nombre: 'Adiviná el lugar', tipo: 'preguntas', tiempo: 20, doble: false, tipoNuevo: 'imagen', textoNuevo: '¿Qué lugar es?', items: [] },
+      { id: 'r11', nombre: 'Sombras', tipo: 'preguntas', tiempo: 20, doble: false, tipoNuevo: 'imagen', sombraNuevo: true, textoNuevo: '¿Qué objeto es?', items: [] },
+      { id: 'r12', nombre: 'Marcas por el logo', tipo: 'preguntas', tiempo: 15, doble: false, tipoNuevo: 'imagen', textoNuevo: '¿De qué marca es este logo?', items: [] }
     ],
     tesoro: [
       { id: 't1', codigo: 'PELOTA', lugar: 'Debajo de la barra del buffet', puntos: 200, pista: 'La próxima está donde se guardan las pelotas.' },
@@ -575,7 +661,8 @@
       { id: 't5', codigo: 'TANTEADOR', lugar: 'Junto al tablero', puntos: 200, pista: 'Último: está donde se recibe a la gente.' },
       { id: 't6', codigo: 'CAMPEON', lugar: 'Entrada o recepción', puntos: 300, pista: '¡Encontraron todos los tesoros! Vuelvan a la mesa.' }
     ],
-    bonusPrimero: 100
+    bonusPrimero: 100,
+    version: 3
   };
 
   function estadoInicial() {
@@ -630,6 +717,15 @@
   var G = lsGet('estado') || estadoInicial();
   // El escudo del GEI pasó a ser el predeterminado: se aplica una vez en las consolas que ya tenían otro guardado
   if (!lsGet('escudo-gei')) { G.club = 'gei'; lsSet('escudo-gei', 1); }
+  // Suma las rondas nuevas (emoji, temas, banderas, lugar, sombras, marcas) a un contenido guardado antes
+  function migrarContenido(c) {
+    if ((c.version || 1) >= 3) return c;
+    var ids = {}; c.rondas.forEach(function (r) { ids[r.id] = 1; });
+    CONTENIDO_DEFAULT.rondas.forEach(function (r) { if (!ids[r.id] && /^r(7|8|9|10|11|12)$/.test(r.id)) c.rondas.push(clone(r)); });
+    c.version = 3;
+    return c;
+  }
+  contenido = migrarContenido(contenido); lsSet('contenido', contenido);
 
   var socket = io();
   var pinGuardado = null; try { pinGuardado = sessionStorage.getItem('ndg-pin'); } catch (e) { }
@@ -637,38 +733,77 @@
 
   function ahora() { return Date.now() + relojOffset; }
 
-  function integrantesPorCliente() {
-    var m = {};
-    Object.keys(G.equipos).forEach(function (k) { (G.equipos[k].integrantes || []).forEach(function (x) { m[x.cliente] = x.nombre; }); });
-    return m;
+  // ---- Identidad de esta consola (para que proyector y celulares acepten siempre el estado nuevo) ----
+  var SESION = uid('s');
+  var PALETA = ['#E53935', '#1E88E5', '#43A047', '#FB8C00', '#8E24AA', '#00ACC1', '#D81B60', '#6D4C41', '#3949AB', '#7CB342', '#F4511E', '#00897B', '#5E35B1', '#C0CA33', '#546E7A', '#FFB300'];
+  function colorLibre() {
+    var usados = {};
+    Object.keys(G.equipos).forEach(function (k) { usados[String(G.equipos[k].color || '').toUpperCase()] = 1; });
+    for (var i = 0; i < PALETA.length; i++) if (!usados[PALETA[i].toUpperCase()]) return PALETA[i];
+    return PALETA[Object.keys(G.equipos).length % PALETA.length];
   }
+  // Pone al día un estado guardado con una versión anterior
+  function normalizarEstado() {
+    G.jugadores = G.jugadores || {}; G.ultimosJ = G.ultimosJ || {}; G.detalle = G.detalle || []; G.clientes = G.clientes || {};
+    Object.keys(G.equipos).forEach(function (k) {
+      var e = G.equipos[k];
+      if (!e.color) e.color = colorLibre();
+      e.integrantes = e.integrantes || [];
+      if (e.bot && !e.integrantes.length) crearIntegrantesBot(e);
+      e.integrantes.forEach(function (x) { if (!G.jugadores[x.cliente]) G.jugadores[x.cliente] = { nombre: x.nombre, equipoId: e.id, puntos: 0, bot: !!e.bot }; });
+    });
+    Object.keys(G.resp || {}).forEach(function (k) { if (!G.resp[k] || !G.resp[k].equipoId) delete G.resp[k]; });
+  }
+
+  function tiempoDe(it, r) { return Number(it && it.tiempo) || Number(r && r.tiempo) || 20; }
+  function poolDe(it, r) { return (Number(it && it.puntos) || Number(r && r.puntos) || 1000) * (r && r.doble ? 2 : 1); }
+  function esEleccion(it) { return it.tipo !== 'estimacion'; }
+  function totalJugadores() { var n = 0; Object.keys(G.equipos).forEach(function (k) { n += (G.equipos[k].integrantes || []).length; }); return n; }
+  // Reparte "pool" en enteros, proporcional a los pesos (método del resto mayor: la suma da exacto)
+  function repartir(pool, pesos) {
+    var ids = Object.keys(pesos).filter(function (k) { return pesos[k] > 0; });
+    var suma = ids.reduce(function (s, k) { return s + pesos[k]; }, 0), out = {};
+    if (!suma) return out;
+    var base = 0, rest = [];
+    ids.forEach(function (k) { var exacto = pool * pesos[k] / suma, piso = Math.floor(exacto); out[k] = piso; base += piso; rest.push({ k: k, r: exacto - piso }); });
+    rest.sort(function (a, b) { return b.r - a.r; });
+    for (var i = 0; i < pool - base && i < rest.length; i++) out[rest[i].k]++;
+    return out;
+  }
+  // Rapidez: 1 si respondió al instante, 0,5 si respondió al final del tiempo
+  function rapidez(tMs, totalMs) { return 0.5 + 0.5 * Math.max(0, Math.min(1, 1 - tMs / totalMs)); }
+  // Cercanía para "Más cerca gana": 1 si es exacto y baja a medida que se aleja
+  function cercania(valor, real) { var e = Math.abs(valor - real) / Math.max(Math.abs(real), 1); return 1 / (1 + 5 * e); }
+
   function vistaPublica() {
-    var r = G.ronda != null ? contenido.rondas[G.ronda] : null;
-    var it = r ? r.items[G.item] : null;
+    var r = rondaAct(), it = itemAct();
     var eqs = Object.keys(G.equipos).map(function (k) { return G.equipos[k]; }).sort(function (a, b) { return b.puntos - a.puntos; });
+    var jug = Object.keys(G.jugadores || {}).filter(function (c) { return G.equipos[G.jugadores[c].equipoId]; }).map(function (c) {
+      var j = G.jugadores[c], e = G.equipos[j.equipoId];
+      return { c: c, nombre: j.nombre, equipo: e.nombre, color: e.color, puntos: j.puntos, bot: !!j.bot };
+    }).sort(function (a, b) { return b.puntos - a.puntos; });
     var v = {
-      rev: G.rev, ahora: Date.now(), fase: G.fase, titulo: contenido.titulo,
+      sesion: SESION, rev: G.rev, ahora: Date.now(), fase: G.fase, titulo: contenido.titulo,
       club: G.club, buffet: G.buffet, precios: G.precios, segundos: G.segundos,
-      ranking: eqs.map(function (e) { return { id: e.id, nombre: e.nombre, puntos: e.puntos, n: (e.integrantes || []).length }; }),
-      integrante: integrantesPorCliente(),
+      ranking: eqs.map(function (e) { return { id: e.id, nombre: e.nombre, puntos: e.puntos, color: e.color, n: (e.integrantes || []).length }; }),
+      jugadores: jug,
       clientes: G.clientes, qrActivo: G.qrActivo, qrTotal: contenido.tesoro.length,
       qrEquipo: {}
     };
     Object.keys(G.qrReclamos).forEach(function (cod) { (G.qrReclamos[cod] || []).forEach(function (id) { v.qrEquipo[id] = (v.qrEquipo[id] || 0) + 1; }); });
     if (r) v.ronda = { nombre: r.nombre, tipo: r.tipo, doble: !!r.doble, num: G.ronda + 1, item: G.item + 1, total: r.items.length };
     if (it && (G.fase === 'pregunta' || G.fase === 'revelado')) {
-      v.pregunta = { texto: it.texto, tipo: it.tipo, opciones: it.opciones || null, unidad: it.unidad || '', tiempo: it.tiempo || r.tiempo || 20, inicio: G.inicio };
+      v.pregunta = {
+        texto: it.texto, tipo: it.tipo, opciones: it.opciones || null, unidad: it.unidad || '',
+        tiempo: tiempoDe(it, r), inicio: G.inicio, pool: poolDe(it, r),
+        img: it.img || '', sombra: !!it.sombra, tema: it.tema || '', desde: Number(it.desde) || 0
+      };
       v.respondieron = Object.keys(G.resp);
+      v.totalJug = totalJugadores();
       if (G.fase === 'revelado') {
         v.pregunta.correcta = it.correcta; v.pregunta.respuesta = it.respuesta; v.pregunta.dato = it.dato || '';
-        v.ultimos = G.ultimos;
-        if (it.tipo === 'estimacion') {
-          v.mejores = Object.keys(G.resp).map(function (id) {
-            var a = G.resp[id]; return { nombre: G.equipos[id] ? G.equipos[id].nombre : '¿?', valor: a.valor, dif: Math.abs(a.valor - it.respuesta), pts: G.ultimos[id] || 0 };
-          }).sort(function (a, b) { return a.dif - b.dif; }).slice(0, 5);
-        } else {
-          v.conteo = it.opciones.map(function (_, i) { return Object.keys(G.resp).filter(function (id) { return G.resp[id].valor === i; }).length; });
-        }
+        v.ultimos = G.ultimos; v.ultimosJ = G.ultimosJ; v.detalle = G.detalle;
+        if (esEleccion(it)) v.conteo = (it.opciones || []).map(function (_, i) { return Object.keys(G.resp).filter(function (c) { return G.resp[c].valor === i; }).length; });
       }
     }
     if (it && G.fase === 'desafio') {
@@ -697,10 +832,12 @@
     socket.emit('contenido', contenido);
   }
 
+  var ultimaVista = 0;
   function recibirVista(v) {
     if (!v) return;
-    if (V && v.rev < V.rev && v.rev > 0 && (V.rev - v.rev) < 1000) return;
-    V = v; relojOffset = v.ahora - Date.now();
+    // Dentro de una misma consola se descartan mensajes atrasados; si la consola es otra (se recargó), se acepta siempre
+    if (V && v.sesion && v.sesion === V.sesion && v.rev < V.rev) return;
+    V = v; ultimaVista = Date.now(); relojOffset = v.ahora - Date.now();
     aplicarDeporte(v.club);
     if (role === 'pantalla') renderPantalla();
     if (role === 'jugador') renderJugador();
@@ -712,10 +849,16 @@
   };
 
   socket.on('estado', function (v) { if (role === 'pantalla' || role === 'jugador') recibirVista(v); });
+  socket.on('pedirEstado', function () { if (role === 'control') publicar(); });
   socket.on('connect', function () {
     if (role === 'pantalla' || role === 'jugador') socket.emit('hola', role);
-    if (role === 'control' && pinGuardado) socket.emit('login', pinGuardado, function () { publicar(); });
+    if (role === 'control' && pinGuardado) socket.emit('login', pinGuardado, function () { publicar(); sincronizarImagenes(); });
   });
+  // Si el celular o el proyector pasan un rato sin novedades (pantalla apagada, señal que se cortó), piden el estado de nuevo
+  function pedirEstado() { if (role === 'pantalla' || role === 'jugador') socket.emit('hola', role); }
+  setInterval(function () { if (Date.now() - ultimaVista > 10000) pedirEstado(); }, 5000);
+  document.addEventListener('visibilitychange', function () { if (!document.hidden) pedirEstado(); });
+  window.addEventListener('focus', pedirEstado);
 
   // ================= Lógica del juego (solo consola) =================
   var token = 0, timerRevelar = null;
@@ -726,12 +869,13 @@
   function lanzar(ri, ii) {
     var r = contenido.rondas[ri], it = r && r.items[ii];
     if (!it) return;
+    if (r.tipo !== 'desafios' && it.tipo === 'imagen' && !it.img) { toast('Esta pregunta no tiene imagen. Cargala en ✏️ Preguntas.'); return; }
     token++; clearTimeout(timerRevelar);
-    G.ronda = ri; G.item = ii; G.resp = {}; G.ultimos = {};
+    G.ronda = ri; G.item = ii; G.resp = {}; G.ultimos = {}; G.ultimosJ = {}; G.detalle = [];
     if (r.tipo === 'desafios') { G.fase = 'desafio'; }
     else {
       G.fase = 'pregunta'; G.inicio = Date.now() + 1500;
-      var mio = token, seg = it.tiempo || r.tiempo || 20;
+      var mio = token, seg = tiempoDe(it, r);
       timerRevelar = setTimeout(function () { if (token === mio) revelar(); }, seg * 1000 + 3000);
       programarBots(it, r, mio);
     }
@@ -741,24 +885,42 @@
 
   function revelar() {
     if (G.fase !== 'pregunta') return;
-    var r = rondaAct(), it = itemAct(), mult = r.doble ? 2 : 1, tiempoMs = (it.tiempo || r.tiempo || 20) * 1000;
-    G.ultimos = {};
-    var ids = Object.keys(G.resp);
-    if (it.tipo === 'estimacion') {
-      var premios = [1000, 700, 500, 300, 150];
-      var lista = ids.map(function (id) { return { id: id, d: Math.abs(G.resp[id].valor - Number(it.respuesta)) }; }).sort(function (a, b) { return a.d - b.d; });
-      var puesto = 0;
-      lista.forEach(function (x, i) {
-        if (i > 0 && x.d !== lista[i - 1].d) puesto = i;
-        if (puesto < premios.length) G.ultimos[x.id] = (premios[puesto] + (x.d === 0 ? 500 : 0)) * mult;
-      });
-    } else {
-      ids.forEach(function (id) {
-        var a = G.resp[id];
-        if (a.valor === it.correcta) G.ultimos[id] = Math.round(500 + 500 * Math.max(0, 1 - a.t / tiempoMs)) * mult;
-      });
-    }
+    var r = rondaAct(), it = itemAct(), pool = poolDe(it, r), totalMs = tiempoDe(it, r) * 1000;
+    var porEquipo = {};
+    Object.keys(G.resp).forEach(function (c) { var a = G.resp[c]; (porEquipo[a.equipoId] = porEquipo[a.equipoId] || []).push({ c: c, a: a }); });
+    var pesosE = {}, pesosJ = {}, detalle = [];
+    Object.keys(G.equipos).forEach(function (id) {
+      var e = G.equipos[id], lista = porEquipo[id] || [];
+      var n = Math.max((e.integrantes || []).length, lista.length);
+      if (!n) return;
+      var tProm = lista.length ? lista.reduce(function (s, x) { return s + x.a.t; }, 0) / lista.length : 0;
+      var d = { id: id, nombre: e.nombre, color: e.color, n: n, resp: lista.length, tProm: Math.round(tProm / 100) / 10, pts: 0 };
+      if (esEleccion(it)) {
+        var bien = lista.filter(function (x) { return x.a.valor === it.correcta; }).length;
+        d.bien = bien; d.acierto = bien / n; d.califica = bien > 0 && d.acierto >= 0.5;
+        if (d.califica) pesosE[id] = d.acierto * rapidez(tProm, totalMs);
+      } else {
+        d.califica = lista.length > 0 && lista.length / n >= 0.5;
+        if (lista.length) d.valor = Math.round(lista.reduce(function (s, x) { return s + x.a.valor; }, 0) / lista.length * 100) / 100;
+        if (d.califica) pesosE[id] = cercania(d.valor, Number(it.respuesta)) * rapidez(tProm, totalMs);
+      }
+      detalle.push(d);
+    });
+    Object.keys(G.resp).forEach(function (c) {
+      var a = G.resp[c];
+      if (esEleccion(it)) { if (a.valor === it.correcta) pesosJ[c] = rapidez(a.t, totalMs); }
+      else pesosJ[c] = cercania(a.valor, Number(it.respuesta)) * rapidez(a.t, totalMs);
+    });
+    G.ultimos = repartir(pool, pesosE);
+    G.ultimosJ = repartir(pool, pesosJ);
+    detalle.forEach(function (d) { d.pts = G.ultimos[d.id] || 0; });
+    detalle.sort(function (a, b) { return b.pts - a.pts || (b.acierto || 0) - (a.acierto || 0); });
+    G.detalle = detalle;
     Object.keys(G.ultimos).forEach(function (id) { if (G.equipos[id]) G.equipos[id].puntos += G.ultimos[id]; });
+    Object.keys(G.ultimosJ).forEach(function (c) {
+      if (!G.jugadores[c]) { var a = G.resp[c]; G.jugadores[c] = { nombre: 'Jugador', equipoId: a.equipoId, puntos: 0 }; }
+      G.jugadores[c].puntos += G.ultimosJ[c];
+    });
     G.fase = 'revelado'; marcarHecho(); token++;
     publicar();
   }
@@ -771,19 +933,19 @@
     publicar();
   }
 
-  function responder(equipoId, valor) {
+  function responder(cl, valor) {
     var r = rondaAct(), it = itemAct();
     if (G.fase !== 'pregunta' || !it) return { ok: false, msg: 'Ahora no hay pregunta abierta.' };
-    if (!G.equipos[equipoId]) return { ok: false, msg: 'Primero sumate a un equipo.' };
-    if (G.resp[equipoId]) return { ok: false, msg: 'Tu equipo ya respondió esta pregunta.' };
+    var eqId = cl ? G.clientes[cl] : null;
+    if (!eqId || !G.equipos[eqId]) return { ok: false, msg: 'Primero sumate a un equipo.' };
+    if (G.resp[cl]) return { ok: false, msg: 'Ya respondiste esta pregunta.' };
     var t = Math.max(0, Date.now() - G.inicio);
-    if (t > (it.tiempo || r.tiempo || 20) * 1000 + 2000) return { ok: false, msg: 'Se terminó el tiempo para esta pregunta.' };
+    if (t > tiempoDe(it, r) * 1000 + 2000) return { ok: false, msg: 'Se terminó el tiempo para esta pregunta.' };
     var v;
     if (it.tipo === 'estimacion') { v = parseNumero(valor); if (!isFinite(v)) return { ok: false, msg: 'Escribí un número.' }; }
-    else { v = Number(valor); if (!(v >= 0 && v < it.opciones.length && v % 1 === 0)) return { ok: false, msg: 'Opción inválida.' }; }
-    G.resp[equipoId] = { valor: v, t: t };
-    var total = Object.keys(G.equipos).length;
-    if (Object.keys(G.resp).length >= total) { var mio = token; setTimeout(function () { if (token === mio) revelar(); }, 1500); }
+    else { v = Number(valor); if (!(v >= 0 && v < (it.opciones || []).length && v % 1 === 0)) return { ok: false, msg: 'Opción inválida.' }; }
+    G.resp[cl] = { valor: v, t: t, equipoId: eqId };
+    if (Object.keys(G.resp).length >= totalJugadores()) { var mio = token; setTimeout(function () { if (token === mio) revelar(); }, 1500); }
     publicar();
     return { ok: true };
   }
@@ -793,28 +955,39 @@
     if (nombre.length < 2) return { ok: false, msg: 'El nombre del equipo tiene que tener al menos 2 letras.' };
     var existe = Object.keys(G.equipos).some(function (k) { return G.equipos[k].nombre.toLowerCase() === nombre.toLowerCase(); });
     if (existe) return { ok: false, msg: 'Ya hay un equipo con ese nombre.' };
-    var id = uid('e'); G.equipos[id] = { id: id, nombre: nombre, puntos: 0, integrantes: [] };
+    var id = uid('e'); G.equipos[id] = { id: id, nombre: nombre, puntos: 0, integrantes: [], color: colorLibre() };
     publicar();
     return { ok: true, id: id };
   }
-  function sacarIntegrante(cliente) {
+  function sacarIntegrante(cl) {
     Object.keys(G.equipos).forEach(function (k) {
-      var e = G.equipos[k]; if (e.integrantes) e.integrantes = e.integrantes.filter(function (x) { return x.cliente !== cliente; });
+      var e = G.equipos[k]; if (e.integrantes) e.integrantes = e.integrantes.filter(function (x) { return x.cliente !== cl; });
     });
-    delete G.clientes[cliente];
+    delete G.clientes[cl];
   }
-  function unirse(equipoId, persona, cliente) {
+  function borrarEquipo(id) {
+    delete G.equipos[id];
+    Object.keys(G.clientes).forEach(function (c) { if (G.clientes[c] === id) delete G.clientes[c]; });
+    Object.keys(G.jugadores).forEach(function (c) { if (G.jugadores[c].equipoId === id) delete G.jugadores[c]; });
+    Object.keys(G.resp).forEach(function (c) { if (G.resp[c].equipoId === id) delete G.resp[c]; });
+  }
+  function unirse(equipoId, persona, cl) {
     var eq = G.equipos[equipoId];
     if (!eq) return { ok: false, msg: 'Elegí tu equipo de la lista.' };
-    // Si alguien se suma a un equipo de prueba, deja de responder solo
-    if (eq.bot) { delete eq.bot; delete G.resp[eq.id]; }
     persona = String(persona || '').trim().replace(/\s+/g, ' ').slice(0, 30);
     if (persona.length < 2) return { ok: false, msg: 'Escribí tu nombre (al menos 2 letras).' };
-    if (!cliente) return { ok: false, msg: 'No se pudo identificar este celular.' };
-    sacarIntegrante(cliente);
+    if (!cl) return { ok: false, msg: 'No se pudo identificar este celular.' };
+    // Si alguien se suma a un equipo de prueba, sus jugadores simulados se van y el equipo deja de responder solo
+    if (eq.bot) {
+      (eq.integrantes || []).forEach(function (x) { delete G.jugadores[x.cliente]; delete G.clientes[x.cliente]; delete G.resp[x.cliente]; });
+      eq.integrantes = []; delete eq.bot;
+    }
+    sacarIntegrante(cl);
     eq.integrantes = eq.integrantes || [];
-    eq.integrantes.push({ cliente: cliente, nombre: persona });
-    G.clientes[cliente] = eq.id;
+    eq.integrantes.push({ cliente: cl, nombre: persona });
+    G.clientes[cl] = eq.id;
+    var previo = G.jugadores[cl];
+    G.jugadores[cl] = { nombre: persona, equipoId: eq.id, puntos: previo ? previo.puntos : 0 };
     publicar();
     return { ok: true, equipoId: eq.id, nombre: eq.nombre };
   }
@@ -851,7 +1024,7 @@
     switch (a.tipo) {
       case 'unirse': return unirse(a.equipoId, a.persona, a.cliente);
       case 'salir': if (a.cliente) { sacarIntegrante(a.cliente); publicar(); } return { ok: true };
-      case 'responder': return responder(eq, a.valor);
+      case 'responder': return responder(a.cliente, a.valor);
       case 'foto': return registrarFoto(eq, a.fotoId);
       case 'qr': return reclamarQR(eq, a.codigo);
     }
@@ -864,29 +1037,119 @@
     socket.emit('resultado', { id: m.id, res: res });
   });
 
-  // ---- Equipos de prueba (simulan celulares, solo viven en la consola) ----
+  // ---- Equipos de prueba: 3 jugadores simulados por equipo que responden solos ----
   var NOMBRES_BOT = ['Los Sabelotodo', 'Mesa 7', 'Las Enciclopedias', 'Cerebros Fugados', 'Los Wikipedia', 'Genios del Buffet', 'Neuronas Unidas', 'Los Profes', 'Team Mate', 'Los Calculines'];
+  function crearIntegrantesBot(e) {
+    e.integrantes = [];
+    for (var i = 1; i <= 3; i++) {
+      var c = 'bot-' + e.id + '-' + i;
+      e.integrantes.push({ cliente: c, nombre: 'Jugador ' + i });
+      G.jugadores[c] = G.jugadores[c] || { nombre: 'Jugador ' + i + ' 🤖', equipoId: e.id, puntos: 0, bot: true };
+      G.clientes[c] = e.id;
+    }
+  }
   function agregarBots(n) {
     var usados = {}; Object.keys(G.equipos).forEach(function (k) { usados[G.equipos[k].nombre] = 1; });
     var libres = NOMBRES_BOT.filter(function (x) { return !usados[x]; });
     for (var i = 0; i < n && libres.length; i++) {
       var nombre = libres.splice(Math.floor(Math.random() * libres.length), 1)[0];
-      var id = uid('b'); G.equipos[id] = { id: id, nombre: nombre, puntos: 0, bot: true };
+      var id = uid('b'); var e = G.equipos[id] = { id: id, nombre: nombre, puntos: 0, bot: true, color: colorLibre() };
+      crearIntegrantesBot(e);
     }
     publicar();
   }
+  function sacarBots() {
+    Object.keys(G.equipos).forEach(function (k) { if (G.equipos[k].bot) borrarEquipo(k); });
+    publicar();
+  }
   function programarBots(it, r, mio) {
-    var seg = it.tiempo || r.tiempo || 20;
+    var seg = tiempoDe(it, r);
     Object.keys(G.equipos).forEach(function (id) {
-      if (!G.equipos[id].bot) return;
-      var demora = 1500 + 2000 + Math.random() * (seg * 1000 * 0.8);
-      setTimeout(function () {
-        if (token !== mio || G.fase !== 'pregunta') return;
-        var valor;
-        if (it.tipo === 'estimacion') { var base = Number(it.respuesta) || 10; valor = Math.round(base * (0.6 + Math.random() * 0.8) * 10) / 10; }
-        else valor = Math.random() < 0.6 ? it.correcta : Math.floor(Math.random() * it.opciones.length);
-        responder(id, valor);
-      }, demora);
+      var e = G.equipos[id]; if (!e.bot) return;
+      (e.integrantes || []).forEach(function (x) {
+        var demora = 1500 + 1500 + Math.random() * (seg * 1000 * 0.8);
+        setTimeout(function () {
+          if (token !== mio || G.fase !== 'pregunta') return;
+          var valor;
+          if (it.tipo === 'estimacion') { var base = Number(it.respuesta) || 10; valor = Math.round(base * (0.6 + Math.random() * 0.8) * 10) / 10; }
+          else valor = Math.random() < 0.65 ? it.correcta : Math.floor(Math.random() * (it.opciones || []).length);
+          responder(x.cliente, valor);
+        }, demora);
+      });
+    });
+  }
+
+  // ---- Imágenes de las preguntas: se guardan en esta compu (IndexedDB) y se reenvían al servidor si le faltan ----
+  var idbProm = null;
+  function abrirIdb() {
+    if (idbProm) return idbProm;
+    idbProm = new Promise(function (ok, mal) {
+      try {
+        var rq = indexedDB.open('ndg-gei', 1);
+        rq.onupgradeneeded = function () { rq.result.createObjectStore('imagenes'); };
+        rq.onsuccess = function () { ok(rq.result); };
+        rq.onerror = function () { mal(rq.error); };
+      } catch (e) { mal(e); }
+    });
+    return idbProm;
+  }
+  function idbPut(k, v) { return abrirIdb().then(function (base) { return new Promise(function (ok, mal) { var tx = base.transaction('imagenes', 'readwrite'); tx.objectStore('imagenes').put(v, k); tx.oncomplete = function () { ok(); }; tx.onerror = function () { mal(tx.error); }; }); }); }
+  function idbGet(k) { return abrirIdb().then(function (base) { return new Promise(function (ok) { var rq = base.transaction('imagenes').objectStore('imagenes').get(k); rq.onsuccess = function () { ok(rq.result || null); }; rq.onerror = function () { ok(null); }; }); }).catch(function () { return null; }); }
+  function imagenesDelContenido() {
+    var l = [];
+    contenido.rondas.forEach(function (r) { r.items.forEach(function (x) { if (x.img && x.img.indexOf('/imagenes/') === 0) l.push(x.img); }); });
+    return l;
+  }
+  function sincronizarImagenes() {
+    var l = imagenesDelContenido(); if (!l.length) return;
+    socket.emit('faltan', l, function (faltan) {
+      (faltan || []).forEach(function (ruta) { idbGet(ruta).then(function (d) { if (d) socket.emit('imagen', { ruta: ruta, data: d }); }); });
+    });
+  }
+  function subirImagen(data) {
+    var ext = /^data:image\/png/.test(data) ? 'png' : 'jpg';
+    var ruta = '/imagenes/' + uid('i') + '.' + ext;
+    return idbPut(ruta, data).catch(function () { }).then(function () {
+      return new Promise(function (ok) {
+        socket.timeout(30000).emit('imagen', { ruta: ruta, data: data }, function (err, r) { ok(!err && r && r.ok ? ruta : null); });
+      });
+    });
+  }
+  // Silueta: borra el fondo partiendo de los bordes de la foto (funciona bien con fondos lisos)
+  function quitarFondo(cv) {
+    var ctx = cv.getContext('2d'), w = cv.width, h = cv.height, im = ctx.getImageData(0, 0, w, h), d = im.data;
+    var bordes = [];
+    for (var x = 0; x < w; x += 4) bordes.push(x, (h - 1) * w + x);
+    for (var y = 0; y < h; y += 4) bordes.push(y * w, y * w + w - 1);
+    var rs = 0, gs = 0, bs = 0, n = 0;
+    bordes.forEach(function (p) { if (d[p * 4 + 3] > 20) { rs += d[p * 4]; gs += d[p * 4 + 1]; bs += d[p * 4 + 2]; n++; } });
+    var fr = n ? rs / n : 255, fg = n ? gs / n : 255, fb = n ? bs / n : 255;
+    var tol = 70 * 70;
+    function esFondo(p) { var i = p * 4; if (d[i + 3] < 20) return true; var dr = d[i] - fr, dg = d[i + 1] - fg, db2 = d[i + 2] - fb; return dr * dr + dg * dg + db2 * db2 < tol; }
+    var visto = new Uint8Array(w * h), pila = [];
+    bordes.forEach(function (p) { if (!visto[p] && esFondo(p)) { visto[p] = 1; pila.push(p); } });
+    while (pila.length) {
+      var p = pila.pop(); d[p * 4 + 3] = 0;
+      var px = p % w, py = (p - px) / w;
+      var vec = [px > 0 ? p - 1 : -1, px < w - 1 ? p + 1 : -1, py > 0 ? p - w : -1, py < h - 1 ? p + w : -1];
+      for (var k = 0; k < 4; k++) { var q = vec[k]; if (q >= 0 && !visto[q]) { visto[q] = 1; if (esFondo(q)) pila.push(q); } }
+    }
+    ctx.putImageData(im, 0, 0);
+  }
+  function procesarImagen(file, sombra) {
+    return new Promise(function (ok, mal) {
+      var img = new Image(); img.onerror = mal;
+      img.onload = function () {
+        var max = sombra ? 700 : 1100, k = Math.min(1, max / Math.max(img.width || max, img.height || max));
+        var cv = document.createElement('canvas'); cv.width = Math.max(1, Math.round((img.width || max) * k)); cv.height = Math.max(1, Math.round((img.height || max) * k));
+        cv.getContext('2d').drawImage(img, 0, 0, cv.width, cv.height); URL.revokeObjectURL(img.src);
+        if (sombra) { quitarFondo(cv); ok(cv.toDataURL('image/png')); return; }
+        if (/png|svg|webp|gif/.test(file.type)) { var png = cv.toDataURL('image/png'); if (png.length < 900000) { ok(png); return; } }
+        var q = 0.82, j = cv.toDataURL('image/jpeg', q);
+        while (j.length > 450000 && q > 0.4) { q -= 0.1; j = cv.toDataURL('image/jpeg', q); }
+        ok(j);
+      };
+      img.src = URL.createObjectURL(file);
     });
   }
 
@@ -922,6 +1185,7 @@
     $('jugador').hidden = r !== 'jugador';
     $('proyectorBtn').hidden = r !== 'control';
     $('fullscreenBtn').hidden = r !== 'pantalla';
+    $('sonidoBtn').hidden = r !== 'pantalla';
     if (r === 'control') { iniciarConsola(); }
     else {
       if (canal) canal.postMessage({ type: 'pedir' });
@@ -950,12 +1214,15 @@
     socket.emit('login', pin, function (r) {
       if (!r || !r.ok) { toast('PIN incorrecto'); return; }
       pinGuardado = pin; try { sessionStorage.setItem('ndg-pin', pin); } catch (e) { }
-      if (!lsGet('contenido') && r.contenido) { contenido = r.contenido; lsSet('contenido', contenido); }
+      if (!lsGet('contenido') && r.contenido) { contenido = migrarContenido(r.contenido); lsSet('contenido', contenido); }
       if (!lsGet('estado') && r.respaldo) { G = r.respaldo; lsSet('estado', G); }
       activarRol('control');
     });
   };
   $('proyectorBtn').onclick = abrirProyector;
+  // Cualquier clic en el proyector habilita el sonido de los temas
+  $('sonidoBtn').onclick = function () { $('sonidoBtn').hidden = true; toast('🔊 Sonido activado'); if (pAudio && V && V.fase === 'pregunta') pAudio.play().catch(function () { }); if (pVideo) { pVideo.muted = false; pVideo.play().catch(function () { }); } };
+  document.addEventListener('click', function (ev) { if (role === 'pantalla' && ev.target.id !== 'sonidoBtn') $('sonidoBtn').hidden = true; });
   $('fullscreenBtn').onclick = function () { try { if (document.fullscreenElement) document.exitFullscreen(); else document.documentElement.requestFullscreen().catch(function () { }); } catch (e) { } };
   document.addEventListener('fullscreenchange', function () { document.body.classList.toggle('is-native-fullscreen', !!document.fullscreenElement); });
 
@@ -968,6 +1235,7 @@
   var fotosCache = {};          // id -> dataURL
 
   function iniciarConsola() {
+    normalizarEstado();
     // Selector de deporte
     var sw = $('sportSwitcher'); sw.innerHTML = '';
     CLUB_SPORTS.forEach(function (s) {
@@ -976,11 +1244,21 @@
       b.onclick = function () { G.club = s.key; aplicarDeporte(s.key); publicar(); };
       sw.appendChild(b);
     });
-    document.querySelectorAll('.game-tab').forEach(function (b) { b.onclick = function () { mostrarTab(b.dataset.tab); }; });
+    document.querySelectorAll('.game-tab').forEach(function (b) {
+      b.onclick = function () {
+        // Volver a Inicio también vuelve el proyector a la cartelera (salvo que haya una pregunta corriendo)
+        if (b.dataset.tab === 'inicio' && G.fase !== 'inicio') {
+          if (G.fase === 'pregunta') toast('Hay una pregunta en juego. Cuando termine, tocá Inicio de nuevo para volver a la cartelera.');
+          else irA('inicio');
+        }
+        mostrarTab(b.dataset.tab);
+      };
+    });
     aplicarDeporte(G.club);
     mostrarTab(tabActiva);
     publicar();
     socket.emit('contenido', contenido);
+    sincronizarImagenes();
   }
 
   function mostrarTab(t) {
@@ -1058,6 +1336,23 @@
   }
 
   // ---- Juego en vivo ----
+  var TIPOS_PREGUNTA = { opcion: 'Opción múltiple', estimacion: 'Más cerca gana (número)', emoji: 'Adiviná el emoji', imagen: 'Con imagen (lugar, bandera, logo, sombra)', tema: 'Descubrí el tema (música)' };
+  function tituloTema(k) { for (var i = 0; i < TEMAS.length; i++) if (TEMAS[i].key === k) return TEMAS[i].titulo; return k; }
+  function resumenItem(x, r) {
+    if (r.tipo === 'desafios') return fmt(x.puntos || 300) + ' pts';
+    var extra = (x.tiempo ? ' · ' + x.tiempo + ' s' : '') + (x.puntos ? ' · ' + fmt(x.puntos) + ' pts' : '');
+    if (x.tipo === 'estimacion') return 'Más cerca gana · ' + fmt(x.respuesta) + ' ' + esc(x.unidad || '') + extra;
+    if (x.tipo === 'imagen' && !x.img) return '⚠️ Falta cargar la imagen';
+    var pre = { emoji: '😀 Emoji · ', imagen: x.sombra ? '👤 Sombra · ' : '🖼️ Imagen · ', tema: '🎵 ' + esc(tituloTema(x.tema)) + ' · ' }[x.tipo] || '';
+    return pre + 'Correcta: ' + LETRAS[x.correcta] + ' · ' + esc((x.opciones || [])[x.correcta] || '') + extra;
+  }
+  function miniatura(x) {
+    if (x.tipo !== 'imagen' || !x.img) return '';
+    return '<span style="display:inline-flex;width:46px;height:46px;background:#fff;border-radius:8px;flex:none;padding:2px"><img src="' + esc(x.img) + '" alt="" style="width:100%;height:100%;object-fit:contain' + (x.sombra ? ';filter:brightness(0)' : '') + '"></span>';
+  }
+  function textoItem(x) { return x.tipo === 'emoji' ? '<span style="font-size:20px">' + esc(x.texto) + '</span>' : esc(x.texto); }
+  function nombreJugador(c) { var j = G.jugadores[c]; return j ? j.nombre : 'Jugador'; }
+
   function renderConsolaVivo() {
     if (role !== 'control') return;
     marcarTabEnVivo();
@@ -1065,24 +1360,32 @@
     if (tabActiva === 'tesoro') renderTesoroConteo();
     if (tabActiva !== 'vivo') return;
     var r = rondaAct(), it = itemAct();
-    var nombresFase = { inicio: 'Tabla general y QR para sumarse', pregunta: 'Pregunta en juego', revelado: 'Respuesta revelada', ranking: 'Mostrando el ranking', desafio: 'Desafío de fotos', fin: 'Podio final' };
-    var total = Object.keys(G.equipos).length, nResp = Object.keys(G.resp).length;
+    var nombresFase = { inicio: 'Cartelera: tablas, buffet y precios', pregunta: 'Pregunta en juego', revelado: 'Respuesta revelada', ranking: 'Mostrando el ranking', desafio: 'Desafío de fotos', fin: 'Podio final' };
+    var total = totalJugadores(), nResp = Object.keys(G.resp).length;
     var ventana;
-    if (G.fase === 'pregunta' && it) ventana = '<span class="ball-label">Quedan</span><div class="ball-number" id="cuenta">—</div><div class="ball-text">' + esc(it.texto) + '</div>';
-    else if ((G.fase === 'revelado') && it) ventana = '<span class="ball-label">Respuesta correcta</span><div class="ball-number" style="font-size:40px">' + (it.tipo === 'estimacion' ? fmt(it.respuesta) : LETRAS[it.correcta]) + '</div><div class="ball-text">' + esc(it.tipo === 'estimacion' ? it.unidad : it.opciones[it.correcta]) + '</div>';
+    var correctaTxt = it && it.opciones ? LETRAS[it.correcta] + ' · ' + esc(it.opciones[it.correcta]) : '';
+    if (G.fase === 'pregunta' && it) ventana = '<span class="ball-label">Quedan</span><div class="ball-number" id="cuenta">—</div><div class="ball-text">' + textoItem(it) + '</div>';
+    else if (G.fase === 'revelado' && it) ventana = '<span class="ball-label">Respuesta correcta</span><div class="ball-number" style="font-size:40px">' + (it.tipo === 'estimacion' ? fmt(it.respuesta) : LETRAS[it.correcta]) + '</div><div class="ball-text">' + (it.tipo === 'estimacion' ? esc(it.unidad || '') : esc(it.opciones[it.correcta])) + '</div>';
     else if (G.fase === 'desafio' && it) ventana = '<span class="ball-label">Desafío activo</span><div class="ball-text">' + esc(it.texto) + '</div>';
     else ventana = '<span class="ball-label">En pantalla</span><div class="ball-text">' + nombresFase[G.fase] + '</div>';
 
     var detalle = '';
     if ((G.fase === 'pregunta' || G.fase === 'revelado') && it) {
-      var filas = Object.keys(G.resp).map(function (id) {
-        var a = G.resp[id], e = G.equipos[id]; if (!e) return '';
+      var filas = Object.keys(G.resp).sort(function (a, b) { return G.resp[a].t - G.resp[b].t; }).map(function (c) {
+        var a = G.resp[c], e = G.equipos[a.equipoId]; if (!e) return '';
         var val = it.tipo === 'estimacion' ? fmt(a.valor) : LETRAS[a.valor];
-        var ok = G.fase === 'revelado' ? (G.ultimos[id] ? ' ✅ +' + fmt(G.ultimos[id]) : ' ❌') : '';
-        return '<div class="resp-row"><span>' + esc(e.nombre) + (e.bot ? ' 🤖' : '') + '</span><b>' + val + ' · ' + (a.t / 1000).toFixed(1) + 's' + ok + '</b></div>';
+        var ok = G.fase === 'revelado' ? (G.ultimosJ[c] ? ' ✅ +' + fmt(G.ultimosJ[c]) : ' ❌') : '';
+        return '<div class="resp-row"><span><i class="dot-eq" style="background:' + esc(e.color) + '"></i> ' + esc(nombreJugador(c)) + ' <span style="opacity:.7">· ' + esc(e.nombre) + '</span></span><b>' + val + ' · ' + (a.t / 1000).toFixed(1) + 's' + ok + '</b></div>';
       }).join('');
-      detalle = '<p class="cage-section-title">Respuestas</p>' + (it.tipo === 'opcion' ? '<p style="margin:0;font-size:13px">Correcta: <b>' + LETRAS[it.correcta] + ' · ' + esc(it.opciones[it.correcta]) + '</b></p>' : '<p style="margin:0;font-size:13px">Respuesta: <b>' + fmt(it.respuesta) + ' ' + esc(it.unidad || '') + '</b></p>') +
-        '<div class="resp-list">' + (filas || '<p class="muted" style="color:var(--parchment-text-soft);margin:0;font-size:13px">Todavía no respondió nadie.</p>') + '</div>';
+      var equiposRes = '';
+      if (G.fase === 'revelado') {
+        equiposRes = '<p class="cage-section-title">Puntos por equipo</p><div class="resp-list">' + (G.detalle || []).map(function (d) {
+          var info = it.tipo === 'estimacion' ? (d.valor != null ? 'promedio ' + fmt(d.valor) : 'sin respuesta') : Math.round((d.acierto || 0) * 100) + '% aciertos';
+          return '<div class="resp-row"><span><i class="dot-eq" style="background:' + esc(d.color) + '"></i> ' + esc(d.nombre) + ' <span style="opacity:.7">· ' + info + (d.resp ? ' · ' + d.tProm + ' s' : '') + '</span></span><b>' + (d.pts ? '+' + fmt(d.pts) : (d.califica ? '0' : 'no califica')) + '</b></div>';
+        }).join('') + '</div>';
+      }
+      detalle = '<p class="cage-section-title">Respuestas · se reparten ' + fmt(poolDe(it, r)) + ' pts</p>' + (it.tipo === 'estimacion' ? '<p style="margin:0;font-size:13px">Respuesta: <b>' + fmt(it.respuesta) + ' ' + esc(it.unidad || '') + '</b></p>' : '<p style="margin:0;font-size:13px">Correcta: <b>' + correctaTxt + '</b></p>') +
+        '<div class="resp-list">' + (filas || '<p class="muted" style="color:var(--parchment-text-soft);margin:0;font-size:13px">Todavía no respondió nadie.</p>') + '</div>' + equiposRes;
     }
     var pend = G.fotos.filter(function (f) { return f.estado === 'pendiente'; });
     var fotosHtml = '';
@@ -1099,34 +1402,39 @@
     var items = rv.items.map(function (x, j) {
       var hecho = G.hechos.indexOf(rondaVista + '-' + j) >= 0;
       var actual = G.ronda === rondaVista && G.item === j && (G.fase === 'pregunta' || G.fase === 'revelado' || G.fase === 'desafio');
-      var sub = rv.tipo === 'desafios' ? (x.puntos || 300) + ' pts' : (x.tipo === 'estimacion' ? 'Más cerca gana · ' + fmt(x.respuesta) + ' ' + esc(x.unidad || '') : 'Correcta: ' + LETRAS[x.correcta] + ' · ' + esc(x.opciones[x.correcta]));
-      return '<div class="item' + (actual ? ' actual' : '') + '"><span class="num">' + (j + 1) + '</span><span class="txt">' + esc(x.texto) + '<small>' + sub + '</small></span>' +
+      return '<div class="item' + (actual ? ' actual' : '') + '"><span class="num">' + (j + 1) + '</span>' + miniatura(x) + '<span class="txt">' + textoItem(x) + '<small>' + resumenItem(x, rv) + '</small></span>' +
         (hecho ? '<span class="badge ok">Jugada</span>' : '') +
         '<button type="button" class="btn ' + (hecho ? 'btn-ghost" style="color:var(--ink);border-color:var(--cell-border)' : 'btn-gold') + '" data-lanzar="' + rondaVista + ',' + j + '">' + (rv.tipo === 'desafios' ? '📸 ' : '▶ ') + (hecho ? 'Repetir' : 'Lanzar') + '</button></div>';
-    }).join('');
+    }).join('') || '<p class="muted" style="margin:0">Esta ronda todavía no tiene preguntas. Cargalas en la pestaña <b>✏️ Preguntas</b>.</p>';
+    var ajustes = rv.tipo === 'desafios' ? '' :
+      '<div class="inline-row" style="margin-bottom:12px"><label for="vTiempo">⏱️ Segundos para responder:</label><input type="number" id="vTiempo" min="5" max="300" value="' + (rv.tiempo || 20) + '">' +
+      '<label for="vPuntos" style="margin-left:8px">🏆 Puntos a repartir:</label><input type="number" id="vPuntos" min="100" step="100" value="' + (rv.puntos || 1000) + '" style="width:90px"></div>';
 
     $('tabVivo').innerHTML =
       '<main class="layout"><section class="cage" aria-label="Control del juego"><div class="cage-inner">' +
         '<div class="ball-window">' + ventana + '</div>' +
-        '<div class="stats-row"><div class="stat"><span class="stat-value">' + nResp + '</span><span class="stat-label">respond.</span></div><div class="progress-track"><div class="progress-fill" style="width:' + (total ? nResp / total * 100 : 0) + '%"></div></div><div class="stat"><span class="stat-value">' + total + '</span><span class="stat-label">equipos</span></div></div>' +
+        '<div class="stats-row"><div class="stat"><span class="stat-value">' + nResp + '</span><span class="stat-label">respond.</span></div><div class="progress-track"><div class="progress-fill" style="width:' + (total ? nResp / total * 100 : 0) + '%"></div></div><div class="stat"><span class="stat-value">' + total + '</span><span class="stat-label">jugadores</span></div></div>' +
         '<div class="controls"><button type="button" class="btn btn-gold full" id="cRevelar"' + (G.fase === 'pregunta' ? '' : ' disabled') + '>👁️ Revelar respuesta</button>' +
-        '<button type="button" class="btn btn-amber" id="cRanking">📊 Ranking</button><button type="button" class="btn btn-ghost" id="cInicio">🏠 Tabla general</button>' +
+        '<button type="button" class="btn btn-amber" id="cRanking">📊 Ranking</button><button type="button" class="btn btn-ghost" id="cInicio">🏠 Cartelera</button>' +
         '<button type="button" class="btn ' + (G.qrActivo ? 'btn-green' : 'btn-ghost') + '" id="cTesoro">🔎 Tesoro: ' + (G.qrActivo ? 'activo' : 'apagado') + '</button><button type="button" class="btn btn-red" id="cFin">🏆 Podio</button></div>' +
         detalle + fotosHtml +
       '</div></section>' +
-      '<section class="card"><div class="card-head"><h2>' + esc(rv.nombre) + (rv.doble ? ' <span class="badge x2">x2</span>' : '') + '</h2><p>' + (rv.tipo === 'desafios' ? 'Cada desafío queda abierto hasta que mostrás el ranking.' : 'La respuesta se revela sola al terminar el tiempo o cuando respondieron todos.') + '</p></div>' +
-        '<div class="round-tabs">' + tabsR + '</div><div class="item-list">' + items + '</div></section></main>';
+      '<section class="card"><div class="card-head"><h2>' + esc(rv.nombre) + (rv.doble ? ' <span class="badge x2">x2</span>' : '') + '</h2><p>' + (rv.tipo === 'desafios' ? 'Cada desafío queda abierto hasta que mostrás el ranking.' : 'Responde cada jugador. Se revela sola al terminar el tiempo o cuando respondieron todos.') + '</p></div>' +
+        '<div class="round-tabs">' + tabsR + '</div>' + ajustes + '<div class="item-list">' + items + '</div></section></main>';
 
-    $('tabVivo').querySelectorAll('[data-rv]').forEach(function (b) { b.onclick = function () { rondaVista = Number(b.dataset.rv); renderConsolaVivo(); }; });
-    $('tabVivo').querySelectorAll('[data-lanzar]').forEach(function (b) { b.onclick = function () { var p = b.dataset.lanzar.split(','); lanzar(Number(p[0]), Number(p[1])); }; });
+    var T = $('tabVivo');
+    T.querySelectorAll('[data-rv]').forEach(function (b) { b.onclick = function () { rondaVista = Number(b.dataset.rv); renderConsolaVivo(); }; });
+    T.querySelectorAll('[data-lanzar]').forEach(function (b) { b.onclick = function () { var p = b.dataset.lanzar.split(','); lanzar(Number(p[0]), Number(p[1])); }; });
+    if ($('vTiempo')) $('vTiempo').onchange = function () { var n = parseInt(this.value, 10); rv.tiempo = (n >= 5 && n <= 300) ? n : 20; this.value = rv.tiempo; guardarContenido(); toast('Tiempo de la ronda: ' + rv.tiempo + ' segundos'); };
+    if ($('vPuntos')) $('vPuntos').onchange = function () { var n = parseInt(this.value, 10); rv.puntos = n >= 10 ? n : 1000; this.value = rv.puntos; guardarContenido(); toast('Se reparten ' + fmt(rv.puntos) + ' puntos por pregunta'); };
     $('cRevelar').onclick = revelar;
     $('cRanking').onclick = function () { irA('ranking'); };
     $('cInicio').onclick = function () { irA('inicio'); };
     $('cFin').onclick = function () { irA('fin'); };
     $('cTesoro').onclick = function () { G.qrActivo = !G.qrActivo; publicar(); };
-    $('tabVivo').querySelectorAll('[data-ok]').forEach(function (b) { b.onclick = function () { aprobarFoto(b.dataset.ok, true); }; });
-    $('tabVivo').querySelectorAll('[data-no]').forEach(function (b) { b.onclick = function () { aprobarFoto(b.dataset.no, false); }; });
-    $('tabVivo').querySelectorAll('[data-foto]').forEach(function (img) {
+    T.querySelectorAll('[data-ok]').forEach(function (b) { b.onclick = function () { aprobarFoto(b.dataset.ok, true); }; });
+    T.querySelectorAll('[data-no]').forEach(function (b) { b.onclick = function () { aprobarFoto(b.dataset.no, false); }; });
+    T.querySelectorAll('[data-foto]').forEach(function (img) {
       cargarFoto(img.dataset.foto, function (src) { img.src = src; });
       img.onclick = function () { if (img.src) zoom(img.src); };
     });
@@ -1144,6 +1452,7 @@
   function zoom(src) { var z = document.createElement('div'); z.className = 'zoom'; z.innerHTML = '<img src="' + src + '" alt="">'; z.onclick = function () { z.remove(); }; document.body.appendChild(z); }
 
   // ---- Preguntas (editor) ----
+  var imgEditor = null; // { ruta } de la imagen elegida en el formulario abierto
   function renderPreguntas() {
     if (rondaEdit >= contenido.rondas.length) rondaEdit = 0;
     var r = contenido.rondas[rondaEdit];
@@ -1151,22 +1460,22 @@
       '<button type="button" class="round-tab" id="nuevaRonda">＋ Nueva ronda</button>';
     var items = r.items.map(function (x, j) {
       if (editando === x.id) return formItem(r, x);
-      var sub = r.tipo === 'desafios' ? (x.puntos || 300) + ' pts' : (x.tipo === 'estimacion' ? 'Más cerca gana · ' + fmt(x.respuesta) + ' ' + esc(x.unidad || '') : 'Correcta: ' + LETRAS[x.correcta] + ' · ' + esc(x.opciones[x.correcta]));
-      var aviso = /^EDITAR/.test(x.texto) ? '<span class="badge x2">Completar</span>' : '';
-      return '<div class="item"><span class="num">' + (j + 1) + '</span><span class="txt">' + esc(x.texto) + '<small>' + sub + '</small></span>' + aviso +
+      var aviso = /^EDITAR/.test(x.texto) || (x.tipo === 'imagen' && !x.img) ? '<span class="badge x2">Completar</span>' : '';
+      return '<div class="item"><span class="num">' + (j + 1) + '</span>' + miniatura(x) + '<span class="txt">' + textoItem(x) + '<small>' + resumenItem(x, r) + '</small></span>' + aviso +
         '<button type="button" class="btn-mini" data-up="' + j + '"' + (j === 0 ? ' disabled' : '') + ' aria-label="Subir">↑</button>' +
         '<button type="button" class="btn-mini" data-edit="' + x.id + '">✏️ Editar</button>' +
         (confirmando === x.id ? '<span class="confirm-inline">¿Borrar? <button type="button" class="btn-mini danger" data-delok="' + x.id + '">Sí</button><button type="button" class="btn-mini" data-delno="1">No</button></span>' : '<button type="button" class="btn-mini danger" data-del="' + x.id + '" aria-label="Borrar">🗑️</button>') + '</div>';
     }).join('');
     var nuevo = editando === 'nuevo' ? formItem(r, null) : '';
+    var ayuda = r.tipoNuevo === 'imagen' ? '<p class="notice" style="margin:0 0 14px">' + (r.sombraNuevo ? '👤 Subí la foto de un objeto: la app lo convierte en silueta negra y lo muestra de verdad al revelar. Funciona mejor con fotos sobre fondo liso (blanco o de un solo color) o con imágenes PNG sin fondo.' : '🖼️ Tocá “Agregar pregunta”, subí la imagen y escribí las opciones.') + '</p>' : '';
     $('tabPreguntas').innerHTML =
       '<section class="card"><div class="card-head"><h2>Preguntas y desafíos</h2><p>Los cambios se guardan solos y se usan en la próxima pregunta que lances.</p></div>' +
       '<div class="round-tabs">' + tabsR + '</div>' +
       '<div class="form-grid" style="margin-bottom:14px">' +
         '<label class="field">Nombre de la ronda<input type="text" id="rNombre" value="' + esc(r.nombre) + '"></label>' +
-        '<label class="field">Tipo<select id="rTipo"><option value="preguntas"' + (r.tipo !== 'desafios' ? ' selected' : '') + '>Preguntas (opción múltiple o "más cerca gana")</option><option value="desafios"' + (r.tipo === 'desafios' ? ' selected' : '') + '>Desafíos de foto</option></select></label>' +
-        (r.tipo !== 'desafios' ? '<label class="field">Segundos para responder<input type="number" id="rTiempo" min="5" max="120" value="' + (r.tiempo || 20) + '"></label><label class="field">Puntaje<select id="rDoble"><option value="0"' + (r.doble ? '' : ' selected') + '>Normal</option><option value="1"' + (r.doble ? ' selected' : '') + '>Doble (x2)</option></select></label>' : '') +
-      '</div>' +
+        '<label class="field">Tipo<select id="rTipo"><option value="preguntas"' + (r.tipo !== 'desafios' ? ' selected' : '') + '>Preguntas (todas las variantes)</option><option value="desafios"' + (r.tipo === 'desafios' ? ' selected' : '') + '>Desafíos de foto</option></select></label>' +
+        (r.tipo !== 'desafios' ? '<label class="field">Segundos para responder<input type="number" id="rTiempo" min="5" max="300" value="' + (r.tiempo || 20) + '"></label><label class="field">Puntos a repartir por pregunta<input type="number" id="rPuntos" min="100" step="100" value="' + (r.puntos || 1000) + '"></label><label class="field">Puntaje<select id="rDoble"><option value="0"' + (r.doble ? '' : ' selected') + '>Normal</option><option value="1"' + (r.doble ? ' selected' : '') + '>Doble (x2)</option></select></label>' : '') +
+      '</div>' + ayuda +
       '<div class="item-list">' + items + nuevo + '</div>' +
       '<div class="row-actions">' + (editando ? '' : '<button type="button" class="btn btn-gold" id="addItem">＋ Agregar ' + (r.tipo === 'desafios' ? 'desafío' : 'pregunta') + '</button>') +
         (confirmando === 'ronda' ? '<span class="confirm-inline">¿Borrar la ronda entera? <button type="button" class="btn-mini danger" id="delRondaOk">Sí, borrar</button><button type="button" class="btn-mini" id="delRondaNo">No</button></span>' : '<button type="button" class="btn-mini danger" id="delRonda">🗑️ Borrar esta ronda</button>') +
@@ -1177,14 +1486,15 @@
     $('nuevaRonda').onclick = function () { contenido.rondas.push({ id: uid('r'), nombre: 'Ronda nueva', tipo: 'preguntas', tiempo: 20, doble: false, items: [] }); rondaEdit = contenido.rondas.length - 1; editando = 'nuevo'; guardarContenido(); renderPreguntas(); };
     $('rNombre').onchange = function () { r.nombre = this.value.trim() || 'Ronda'; guardarContenido(); renderPreguntas(); };
     $('rTipo').onchange = function () { if (r.items.length && this.value !== r.tipo) { toast('Para cambiar el tipo, la ronda tiene que estar vacía.'); this.value = r.tipo; return; } r.tipo = this.value; guardarContenido(); renderPreguntas(); };
-    if ($('rTiempo')) $('rTiempo').onchange = function () { var n = parseInt(this.value, 10); r.tiempo = (n >= 5 && n <= 120) ? n : 20; guardarContenido(); };
+    if ($('rTiempo')) $('rTiempo').onchange = function () { var n = parseInt(this.value, 10); r.tiempo = (n >= 5 && n <= 300) ? n : 20; guardarContenido(); };
+    if ($('rPuntos')) $('rPuntos').onchange = function () { var n = parseInt(this.value, 10); r.puntos = n >= 10 ? n : 1000; guardarContenido(); };
     if ($('rDoble')) $('rDoble').onchange = function () { r.doble = this.value === '1'; guardarContenido(); };
-    T.querySelectorAll('[data-edit]').forEach(function (b) { b.onclick = function () { editando = b.dataset.edit; confirmando = null; renderPreguntas(); }; });
+    T.querySelectorAll('[data-edit]').forEach(function (b) { b.onclick = function () { editando = b.dataset.edit; confirmando = null; imgEditor = null; renderPreguntas(); }; });
     T.querySelectorAll('[data-up]').forEach(function (b) { b.onclick = function () { var j = Number(b.dataset.up); var t = r.items[j - 1]; r.items[j - 1] = r.items[j]; r.items[j] = t; guardarContenido(); renderPreguntas(); }; });
     T.querySelectorAll('[data-del]').forEach(function (b) { b.onclick = function () { confirmando = b.dataset.del; renderPreguntas(); }; });
     T.querySelectorAll('[data-delok]').forEach(function (b) { b.onclick = function () { r.items = r.items.filter(function (x) { return x.id !== b.dataset.delok; }); confirmando = null; guardarContenido(); renderPreguntas(); }; });
     T.querySelectorAll('[data-delno]').forEach(function (b) { b.onclick = function () { confirmando = null; renderPreguntas(); }; });
-    if ($('addItem')) $('addItem').onclick = function () { editando = 'nuevo'; renderPreguntas(); };
+    if ($('addItem')) $('addItem').onclick = function () { editando = 'nuevo'; imgEditor = null; renderPreguntas(); };
     if ($('delRonda')) $('delRonda').onclick = function () { confirmando = 'ronda'; renderPreguntas(); };
     if ($('delRondaOk')) $('delRondaOk').onclick = function () { if (contenido.rondas.length <= 1) { toast('Tiene que quedar al menos una ronda.'); confirmando = null; renderPreguntas(); return; } contenido.rondas.splice(rondaEdit, 1); rondaEdit = 0; confirmando = null; guardarContenido(); renderPreguntas(); };
     if ($('delRondaNo')) $('delRondaNo').onclick = function () { confirmando = null; renderPreguntas(); };
@@ -1193,96 +1503,152 @@
     if ($('resetNo')) $('resetNo').onclick = function () { confirmando = null; renderPreguntas(); };
     var f = $('formItem');
     if (f) {
-      if ($('fTipo')) $('fTipo').onchange = function () { $('bloqueOpcion').hidden = this.value !== 'opcion'; $('bloqueEstim').hidden = this.value !== 'estimacion'; };
-      $('fCancelar').onclick = function () { editando = null; renderPreguntas(); };
+      var mostrarBloques = function () {
+        var t = $('fTipo') ? $('fTipo').value : '';
+        if (!$('fTipo')) return;
+        $('bloqueOpcion').hidden = t === 'estimacion';
+        $('bloqueEstim').hidden = t !== 'estimacion';
+        $('bloqueImagen').hidden = t !== 'imagen';
+        $('bloqueTema').hidden = t !== 'tema';
+        $('fTextoLbl').textContent = t === 'emoji' ? 'Emojis que se muestran' : (t === 'tema' ? 'Texto en pantalla' : 'Pregunta');
+      };
+      if ($('fTipo')) { $('fTipo').onchange = mostrarBloques; mostrarBloques(); }
+      var pintarPrevia = function () {
+        var p = $('fPrevia'); if (!p) return;
+        var ruta = imgEditor ? imgEditor.ruta : '';
+        var sombra = $('fSombra') && $('fSombra').checked;
+        p.innerHTML = ruta ? '<img src="' + esc(ruta) + '" alt="Imagen elegida" style="max-height:140px;max-width:100%;object-fit:contain;background:#fff;border-radius:10px;padding:6px">' + (sombra ? '<span style="display:inline-flex;background:#fff;border-radius:10px;padding:6px"><img src="' + esc(ruta) + '" alt="Así se ve la sombra" style="max-height:128px;max-width:100%;object-fit:contain;filter:brightness(0)"></span>' : '') : '<p class="hint" style="margin:0">Todavía no elegiste imagen.</p>';
+      };
+      if ($('fImg')) {
+        $('fImg').onchange = function () {
+          var file = this.files[0]; if (!file) return;
+          var sombra = $('fSombra').checked;
+          $('fPrevia').innerHTML = '<p class="hint" style="margin:0">Preparando la imagen…</p>';
+          procesarImagen(file, sombra).then(subirImagen).then(function (ruta) {
+            if (!ruta) { toast('No se pudo subir la imagen. Revisá la conexión y probá de nuevo.'); pintarPrevia(); return; }
+            imgEditor = { ruta: ruta }; pintarPrevia();
+          }).catch(function () { toast('No se pudo abrir esa imagen. Probá con otra.'); pintarPrevia(); });
+        };
+        $('fSombra').onchange = function () { if (this.checked && imgEditor && imgEditor.ruta.indexOf('/imagenes/') === 0 && /\.jpg$/.test(imgEditor.ruta)) toast('Para la sombra, volvé a elegir la imagen así se le quita el fondo.'); pintarPrevia(); };
+        pintarPrevia();
+      }
+      $('fCancelar').onclick = function () { editando = null; imgEditor = null; renderPreguntas(); };
       f.onsubmit = function (ev) {
         ev.preventDefault();
         var texto = $('fTexto').value.trim(); if (!texto) { toast('Escribí el texto.'); return; }
         var x = editando === 'nuevo' ? { id: uid('i') } : r.items.filter(function (y) { return y.id === editando; })[0];
-        x.texto = texto;
-        if (r.tipo === 'desafios') { x.puntos = parseInt($('fPuntos').value, 10) || 300; }
+        if (r.tipo === 'desafios') { x.texto = texto; x.puntos = parseInt($('fPuntos').value, 10) || 300; }
         else {
-          x.tipo = $('fTipo').value; x.dato = $('fDato').value.trim();
-          if (x.tipo === 'opcion') {
+          var tipo = $('fTipo').value;
+          if (tipo === 'imagen' && !(imgEditor && imgEditor.ruta)) { toast('Elegí la imagen de la pregunta.'); return; }
+          x.texto = texto; x.tipo = tipo; x.dato = $('fDato').value.trim();
+          var tq = parseInt($('fTiempoQ').value, 10), pq = parseInt($('fPuntosQ').value, 10);
+          if (tq >= 5) x.tiempo = tq; else delete x.tiempo;
+          if (pq >= 10) x.puntos = pq; else delete x.puntos;
+          if (tipo === 'estimacion') {
+            var n = parseNumero($('fResp').value); if (!isFinite(n)) { toast('La respuesta tiene que ser un número.'); return; }
+            x.respuesta = n; x.unidad = $('fUnidad').value.trim(); delete x.opciones; delete x.correcta;
+          } else {
             var ops = [0, 1, 2, 3].map(function (i) { return $('fOp' + i).value.trim(); });
             var marcada = T.querySelector('input[name="fCorrecta"]:checked');
             var corr = marcada ? Number(marcada.value) : -1;
-            var llenas = ops.filter(Boolean);
-            if (llenas.length < 2) { toast('Completá al menos 2 opciones.'); return; }
+            if (ops.filter(Boolean).length < 2) { toast('Completá al menos 2 opciones.'); return; }
             if (corr < 0 || !ops[corr]) { toast('Marcá cuál es la opción correcta.'); return; }
-            // quitar huecos manteniendo la correcta
             var nuevas = [], nuevaCorr = 0;
             ops.forEach(function (o, i) { if (o) { if (i === corr) nuevaCorr = nuevas.length; nuevas.push(o); } });
             x.opciones = nuevas; x.correcta = nuevaCorr; delete x.respuesta; delete x.unidad;
-          } else {
-            var n = parseNumero($('fResp').value); if (!isFinite(n)) { toast('La respuesta tiene que ser un número.'); return; }
-            x.respuesta = n; x.unidad = $('fUnidad').value.trim(); delete x.opciones; delete x.correcta;
           }
+          if (tipo === 'imagen') { x.img = imgEditor.ruta; x.sombra = $('fSombra').checked; } else { delete x.img; delete x.sombra; }
+          if (tipo === 'tema') { x.tema = $('fTema').value; x.desde = Math.max(0, parseInt($('fDesde').value, 10) || 0); } else { delete x.tema; delete x.desde; }
         }
         if (editando === 'nuevo') r.items.push(x);
-        editando = null; guardarContenido(); renderPreguntas(); toast('Guardado');
+        editando = null; imgEditor = null; guardarContenido(); renderPreguntas(); toast('Guardado');
       };
       $('fTexto').focus();
     }
   }
   function formItem(r, x) {
-    var esNuevo = !x; x = x || { tipo: 'opcion', texto: '', opciones: ['', '', '', ''], correcta: 0, puntos: 300 };
+    var esNuevo = !x;
+    x = x || { tipo: r.tipoNuevo || 'opcion', texto: r.textoNuevo || '', opciones: ['', '', '', ''], correcta: 0, sombra: !!r.sombraNuevo };
     if (r.tipo === 'desafios') {
       return '<form class="item" id="formItem" style="flex-direction:column;align-items:stretch;gap:10px"><div class="form-grid">' +
         '<label class="field full">Consigna del desafío<textarea id="fTexto">' + esc(x.texto) + '</textarea></label>' +
         '<label class="field">Puntos<input type="number" id="fPuntos" min="50" step="50" value="' + (x.puntos || 300) + '"></label></div>' +
         '<div class="row-actions" style="margin:0"><button type="submit" class="btn btn-gold">' + (esNuevo ? 'Agregar' : 'Guardar') + '</button><button type="button" class="btn-mini" id="fCancelar">Cancelar</button></div></form>';
     }
+    if (x.img && !imgEditor) imgEditor = { ruta: x.img };
     var ops = (x.opciones || []).concat(['', '', '', '']).slice(0, 4);
     var tipo = x.tipo || 'opcion';
     return '<form class="item" id="formItem" style="flex-direction:column;align-items:stretch;gap:10px"><div class="form-grid">' +
-      '<label class="field full">Pregunta<textarea id="fTexto">' + esc(x.texto) + '</textarea></label>' +
-      '<label class="field">Tipo de pregunta<select id="fTipo"><option value="opcion"' + (tipo === 'opcion' ? ' selected' : '') + '>Opción múltiple</option><option value="estimacion"' + (tipo === 'estimacion' ? ' selected' : '') + '>Más cerca gana (número)</option></select></label>' +
+      '<label class="field">Tipo de pregunta<select id="fTipo">' + Object.keys(TIPOS_PREGUNTA).map(function (k) { return '<option value="' + k + '"' + (tipo === k ? ' selected' : '') + '>' + TIPOS_PREGUNTA[k] + '</option>'; }).join('') + '</select></label>' +
       '<label class="field">Dato curioso al revelar (opcional)<input type="text" id="fDato" value="' + esc(x.dato || '') + '"></label>' +
-      '<div class="full" id="bloqueOpcion"' + (tipo === 'opcion' ? '' : ' hidden') + '><p class="hint" style="margin:0 0 6px">Escribí las opciones y marcá la correcta.</p><div class="form-grid">' +
+      '<label class="field full"><span id="fTextoLbl">Pregunta</span><textarea id="fTexto">' + esc(x.texto) + '</textarea></label>' +
+      '<div class="full form-grid" id="bloqueImagen" hidden>' +
+        '<label class="field">Imagen<input type="file" id="fImg" accept="image/*"></label>' +
+        '<label class="op-field" style="font-size:13px;font-weight:700;color:var(--ink-soft)"><input type="checkbox" id="fSombra"' + (x.sombra ? ' checked' : '') + ' style="width:18px;height:18px;accent-color:var(--gold)"> Mostrar como sombra (se revela al final)</label>' +
+        '<div class="full" id="fPrevia" style="display:flex;gap:10px;flex-wrap:wrap"></div>' +
+      '</div>' +
+      '<div class="full form-grid" id="bloqueTema" hidden>' +
+        '<label class="field">Canción<select id="fTema">' + TEMAS.map(function (t) { return '<option value="' + t.key + '"' + (x.tema === t.key ? ' selected' : '') + '>' + esc(t.titulo) + '</option>'; }).join('') + '</select></label>' +
+        '<label class="field">Empieza en el segundo<input type="number" id="fDesde" min="0" value="' + (Number(x.desde) || 0) + '"></label>' +
+        '<p class="hint full" style="margin:0">El fragmento suena en la ventana del proyector mientras corre el tiempo. Al revelar, se pasa el video.</p>' +
+      '</div>' +
+      '<div class="full" id="bloqueOpcion"><p class="hint" style="margin:0 0 6px">Escribí las opciones y marcá la correcta.</p><div class="form-grid">' +
         ops.map(function (o, i) { return '<label class="op-field"><input type="radio" name="fCorrecta" value="' + i + '"' + (x.correcta === i ? ' checked' : '') + ' aria-label="Opción ' + LETRAS[i] + ' es la correcta"><span class="op-letter op-' + 'abcd'[i] + '-bg">' + LETRAS[i] + '</span><span class="field" style="flex:1"><input type="text" id="fOp' + i + '" value="' + esc(o) + '" placeholder="Opción ' + LETRAS[i] + '"></span></label>'; }).join('') +
       '</div></div>' +
-      '<div class="full form-grid" id="bloqueEstim"' + (tipo === 'estimacion' ? '' : ' hidden') + '><label class="field">Respuesta exacta<input type="text" inputmode="decimal" id="fResp" value="' + (x.respuesta != null ? esc(x.respuesta) : '') + '"></label><label class="field">Unidad (opcional)<input type="text" id="fUnidad" value="' + esc(x.unidad || '') + '" placeholder="metros, años, kilos…"></label></div>' +
+      '<div class="full form-grid" id="bloqueEstim" hidden><label class="field">Respuesta exacta<input type="text" inputmode="decimal" id="fResp" value="' + (x.respuesta != null ? esc(x.respuesta) : '') + '"></label><label class="field">Unidad (opcional)<input type="text" id="fUnidad" value="' + esc(x.unidad || '') + '" placeholder="metros, años, kilos…"></label></div>' +
+      '<label class="field">Segundos (vacío = los de la ronda)<input type="number" id="fTiempoQ" min="5" max="300" value="' + (x.tiempo || '') + '" placeholder="' + (r.tiempo || 20) + '"></label>' +
+      '<label class="field">Puntos a repartir (vacío = los de la ronda)<input type="number" id="fPuntosQ" min="10" step="100" value="' + (x.puntos || '') + '" placeholder="' + (r.puntos || 1000) + '"></label>' +
       '</div><div class="row-actions" style="margin:0"><button type="submit" class="btn btn-gold">' + (esNuevo ? 'Agregar' : 'Guardar') + '</button><button type="button" class="btn-mini" id="fCancelar">Cancelar</button></div></form>';
   }
 
   // ---- Equipos ----
   function renderEquipos() {
     if (tabActiva !== 'equipos') return;
+    var activo = document.activeElement && document.activeElement.id === 'inEquipo' ? $('inEquipo').value : null;
     var lista = Object.keys(G.equipos).map(function (k) { return G.equipos[k]; }).sort(function (a, b) { return b.puntos - a.puntos; });
     var hayBots = lista.some(function (e) { return e.bot; });
+    var jug = Object.keys(G.jugadores || {}).filter(function (c) { return G.equipos[G.jugadores[c].equipoId]; }).map(function (c) { return { c: c, j: G.jugadores[c] }; }).sort(function (a, b) { return b.j.puntos - a.j.puntos; });
     $('tabEquipos').innerHTML =
-      '<section class="card"><div class="card-head"><h2>Equipos (' + lista.length + ')</h2><p>Cargá acá los equipos. En el celular, cada persona elige el suyo de una lista y escribe su nombre.</p></div>' +
+      '<section class="card"><div class="card-head"><h2>Equipos (' + lista.length + ')</h2><p>Cargá acá los equipos. En el celular, cada persona elige el suyo y escribe su nombre. El color es el fondo de su celular.</p></div>' +
       '<form id="fEquipo" class="row-actions" style="margin:0 0 14px"><span class="field" style="flex:1;min-width:200px"><input type="text" id="inEquipo" maxlength="30" autocomplete="off" placeholder="Nombre del equipo (ej.: Mesa 1, Los Genios)" aria-label="Nombre del equipo nuevo"></span><button type="submit" class="btn btn-gold">＋ Agregar equipo</button></form>' +
       (lista.length ? lista.map(function (e, i) {
-        return '<div class="eq-row"><span class="pos">' + (i + 1) + '</span><span class="nom">' + esc(e.nombre) + (e.bot ? ' 🤖' : '') + '<small style="display:block;font-weight:500;color:var(--ink-soft);font-size:12px;white-space:normal">' + (e.bot ? 'Equipo de prueba' : ((e.integrantes || []).length ? (e.integrantes || []).map(function (x) { return esc(x.nombre); }).join(', ') : 'Todavía no se sumó nadie')) + '</small></span><span class="pts">' + fmt(e.puntos) + '</span>' +
+        var miembros = (e.integrantes || []).map(function (x) { var j = G.jugadores[x.cliente]; return esc(x.nombre) + (j ? ' (' + fmt(j.puntos) + ')' : ''); }).join(', ');
+        return '<div class="eq-row"><span class="pos">' + (i + 1) + '</span><input type="color" value="' + esc(e.color || '#888888') + '" data-color="' + e.id + '" aria-label="Color de ' + esc(e.nombre) + '" style="width:34px;height:30px;border:0;background:none;padding:0;cursor:pointer;flex:none"><span class="nom">' + esc(e.nombre) + (e.bot ? ' 🤖' : '') + '<small style="display:block;font-weight:500;color:var(--ink-soft);font-size:12px;white-space:normal">' + (e.bot ? 'Equipo de prueba: 3 jugadores simulados' : (miembros || 'Todavía no se sumó nadie')) + '</small></span><span class="pts">' + fmt(e.puntos) + '</span>' +
           '<button type="button" class="btn-mini" data-aj="' + e.id + '" data-d="100">+100</button><button type="button" class="btn-mini" data-aj="' + e.id + '" data-d="-100">−100</button>' +
           (confirmando === e.id ? '<button type="button" class="btn-mini danger" data-borrarok="' + e.id + '">¿Borrar?</button>' : '<button type="button" class="btn-mini danger" data-borrar="' + e.id + '" aria-label="Borrar equipo">🗑️</button>') + '</div>';
       }).join('') : '<p class="muted">Todavía no cargaste equipos. Escribí el nombre arriba y tocá "Agregar equipo".</p>') +
       '</section>' +
-      '<section class="card"><div class="card-head"><h2>Probar sin celulares</h2><p>Los equipos de prueba 🤖 responden solos (aciertan más o menos 6 de cada 10). Sirven para ensayar la noche.</p></div>' +
+      '<section class="card"><div class="card-head"><h2>Tabla individual (' + jug.length + ')</h2><p>Cada pregunta reparte también los mismos puntos entre los jugadores que acertaron.</p></div>' +
+      (jug.length ? '<div style="display:grid;grid-template-columns:repeat(auto-fill,minmax(240px,1fr));gap:0 18px">' + jug.map(function (x, i) {
+        var e = G.equipos[x.j.equipoId];
+        return '<div class="eq-row"><span class="pos">' + (i + 1) + '</span><i class="dot-eq" style="background:' + esc(e.color) + '"></i><span class="nom">' + esc(x.j.nombre) + '<small style="display:block;font-weight:500;color:var(--ink-soft);font-size:12px">' + esc(e.nombre) + '</small></span><span class="pts">' + fmt(x.j.puntos) + '</span></div>';
+      }).join('') + '</div>' : '<p class="muted" style="margin:0">Cuando la gente se sume desde el celular, aparece acá.</p>') + '</section>' +
+      '<section class="card"><div class="card-head"><h2>Probar sin celulares</h2><p>Cada equipo de prueba 🤖 tiene 3 jugadores simulados que responden solos (aciertan más o menos 6 de cada 10).</p></div>' +
       '<div class="row-actions" style="margin:0"><button type="button" class="btn btn-gold" id="bots5">🤖 Agregar 5 equipos de prueba</button>' + (hayBots ? '<button type="button" class="btn-mini danger" id="botsFuera">Sacar los equipos de prueba</button>' : '') +
       (confirmando === 'puntos' ? '<span class="confirm-inline">¿Poner todos en 0 y borrar fotos y tesoro? <button type="button" class="btn-mini danger" id="ceroOk">Sí</button><button type="button" class="btn-mini" id="ceroNo">No</button></span>' : '<button type="button" class="btn-mini" id="cero">↺ Puntos a cero</button>') +
       (confirmando === 'todo' ? '<span class="confirm-inline">¿Borrar todos los equipos y empezar de nuevo? <button type="button" class="btn-mini danger" id="todoOk">Sí, borrar todo</button><button type="button" class="btn-mini" id="todoNo">No</button></span>' : '<button type="button" class="btn-mini danger" id="todo">🗑️ Empezar la noche de cero</button>') +
       '</div></section>';
     var T = $('tabEquipos');
+    if (activo != null) { $('inEquipo').value = activo; $('inEquipo').focus(); }
     T.querySelectorAll('[data-aj]').forEach(function (b) { b.onclick = function () { var e = G.equipos[b.dataset.aj]; if (e) { e.puntos += Number(b.dataset.d); publicar(); } }; });
+    T.querySelectorAll('[data-color]').forEach(function (inp) { inp.onchange = function () { var e = G.equipos[inp.dataset.color]; if (e) { e.color = inp.value; publicar(); } }; });
     T.querySelectorAll('[data-borrar]').forEach(function (b) { b.onclick = function () { confirmando = b.dataset.borrar; renderEquipos(); }; });
-    T.querySelectorAll('[data-borrarok]').forEach(function (b) { b.onclick = function () { var id = b.dataset.borrarok; delete G.equipos[id]; delete G.resp[id]; Object.keys(G.clientes).forEach(function (c) { if (G.clientes[c] === id) delete G.clientes[c]; }); confirmando = null; publicar(); }; });
+    T.querySelectorAll('[data-borrarok]').forEach(function (b) { b.onclick = function () { borrarEquipo(b.dataset.borrarok); confirmando = null; publicar(); }; });
     $('bots5').onclick = function () { agregarBots(5); };
     $('fEquipo').onsubmit = function (ev) {
       ev.preventDefault();
       var r = crearEquipo($('inEquipo').value);
       if (!r.ok) { toast(esc(r.msg)); return; }
       toast('Equipo agregado');
-      setTimeout(function () { if ($('inEquipo')) $('inEquipo').focus(); }, 30);
+      setTimeout(function () { if ($('inEquipo')) { $('inEquipo').value = ''; $('inEquipo').focus(); } }, 30);
     };
-    if ($('botsFuera')) $('botsFuera').onclick = function () { Object.keys(G.equipos).forEach(function (k) { if (G.equipos[k].bot) { delete G.equipos[k]; delete G.resp[k]; } }); publicar(); };
+    if ($('botsFuera')) $('botsFuera').onclick = sacarBots;
     if ($('cero')) $('cero').onclick = function () { confirmando = 'puntos'; renderEquipos(); };
-    if ($('ceroOk')) $('ceroOk').onclick = function () { Object.keys(G.equipos).forEach(function (k) { G.equipos[k].puntos = 0; }); G.fotos = []; G.qrReclamos = {}; G.hechos = []; confirmando = null; publicar(); };
+    if ($('ceroOk')) $('ceroOk').onclick = function () { Object.keys(G.equipos).forEach(function (k) { G.equipos[k].puntos = 0; }); Object.keys(G.jugadores).forEach(function (c) { G.jugadores[c].puntos = 0; }); G.fotos = []; G.qrReclamos = {}; G.hechos = []; confirmando = null; publicar(); };
     if ($('ceroNo')) $('ceroNo').onclick = function () { confirmando = null; renderEquipos(); };
     if ($('todo')) $('todo').onclick = function () { confirmando = 'todo'; renderEquipos(); };
-    if ($('todoOk')) $('todoOk').onclick = function () { var keep = { club: G.club, buffet: G.buffet, precios: G.precios, segundos: G.segundos, rev: G.rev }; G = estadoInicial(); Object.assign(G, keep); confirmando = null; token++; publicar(); };
+    if ($('todoOk')) $('todoOk').onclick = function () { var keep = { club: G.club, buffet: G.buffet, precios: G.precios, segundos: G.segundos, rev: G.rev }; G = estadoInicial(); Object.assign(G, keep); normalizarEstado(); confirmando = null; token++; publicar(); };
     if ($('todoNo')) $('todoNo').onclick = function () { confirmando = null; renderEquipos(); };
   }
 
@@ -1327,18 +1693,21 @@
   // ================= PANTALLA =================
   var firmaP = '', firmaT = '';
   function pintarQrUnion() { $('joinQr').innerHTML = qrSvg(BASE + '/jugar', 8); $('joinUrl').textContent = BASE.replace(/^https?:\/\//, '') + '/jugar'; }
-  // Cartelera de Inicio: rota entre la tabla de posiciones, el buffet y los precios
+  // Cartelera de Inicio: rota entre la tabla por equipos, la individual, el buffet y los precios
   var slideIdx = 0, slideTimer = null, segActual = 0;
   function hayPrecios(obj) { return Object.keys(obj || {}).some(function (k) { return obj[k] && obj[k].on && String(obj[k].precio || '').trim(); }); }
   function slidesDisponibles() {
     var ids = ['tabla'];
+    if (V && (V.jugadores || []).length) ids.push('jugadores');
     if (V && hayPrecios(V.buffet)) ids.push('buffet');
     if (V && hayPrecios(V.precios)) ids.push('juegos');
     return ids;
   }
   function mostrarSlide(id) {
-    $('homeBoard').hidden = id !== 'tabla';
-    $('homeFlyer').hidden = id === 'tabla';
+    var tabla = id === 'tabla' || id === 'jugadores';
+    $('homeBoard').hidden = !tabla;
+    $('homeFlyer').hidden = tabla;
+    if (tabla) renderTabla(id);
     document.querySelectorAll('.home-slide').forEach(function (s) { s.classList.toggle('active', s.dataset.slide === id); });
   }
   function arrancarCartelera() {
@@ -1364,79 +1733,153 @@
     $('homeJuegos').innerHTML = PRECIOS_NOCHE.filter(function (d) { return ok(pr, d.key); }).map(function (d) { return filaPrecio(d.label, pr[d.key].precio, null, d.emoji); }).join('');
   }
 
-  function renderTabla() {
-    var lista = V.ranking || [];
-    $('hbCount').textContent = lista.length + (lista.length === 1 ? ' equipo' : ' equipos');
+  var modoTabla = 'tabla';
+  function renderTabla(modo) {
+    modo = modo || modoTabla; modoTabla = modo;
+    var indiv = modo === 'jugadores';
+    var lista = indiv ? (V.jugadores || []) : (V.ranking || []);
+    $('hbTitulo').textContent = indiv ? 'Tabla individual' : 'Tabla por equipos';
+    $('hbCount').textContent = V.ranking.length + (V.ranking.length === 1 ? ' equipo' : ' equipos') + ' · ' + (V.jugadores || []).length + ' jugadores';
     $('hbTesoro').hidden = !V.qrActivo;
     $('hbTesoro').textContent = '🔎 ¡Búsqueda del tesoro activa! Hay ' + V.qrTotal + ' tarjetas escondidas en el club. Escaneá el QR de cada una con el celu.';
-    var f = JSON.stringify(lista); if (f === firmaT) return; firmaT = f;
+    var f = modo + JSON.stringify(lista); if (f === firmaT) return; firmaT = f;
     var g = $('hbGrid');
-    if (!lista.length) { g.style.gridTemplateRows = ''; g.innerHTML = '<p class="hb-empty">Todavía no hay equipos anotados.<br>Escaneá el QR y sumá al tuyo.</p>'; return; }
+    if (!lista.length) { g.style.gridTemplateRows = ''; g.innerHTML = '<p class="hb-empty">' + (indiv ? 'Todavía no se sumó nadie.' : 'Todavía no hay equipos cargados.') + '<br>Escaneá el QR, elegí tu equipo y escribí tu nombre.</p>'; return; }
     var cols = lista.length > 30 ? 3 : (lista.length > 12 ? 2 : 1), filas = Math.ceil(lista.length / cols);
     var alto = Math.min(7.5, 62 / filas);
     g.style.gridTemplateRows = 'repeat(' + filas + ', ' + alto + 'vh)';
     g.style.fontSize = Math.max(1.4, Math.min(3.2, alto * 0.45)) + 'vh';
     g.innerHTML = lista.map(function (e, i) {
-      return '<div class="hb-row' + (i < 3 && e.puntos > 0 ? ' top' : '') + '"><span class="n">' + (i < 3 && e.puntos > 0 ? ['🥇', '🥈', '🥉'][i] : i + 1) + '</span><span class="nom">' + esc(e.nombre) + '</span><span class="p">' + fmt(e.puntos) + '</span></div>';
+      var top = i < 3 && e.puntos > 0;
+      return '<div class="hb-row' + (top ? ' top' : '') + '"><span class="n">' + (top ? ['🥇', '🥈', '🥉'][i] : i + 1) + '</span><i class="dot-eq" style="background:' + esc(e.color) + '"></i><span class="nom">' + esc(e.nombre) + (indiv ? '<small> · ' + esc(e.equipo) + '</small>' : '') + '</span><span class="p">' + fmt(e.puntos) + '</span></div>';
     }).join('');
+  }
+
+  // ---- Audio y video de "Descubrí el tema" (suenan en el proyector) ----
+  var medioClave = '', pAudio = null, pVideo = null;
+  function temaSrc(k, cual) { return '/temas/tema-' + k + (cual === 'video' ? '-reveal.webm' : '-audio.mp3'); }
+  function pararMedios() {
+    if (pAudio) { try { pAudio.pause(); } catch (e) { } }
+    if (pVideo) { try { pVideo.pause(); pVideo.remove(); } catch (e) { } pVideo = null; }
+  }
+  function avisoSonido() { $('sonidoBtn').hidden = false; toast('🔇 El navegador bloqueó el sonido. Tocá “Activar sonido” en el proyector.', 6000); }
+  function tocarAudio(k, desde) {
+    if (!pAudio) pAudio = new Audio();
+    pAudio.preload = 'auto';
+    pAudio.src = temaSrc(k, 'audio');
+    var arrancar = function () { try { pAudio.currentTime = desde || 0; } catch (e) { } pAudio.play().catch(avisoSonido); };
+    if (pAudio.readyState >= 1) arrancar(); else pAudio.addEventListener('loadedmetadata', arrancar, { once: true });
+  }
+  function ponerVideo(k) {
+    var slot = $('pVideoSlot'); if (!slot) return;
+    if (!pVideo) {
+      pVideo = document.createElement('video');
+      pVideo.src = temaSrc(k, 'video'); pVideo.playsInline = true; pVideo.preload = 'auto';
+    }
+    slot.appendChild(pVideo);
+    pVideo.play().catch(function () { pVideo.muted = true; pVideo.play().catch(function () { }); avisoSonido(); });
+  }
+
+  function filaRanking(x, i, max, sub) {
+    return '<div class="p-row' + (i === 0 ? ' first' : '') + '" style="animation:pop .5s ease both;animation-delay:' + i * 70 + 'ms"><div class="bar" style="width:' + (x.puntos / max * 100) + '%"></div><span class="n">' + (i < 3 && x.puntos > 0 ? ['🥇', '🥈', '🥉'][i] : i + 1) + '</span><i class="dot-eq" style="background:' + esc(x.color) + ';position:relative"></i><span class="nom">' + esc(x.nombre) + (sub ? '<small style="opacity:.7;font-weight:600"> · ' + esc(sub) + '</small>' : '') + '</span><span class="p">' + fmt(x.puntos) + '</span></div>';
   }
 
   function renderPantalla() {
     if (!V) return;
     var enInicio = V.fase === 'inicio';
     $('pStage').hidden = enInicio;
-    if (enInicio) { renderTabla(); renderPrecios(); arrancarCartelera(); aplicarDeporte(V.club); firmaP = ''; return; }
+    if (enInicio) { pararMedios(); medioClave = ''; renderTabla(); renderPrecios(); arrancarCartelera(); aplicarDeporte(V.club); firmaP = ''; return; }
     $('homeBoard').hidden = true; pararCartelera();
     firmaT = '';
     var r = V.ronda, pr = V.pregunta;
     $('pRonda').innerHTML = r && V.fase !== 'fin' && V.fase !== 'ranking' ? '<span class="p-pill">' + esc(r.nombre) + ' · ' + r.item + '/' + r.total + '</span>' + (r.doble ? '<span class="p-pill x2">Puntos x2</span>' : '') : '<span class="p-pill">' + V.ranking.length + ' equipos</span>';
     $('pTesoro').hidden = !V.qrActivo;
     $('pTesoro').textContent = '🔎 ¡Búsqueda del tesoro activa! Hay ' + V.qrTotal + ' tarjetas escondidas en el club. Escaneen el QR de cada una con el celu.';
-    var firma = JSON.stringify([V.fase, r, pr && pr.texto, V.respondieron && V.respondieron.length, V.ranking, V.galeria, V.conteo, V.mejores]);
+    var enPregunta = (V.fase === 'pregunta' || V.fase === 'revelado') && pr;
+    var clave = V.fase + '|' + (r ? r.num + '-' + r.item : '');
+    if (pResp()) $('pResp').textContent = (V.respondieron || []).length;
+    var firma = enPregunta ? JSON.stringify([V.sesion, clave, pr.texto, pr.img, V.detalle]) : JSON.stringify([V.fase, r, V.ranking, V.jugadores, V.galeria]);
     if (firma === firmaP) return; firmaP = firma;
     var m = $('pMain'), html = '';
-    if ((V.fase === 'pregunta' || V.fase === 'revelado') && pr) {
+    if (enPregunta) {
       var rev = V.fase === 'revelado';
+      var conMedia = ['emoji', 'imagen', 'tema'].indexOf(pr.tipo) >= 0;
+      var media = '';
+      if (pr.tipo === 'emoji') media = '<div class="p-media"><div class="p-emojis">' + esc(pr.texto) + '</div></div>';
+      if (pr.tipo === 'imagen') media = '<div class="p-media"><div class="p-imgbox"><img class="p-img' + (pr.sombra ? ' sombra' + (rev ? ' revelar' : '') : '') + '" src="' + esc(pr.img) + '" alt=""></div></div>';
+      if (pr.tipo === 'tema') media = rev ? '<div class="p-media" id="pVideoSlot"></div>' : '<div class="p-media"><div class="p-musica"><div class="notas">🎵🎶🎵</div><p>Escuchen el tema que está sonando</p></div></div>';
+      var titulo = pr.tipo === 'emoji' ? '¿Qué refrán es?' : pr.texto;
       var cuerpo;
       if (pr.tipo === 'estimacion') {
         cuerpo = rev ? '<div class="p-est"><div class="p-answer"><span class="ball-label" style="font-size:1.6vh">Respuesta</span><div class="ball-number">' + fmt(pr.respuesta) + '</div><div class="u">' + esc(pr.unidad) + '</div></div><div class="p-list">' +
-          ((V.mejores || []).map(function (x, i) { return '<div class="p-row' + (i === 0 ? ' first' : '') + '"><span class="n">' + (i + 1) + '</span><span class="nom">' + esc(x.nombre) + '</span><span class="v">' + fmt(x.valor) + '</span><span class="p">+' + fmt(x.pts) + '</span></div>'; }).join('') || '<p class="p-empty">Nadie respondió</p>') + '</div></div>'
-          : '<div class="p-est" style="grid-template-columns:1fr"><p class="p-est-hint">🎯 Escriban un número en el celu.<br>El equipo que más se acerque, gana.</p></div>';
+          ((V.detalle || []).filter(function (d) { return d.valor != null; }).slice(0, 6).map(function (d, i) { return '<div class="p-row' + (i === 0 && d.pts ? ' first' : '') + '"><span class="n">' + (i + 1) + '</span><i class="dot-eq" style="background:' + esc(d.color) + '"></i><span class="nom">' + esc(d.nombre) + '</span><span class="v">≈ ' + fmt(d.valor) + '</span><span class="p">+' + fmt(d.pts) + '</span></div>'; }).join('') || '<p class="p-empty">Nadie respondió</p>') + '</div></div>'
+          : '<div class="p-est" style="grid-template-columns:1fr"><p class="p-est-hint">🎯 Cada uno escribe un número en el celu.<br>Cuenta el promedio del equipo: el que más se acerque, gana.</p></div>';
       } else {
         cuerpo = '<div class="p-ops">' + pr.opciones.map(function (o, i) {
           return '<div class="p-op op-' + i + (rev ? (i === pr.correcta ? ' win' : ' dim') : '') + '"><span class="l">' + LETRAS[i] + '</span><span class="t">' + esc(o) + '</span>' + (rev && V.conteo ? '<span class="c">' + V.conteo[i] + '</span>' : '') + '</div>';
         }).join('') + '</div>';
       }
-      html = '<div class="p-felt"><div class="p-q-head"><h2 class="p-question">' + esc(pr.texto) + '</h2>' +
+      var pie;
+      if (rev) {
+        var ganadores = (V.detalle || []).filter(function (d) { return d.pts > 0; });
+        pie = '<div class="p-chips">' + (ganadores.length ? ganadores.map(function (d) { return '<span class="p-chip"><i style="background:' + esc(d.color) + '"></i>' + esc(d.nombre) + ' +' + fmt(d.pts) + '</span>'; }).join('') : '<span class="p-chip">Ningún equipo llegó al 50% de aciertos</span>') + '</div>' + (pr.dato ? '<span class="p-dato">💡 ' + esc(pr.dato) + '</span>' : '');
+      } else {
+        pie = '<span><b id="pResp">' + (V.respondieron || []).length + '</b> de ' + (V.totalJug || 0) + ' jugadores respondieron</span><span>🏆 Se reparten ' + fmt(pr.pool) + ' puntos</span>';
+      }
+      html = '<div class="p-felt' + (conMedia ? ' con-media' : '') + '"><div class="p-q-head"><h2 class="p-question">' + esc(titulo) + '</h2>' +
         (rev ? '' : '<div class="p-timer"><span class="ball-label">Quedan</span><div class="ball-number" data-cuenta>—</div></div>') + '</div>' +
-        (rev ? '' : '<div class="p-bar"><i data-barra></i></div>') + cuerpo +
-        '<div class="p-foot"><span><b>' + V.respondieron.length + '</b> de ' + V.ranking.length + ' equipos respondieron</span>' + (rev && pr.dato ? '<span class="p-dato">💡 ' + esc(pr.dato) + '</span>' : '') + '</div></div>';
+        (rev ? '' : '<div class="p-bar"><i data-barra></i></div>') + media + cuerpo +
+        '<div class="p-foot">' + pie + '</div></div>';
     }
     else if (V.fase === 'ranking') {
-      var top = V.ranking.slice(0, 10), max = Math.max.apply(null, [1].concat(top.map(function (x) { return x.puntos; })));
-      html = '<div class="p-felt"><h2 class="p-title">Así va la tabla</h2><div class="p-list">' + top.map(function (x, i) {
-        return '<div class="p-row' + (i === 0 ? ' first' : '') + '" style="animation:pop .5s ease both;animation-delay:' + i * 70 + 'ms"><div class="bar" style="width:' + (x.puntos / max * 100) + '%"></div><span class="n">' + (i < 3 ? ['🥇', '🥈', '🥉'][i] : i + 1) + '</span><span class="nom">' + esc(x.nombre) + '</span><span class="p">' + fmt(x.puntos) + '</span></div>';
-      }).join('') + (V.ranking.length > 10 ? '<p style="margin:0;color:var(--parchment-text-soft);font-size:2.2vh">… y ' + (V.ranking.length - 10) + ' equipos más</p>' : '') + (top.length ? '' : '<p class="p-empty">Todavía no hay equipos anotados</p>') + '</div></div>';
+      var te = V.ranking.slice(0, 8), tj = (V.jugadores || []).slice(0, 8);
+      var maxE = Math.max.apply(null, [1].concat(te.map(function (x) { return x.puntos; })));
+      var maxJ = Math.max.apply(null, [1].concat(tj.map(function (x) { return x.puntos; })));
+      html = '<div class="p-felt"><h2 class="p-title">Así va la tabla</h2><div class="p-rk2">' +
+        '<div><h3 class="p-sub">Equipos</h3><div class="p-list">' + (te.map(function (x, i) { return filaRanking(x, i, maxE); }).join('') || '<p class="p-empty">Todavía no hay equipos</p>') + '</div></div>' +
+        '<div><h3 class="p-sub">Jugadores</h3><div class="p-list">' + (tj.map(function (x, i) { return filaRanking(x, i, maxJ, x.equipo); }).join('') || '<p class="p-empty">Todavía no se sumó nadie</p>') + '</div></div>' +
+        '</div></div>';
     }
     else if (V.fase === 'desafio' && V.desafio) {
       html = '<div class="p-felt"><div class="p-q-head"><div style="flex:1"><span class="p-stamp" style="color:var(--gold-bright);font-size:2.6vh">📸 Desafío · ' + fmt(V.desafio.puntos) + ' puntos</span><h2 class="p-desafio">' + esc(V.desafio.texto) + '</h2></div></div>' +
         (V.galeria.length ? '<div class="p-gal">' + V.galeria.slice(-12).reverse().map(function (g) { return '<figure><img data-pfoto="' + g.id + '" alt=""><figcaption>' + esc(g.nombre) + '</figcaption></figure>'; }).join('') + '</div>' : '<p class="p-empty">Saquen la foto desde el celu y mándenla.<br>Las aprobadas aparecen acá.</p>') + '</div>';
     }
     else if (V.fase === 'fin') {
-      var a = V.ranking[0], b = V.ranking[1], c = V.ranking[2];
+      var a = V.ranking[0], b = V.ranking[1], c = V.ranking[2], mvp = (V.jugadores || [])[0];
       var col = function (x, n) { return x ? '<div class="esc p' + n + '"><div class="nom" style="animation-delay:' + (4 - n) * 500 + 'ms">' + esc(x.nombre) + '</div><div class="pts">' + fmt(x.puntos) + ' pts</div><div class="base">' + n + '</div></div>' : ''; };
-      html = '<div class="p-felt" style="text-align:center"><h2 class="p-title">🏆 Los genios de la noche</h2><div class="podio">' + col(b, 2) + col(a, 1) + col(c, 3) + '</div></div>';
+      html = '<div class="p-felt" style="text-align:center"><h2 class="p-title">🏆 Los genios de la noche</h2><div class="podio">' + col(b, 2) + col(a, 1) + col(c, 3) + '</div>' +
+        (mvp && mvp.puntos > 0 ? '<p class="p-mvp">⭐ Mejor jugador: <b>' + esc(mvp.nombre) + '</b> · ' + esc(mvp.equipo) + ' · ' + fmt(mvp.puntos) + ' pts</p>' : '') + '</div>';
     }
     m.innerHTML = html;
     m.querySelectorAll('[data-pfoto]').forEach(function (img) { cargarFoto(img.dataset.pfoto, function (src) { img.src = src; }); });
+    m.querySelectorAll('.p-img.revelar').forEach(function (img) { setTimeout(function () { img.classList.remove('sombra'); }, 120); });
+    // Sonido y video del tema
+    if (clave !== medioClave) {
+      pararMedios();
+      if (enPregunta && pr.tipo === 'tema' && pr.tema) {
+        if (V.fase === 'pregunta') tocarAudio(pr.tema, pr.desde);
+      }
+      medioClave = clave;
+    }
+    if (enPregunta && pr.tipo === 'tema' && V.fase === 'revelado' && pr.tema) ponerVideo(pr.tema);
     aplicarDeporte(V.club);
     tickCuentas();
   }
+  function pResp() { return $('pResp'); }
 
   // ================= JUGADOR =================
   var cliente = lsGet('cliente'); if (!cliente) { cliente = uid('c'); lsSet('cliente', cliente); }
   var claveJ = '';
-  function miEquipo() { if (!V) return null; var id = V.clientes && V.clientes[cliente]; if (!id) return null; for (var i = 0; i < V.ranking.length; i++) if (V.ranking[i].id === id) return { id: id, pos: i + 1, nombre: V.ranking[i].nombre, puntos: V.ranking[i].puntos }; return null; }
+  function miEquipo() {
+    if (!V) return null; var id = V.clientes && V.clientes[cliente]; if (!id) return null;
+    for (var i = 0; i < V.ranking.length; i++) if (V.ranking[i].id === id) return { id: id, pos: i + 1, nombre: V.ranking[i].nombre, puntos: V.ranking[i].puntos, color: V.ranking[i].color };
+    return null;
+  }
+  function miJugador() {
+    var l = (V && V.jugadores) || [];
+    for (var i = 0; i < l.length; i++) if (l[i].c === cliente) return { pos: i + 1, nombre: l[i].nombre, puntos: l[i].puntos, total: l.length };
+    return null;
+  }
 
   function enviarAccion(datos) {
     return new Promise(function (ok) {
@@ -1456,13 +1899,21 @@
       else toast(esc(r.msg) + (r.pista ? '<br>Pista: ' + esc(r.pista) : ''), 7000);
     });
   }
+  function mediaJugador(pr, rev) {
+    if (pr.tipo === 'emoji') return '<div class="j-card j-emojis">' + esc(pr.texto) + '</div>';
+    if (pr.tipo === 'imagen') return '<div class="j-media"><img src="' + esc(pr.img) + '" alt=""' + (pr.sombra && !rev ? ' class="sombra"' : '') + '></div>';
+    if (pr.tipo === 'tema') return '<div class="j-card center" style="padding:12px"><span style="font-size:34px">🎵</span><p class="muted" style="margin:4px 0 0">Escuchá el tema que suena en el salón</p></div>';
+    return '';
+  }
 
   socket.on('disconnect', function () { if (role === 'jugador') toast('Se cortó la conexión. Reconectando…', 2500); });
   function renderJugador() {
-    var eq = miEquipo();
+    var eq = miEquipo(), yo = miJugador();
     var ti = $('jTeam'), te = $('jTesoro');
+    document.body.classList.toggle('con-color', !!eq);
+    if (eq) document.body.style.setProperty('--team', eq.color || '#0F5680');
     ti.hidden = !eq;
-    if (eq) ti.innerHTML = '<div class="j-team"><div><b>' + esc(eq.nombre) + '</b><small>' + (V.integrante && V.integrante[cliente] ? esc(V.integrante[cliente]) + ' · ' : '') + 'Puesto ' + eq.pos + ' de ' + V.ranking.length + '</small></div><div class="pts">' + fmt(eq.puntos) + '</div></div>';
+    if (eq) ti.innerHTML = '<div class="j-team"><div><b>' + esc(eq.nombre) + '</b><small>' + (yo ? esc(yo.nombre) + ' · ' : '') + 'Equipo #' + eq.pos + ' de ' + V.ranking.length + (yo ? ' · Vos #' + yo.pos : '') + '</small></div><div style="text-align:right"><div class="pts">' + fmt(eq.puntos) + '</div><small>' + (yo ? 'vos: ' + fmt(yo.puntos) : '') + '</small></div></div>';
     var conTesoro = !!(V && V.qrActivo && eq);
     te.hidden = !conTesoro;
     if (conTesoro && !te.dataset.listo) {
@@ -1482,10 +1933,10 @@
       m.innerHTML = '<div class="j-card center"><div class="j-big">⏳</div><h2>Conectando con el juego…</h2><p class="muted">Si tarda mucho, avisale al conductor que abra la consola.</p></div>';
       return;
     }
-    var yaResp = eq && V.respondieron && V.respondieron.indexOf(eq.id) >= 0;
+    var yaResp = !!(eq && V.respondieron && V.respondieron.indexOf(cliente) >= 0);
     var foto = eq && V.fotosEstado ? (V.fotosEstado[eq.id] || '') : '';
     var equiposLista = V.ranking.map(function (e) { return e.id + ':' + e.nombre; }).sort().join('|');
-    var k = [eq ? eq.id : 'x:' + equiposLista, V.fase, V.ronda && V.ronda.num, V.ronda && V.ronda.item, yaResp, foto].join('|');
+    var k = [V.sesion, eq ? eq.id : 'x:' + equiposLista, V.fase, V.ronda && V.ronda.num, V.ronda && V.ronda.item, yaResp, foto].join('|');
     if (eq && tesoroPendiente) { var tp = tesoroPendiente; tesoroPendiente = null; cargarTesoro(tp); }
     if (k === claveJ) return; claveJ = k;
 
@@ -1516,24 +1967,28 @@
     }
     var r = V.ronda, pr = V.pregunta;
     if (V.fase === 'inicio') {
-      m.innerHTML = '<div class="j-card center"><div class="j-big">⏳</div><h2>¡Ya están adentro!</h2><p class="muted" style="line-height:1.5">Esperen que arranque la próxima ronda. Dejen el celu a mano y con la pantalla prendida.</p><p class="hint"><button type="button" class="btn-mini" id="salir">Me equivoqué de equipo</button></p></div>';
+      m.innerHTML = '<div class="j-card center"><div class="j-big">⏳</div><h2>¡Ya estás adentro!</h2><p class="muted" style="line-height:1.5">Esperá que arranque la próxima ronda. Dejá el celu a mano y con la pantalla prendida: se actualiza solo.</p><p class="hint"><button type="button" class="btn-mini" id="salir">Me equivoqué de equipo</button></p></div>';
       $('salir').onclick = function () { enviarAccion({ tipo: 'salir' }); toast('Saliste del equipo'); };
     }
     else if (V.fase === 'pregunta' && pr) {
-      var cab = '<div class="j-q-head"><span class="j-pill">' + esc(r.nombre) + ' · ' + r.item + '/' + r.total + (r.doble ? ' · x2' : '') + '</span><span class="j-timer" data-cuenta></span></div><div class="j-bar"><i data-barra></i></div><p class="j-question">' + esc(pr.texto) + '</p>';
-      if (yaResp) m.innerHTML = cab + '<div class="j-card center"><div class="j-big">✅</div><h2>¡Respuesta enviada!</h2><p class="muted">Miren la pantalla grande.</p></div>';
+      var titulo = pr.tipo === 'emoji' ? '¿Qué refrán es?' : pr.texto;
+      var cab = '<div class="j-q-head"><span class="j-pill">' + esc(r.nombre) + ' · ' + r.item + '/' + r.total + (r.doble ? ' · x2' : '') + '</span><span class="j-timer" data-cuenta></span></div><div class="j-bar"><i data-barra></i></div><p class="j-question">' + esc(titulo) + '</p>' + mediaJugador(pr, false);
+      if (yaResp) m.innerHTML = cab + '<div class="j-card center"><div class="j-big">✅</div><h2>¡Respuesta enviada!</h2><p class="muted">Esperá a que respondan los demás.</p></div>';
       else if (pr.tipo === 'estimacion') {
-        m.innerHTML = cab + '<p class="hint" style="margin:0">El que más se acerque gana. Una respuesta por equipo.</p><form id="fEst" class="j-card"><input class="j-input" id="inValor" inputmode="decimal" autocomplete="off" placeholder="Tu número' + (pr.unidad ? ' (' + esc(pr.unidad) + ')' : '') + '"><button type="submit" class="btn btn-gold" style="width:100%;margin-top:12px;font-size:16px">Enviar</button></form>';
+        m.innerHTML = cab + '<p class="hint" style="margin:0">Cuenta el promedio de tu equipo. Más cerca y más rápido, más puntos.</p><form id="fEst" class="j-card"><input class="j-input" id="inValor" inputmode="decimal" autocomplete="off" placeholder="Tu número' + (pr.unidad ? ' (' + esc(pr.unidad) + ')' : '') + '"><button type="submit" class="btn btn-gold" style="width:100%;margin-top:12px;font-size:16px">Enviar</button></form>';
         $('fEst').onsubmit = function (ev) { ev.preventDefault(); var v = $('inValor').value; if (!isFinite(parseNumero(v))) { toast('Escribí un número.'); return; } this.querySelector('button').disabled = true; mandarRespuesta(v); };
       } else {
-        m.innerHTML = cab + '<p class="hint" style="margin:0">Más rápido, más puntos. Una respuesta por equipo.</p><div class="j-ops">' + pr.opciones.map(function (o, i) { return '<button type="button" class="j-op op-' + i + '" data-i="' + i + '"><span class="l">' + LETRAS[i] + '</span><span>' + esc(o) + '</span></button>'; }).join('') + '</div>';
-        m.querySelectorAll('.j-op').forEach(function (b) { b.onclick = function () { m.querySelectorAll('.j-op').forEach(function (x) { x.disabled = true; }); b.style.outline = '4px solid var(--gold)'; mandarRespuesta(Number(b.dataset.i)); }; });
+        m.innerHTML = cab + '<p class="hint" style="margin:0">Responde cada uno. Más rápido, más puntos.</p><div class="j-ops">' + pr.opciones.map(function (o, i) { return '<button type="button" class="j-op op-' + i + '" data-i="' + i + '"><span class="l">' + LETRAS[i] + '</span><span>' + esc(o) + '</span></button>'; }).join('') + '</div>';
+        m.querySelectorAll('.j-op').forEach(function (b) { b.onclick = function () { m.querySelectorAll('.j-op').forEach(function (x) { x.disabled = true; }); b.style.outline = '4px solid #fff'; mandarRespuesta(Number(b.dataset.i)); }; });
       }
     }
     else if (V.fase === 'revelado' && pr) {
-      var gane = V.ultimos && V.ultimos[eq.id];
+      var mios = (V.ultimosJ || {})[cliente] || 0, delEquipo = (V.ultimos || {})[eq.id] || 0;
       var correcta = pr.tipo === 'estimacion' ? fmt(pr.respuesta) + ' ' + esc(pr.unidad) : LETRAS[pr.correcta] + ' · ' + esc(pr.opciones[pr.correcta]);
-      m.innerHTML = '<div class="j-card center">' + (gane ? '<span class="j-result ok">¡Bien ahí!</span><h2 style="margin-top:8px">+' + fmt(gane) + ' puntos</h2>' : (yaResp ? '<span class="j-result no">' + (pr.tipo === 'estimacion' ? 'Lejos…' : 'No era') + '</span>' : '<span class="j-result no">Sin respuesta</span>')) +
+      var cabeza = mios ? '<span class="j-result ok">¡Bien ahí!</span><h2 style="margin-top:8px">+' + fmt(mios) + ' para vos</h2>'
+        : (yaResp ? '<span class="j-result no">' + (pr.tipo === 'estimacion' ? 'Lejos…' : 'No era') + '</span>' : '<span class="j-result no">Sin respuesta</span>');
+      m.innerHTML = (pr.tipo === 'imagen' ? mediaJugador(pr, true) : '') + '<div class="j-card center">' + cabeza +
+        '<p style="margin:10px 0 0;font-weight:700">' + (delEquipo ? 'Tu equipo sumó +' + fmt(delEquipo) : 'Tu equipo no sumó en esta') + '</p>' +
         '<p class="muted" style="margin:14px 0 4px">Respuesta correcta</p><h2>' + correcta + '</h2>' + (pr.dato ? '<p class="hint">💡 ' + esc(pr.dato) + '</p>' : '') + '</div>';
     }
     else if (V.fase === 'desafio' && V.desafio) {
@@ -1561,7 +2016,10 @@
     else if (V.fase === 'ranking' || V.fase === 'fin') {
       var fin = V.fase === 'fin';
       m.innerHTML = '<div class="j-card center"><div class="j-big">' + (eq.pos <= 3 ? ['🥇', '🥈', '🥉'][eq.pos - 1] : (fin ? '👏' : '📊')) + '</div><p class="muted" style="margin:0">' + (fin ? '¡Terminó la Noche de Genios!' : 'Así van') + '</p>' +
-        '<div class="ball-number" style="color:var(--panel-felt);margin:6px 0">#' + eq.pos + '</div><h2>' + fmt(eq.puntos) + ' puntos</h2><p class="muted">' + (fin ? '¡Gracias por jugar!' : 'Miren la pantalla para ver la tabla completa.') + '</p></div>';
+        '<div style="display:grid;grid-template-columns:1fr 1fr;gap:12px;margin:12px 0">' +
+          '<div><p class="muted" style="margin:0;font-size:12px">Tu equipo</p><div class="ball-number" style="color:var(--panel-felt);font-size:42px">#' + eq.pos + '</div><b>' + fmt(eq.puntos) + ' pts</b></div>' +
+          '<div><p class="muted" style="margin:0;font-size:12px">Vos</p><div class="ball-number" style="color:var(--panel-felt);font-size:42px">#' + (yo ? yo.pos : '-') + '</div><b>' + fmt(yo ? yo.puntos : 0) + ' pts</b></div>' +
+        '</div><p class="muted" style="margin:0">' + (fin ? '¡Gracias por jugar!' : 'Miren la pantalla para ver las tablas completas.') + '</p></div>';
     }
     else m.innerHTML = '<div class="j-card center"><div class="j-big">👀</div><h2>Miren la pantalla grande</h2></div>';
     tickCuentas();

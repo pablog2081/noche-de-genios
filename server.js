@@ -24,7 +24,9 @@ const PIN = process.env.PIN || 'genio2026';
 const BASE_URL = (process.env.BASE_URL || process.env.RENDER_EXTERNAL_URL || '').replace(/\/$/, '');
 const DIR_DATOS = path.join(__dirname, 'datos');
 const DIR_FOTOS = path.join(DIR_DATOS, 'fotos');
+const DIR_IMAGENES = path.join(DIR_DATOS, 'imagenes');
 fs.mkdirSync(DIR_FOTOS, { recursive: true });
+fs.mkdirSync(DIR_IMAGENES, { recursive: true });
 
 // ---------- Datos guardados (por si se reinicia el servidor) ----------
 function leer(nombre) {
@@ -72,6 +74,7 @@ app.get(['/', '/pantalla', '/jugar'], pagina);
 app.get('/vendor/qrcode.js', (req, res) => res.sendFile(require.resolve('qrcode-generator')));
 app.get('/api/info', (req, res) => res.json({ base: baseUrl(req) }));
 app.use('/fotos', express.static(DIR_FOTOS, { maxAge: '1d' }));
+app.use('/imagenes', express.static(DIR_IMAGENES, { maxAge: '7d' }));
 app.use(express.static(path.join(__dirname, 'public')));
 
 app.get('/tarjetas', (req, res) => {
@@ -120,7 +123,10 @@ function consolaActiva() {
 }
 
 io.on('connection', socket => {
-  socket.on('hola', () => { if (ultimoEstado) socket.emit('estado', ultimoEstado); });
+  socket.on('hola', () => {
+    if (ultimoEstado) socket.emit('estado', ultimoEstado);
+    else io.to('consola').emit('pedirEstado'); // el servidor se reinició: que la consola vuelva a mandar el estado
+  });
 
   socket.on('login', (pin, cb) => {
     if (typeof cb !== 'function') return;
@@ -154,6 +160,23 @@ io.on('connection', socket => {
     if (!socket.data.admin || !m) return;
     const cb = pendientes.get(m.id);
     if (cb) { pendientes.delete(m.id); cb(m.res || { ok: false }); }
+  });
+
+  // Imágenes de las preguntas (lugar, sombras, logos): las sube la consola, que guarda una copia
+  const RUTA_IMG = /^\/imagenes\/([a-z0-9]+)\.(jpg|png)$/i;
+  socket.on('imagen', (m, cb) => {
+    const fin = typeof cb === 'function' ? cb : () => {};
+    if (!socket.data.admin || !m) return fin({ ok: false });
+    const r = RUTA_IMG.exec(m.ruta || '');
+    const d = /^data:image\/(jpeg|png);base64,(.+)$/.exec(m.data || '');
+    if (!r || !d) return fin({ ok: false });
+    const buf = Buffer.from(d[2], 'base64');
+    if (buf.length > 4e6) return fin({ ok: false });
+    fs.writeFile(path.join(DIR_IMAGENES, r[1] + '.' + r[2].toLowerCase()), buf, err => fin({ ok: !err }));
+  });
+  socket.on('faltan', (lista, cb) => {
+    if (!socket.data.admin || typeof cb !== 'function' || !Array.isArray(lista)) return;
+    cb(lista.filter(ruta => { const r = RUTA_IMG.exec(ruta || ''); return r && !fs.existsSync(path.join(DIR_IMAGENES, r[1] + '.' + r[2].toLowerCase())); }));
   });
 
   // Fotos de los desafíos

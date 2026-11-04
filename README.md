@@ -43,20 +43,39 @@ Así cada uno juega con sus propios datos móviles y no dependés del wifi del c
 
 ## Cómo se juega
 
-1. **Inicio:** abrí el proyector desde la consola. Antes de empezar, cargá los equipos en la pestaña **Equipos**. Cada persona escanea el QR, elige su equipo de la lista y escribe su nombre.
-2. **Juego en vivo:** elegí la ronda y tocá **▶ Lanzar** en cada pregunta.
-   - Opción múltiple: 500 puntos por acertar + hasta 500 por velocidad.
-   - Más cerca gana: 1000 / 700 / 500 / 300 / 150 para los cinco más cercanos, +500 si es exacto.
-   - La respuesta se revela sola cuando se termina el tiempo o cuando respondieron todos.
-3. **Desafíos de foto:** los equipos sacan la foto desde el celu y te llega a la consola para aprobarla. Las aprobadas aparecen en el proyector.
-4. **Tesoro:** escondé las tarjetas por el club (se imprimen desde la pestaña **Tesoro** → **🖨️ Abrir para imprimir**, o en `/tarjetas`). Activá la búsqueda desde la consola. Al escanear una tarjeta con la cámara, el código se carga solo.
-5. **🏆 Podio** para cerrar la noche.
+1. **Equipos:** antes de empezar, cargá los equipos en la pestaña **👥 Equipos**. Cada uno recibe un color, que se puede cambiar, y ese color es el fondo del celular de sus jugadores.
+2. **Inicio:** abrí el proyector desde la consola. Cada persona escanea el QR, elige su equipo de la lista y escribe su nombre. En Inicio el proyector rota entre la tabla por equipos, la tabla individual, el buffet y los precios. Tocar la pestaña **🏠 Inicio** vuelve el proyector a esa cartelera.
+3. **Juego en vivo:** elegí la ronda y tocá **▶ Lanzar**. Arriba de la lista podés cambiar los **segundos para responder** y los **puntos a repartir** de la ronda. Responde **cada jugador** desde su celular.
+4. **Desafíos de foto:** los equipos sacan la foto desde el celu y te llega a la consola para aprobarla.
+5. **Tesoro:** escondé las tarjetas por el club (pestaña **Tesoro** → **🖨️ Abrir para imprimir**). Al escanear una tarjeta, el código se carga solo.
+6. **🏆 Podio** para cerrar la noche, con el mejor jugador.
 
-Para ensayar sin celulares: pestaña **Equipos** → **🤖 Agregar 5 equipos de prueba**. Responden solos.
+### Puntuación
+
+Cada pregunta tiene puntos para repartir, 1000 por defecto y el doble en la ronda x2. Se reparten **dos veces**: una entre equipos y otra entre jugadores.
+
+- **Equipos:** califican los que tuvieron el **50% o más de aciertos** entre sus jugadores. Cada uno recibe una parte proporcional a **% de aciertos × rapidez**. La rapidez va de 1 (respondieron al instante) a 0,5 (al final del tiempo) y se calcula con el **tiempo promedio** de los jugadores del equipo.
+- **Jugadores:** los mismos puntos se reparten entre los que acertaron, según la rapidez de cada uno.
+- **Más cerca gana:** cuenta el **promedio** de los números del equipo; el más cercano y rápido se lleva más. Califica el equipo si respondió al menos la mitad.
+
+### Juegos incluidos
+
+- **Trivia, Bien argentina, Nuestro club y Doble o nada:** opción múltiple.
+- **Más cerca gana:** responden un número.
+- **Adiviná el emoji:** refranes con emojis.
+- **Descubrí el tema:** el fragmento suena en la ventana del proyector y al revelar se pasa el video. Antes de empezar tocá **🔊 Activar sonido** en el proyector.
+- **Banderas:** 12 banderas ya cargadas.
+- **Adiviná el lugar** y **Marcas por el logo:** subí las fotos o logos desde **✏️ Preguntas**.
+- **Sombras:** subí la foto de un objeto y la app lo muestra como silueta; al revelar aparece la foto real. Funciona mejor con fondos lisos o PNG sin fondo.
+- **Desafíos con el celu** y **búsqueda del tesoro**.
+
+Las imágenes que subís quedan guardadas en la compu de la consola y se vuelven a mandar al servidor solas si hace falta. Por eso conviene usar **siempre la misma compu y el mismo navegador** para la consola.
+
+Para ensayar sin celulares: pestaña **Equipos** → **🤖 Agregar 5 equipos de prueba**. Cada equipo tiene 3 jugadores simulados que responden solos.
 
 ## Editar las preguntas
 
-En la consola, pestaña **✏️ Preguntas**: podés agregar, editar, ordenar y borrar preguntas, desafíos y rondas. La ronda **"Nuestro club"** trae preguntas de ejemplo para completar con datos reales.
+En la consola, pestaña **✏️ Preguntas**: podés agregar, editar, ordenar y borrar preguntas, desafíos y rondas, y elegir el tipo de cada pregunta. Cada pregunta puede tener su propio tiempo y sus propios puntos. La ronda **"Nuestro club"** trae preguntas de ejemplo para completar con datos reales.
 
 ## Cambiar el PIN
 
