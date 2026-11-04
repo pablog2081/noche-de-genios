@@ -805,7 +805,9 @@
   }
   function unirse(equipoId, persona, cliente) {
     var eq = G.equipos[equipoId];
-    if (!eq || eq.bot) return { ok: false, msg: 'Elegí tu equipo de la lista.' };
+    if (!eq) return { ok: false, msg: 'Elegí tu equipo de la lista.' };
+    // Si alguien se suma a un equipo de prueba, deja de responder solo
+    if (eq.bot) { delete eq.bot; delete G.resp[eq.id]; }
     persona = String(persona || '').trim().replace(/\s+/g, ' ').slice(0, 30);
     if (persona.length < 2) return { ok: false, msg: 'Escribí tu nombre (al menos 2 letras).' };
     if (!cliente) return { ok: false, msg: 'No se pudo identificar este celular.' };
@@ -1482,7 +1484,7 @@
     }
     var yaResp = eq && V.respondieron && V.respondieron.indexOf(eq.id) >= 0;
     var foto = eq && V.fotosEstado ? (V.fotosEstado[eq.id] || '') : '';
-    var equiposLista = V.ranking.filter(function (e) { return e.id.charAt(0) !== 'b'; }).map(function (e) { return e.id + ':' + e.nombre; }).sort().join('|');
+    var equiposLista = V.ranking.map(function (e) { return e.id + ':' + e.nombre; }).sort().join('|');
     var k = [eq ? eq.id : 'x:' + equiposLista, V.fase, V.ronda && V.ronda.num, V.ronda && V.ronda.item, yaResp, foto].join('|');
     if (eq && tesoroPendiente) { var tp = tesoroPendiente; tesoroPendiente = null; cargarTesoro(tp); }
     if (k === claveJ) return; claveJ = k;
@@ -1490,7 +1492,7 @@
     if (!eq) {
       var elegido = $('selEquipo') ? $('selEquipo').value : '';
       var escrito = $('inPersona') ? $('inPersona').value : (lsGet('persona') || '');
-      var opciones = V.ranking.filter(function (e) { return e.id.charAt(0) !== 'b'; }).slice().sort(function (a, b) { return a.nombre.localeCompare(b.nombre, 'es'); });
+      var opciones = V.ranking.slice().sort(function (a, b) { return a.nombre.localeCompare(b.nombre, 'es'); });
       if (!opciones.length) {
         m.innerHTML = '<div class="j-card center"><div class="j-big">⏳</div><h2>¡Bienvenidos a la ' + esc(V.titulo) + '!</h2><p class="muted" style="line-height:1.5">El conductor todavía está cargando los equipos. En un ratito aparecen acá para que elijas el tuyo.</p></div>';
         return;
