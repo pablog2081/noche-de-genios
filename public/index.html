@@ -6,6 +6,11 @@
 <meta name="theme-color" content="#0F5680">
 <title>Noche de Genios</title>
 <link rel="icon" href="club-logo-gei.png">
+<link rel="manifest" href="/manifest.webmanifest">
+<link rel="apple-touch-icon" href="/apple-touch-icon.png">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-title" content="Noche de Genios">
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,500;9..144,600;9..144,700&family=Archivo+Black&family=Libre+Franklin:wght@400;500;600;700;800&family=Fredoka:wght@600;700&display=swap">
 <script src="/vendor/qrcode.js"></script>
 <script src="/socket.io/socket.io.js"></script>
@@ -421,6 +426,85 @@
   .toast { position: fixed; left: 50%; bottom: calc(22px + env(safe-area-inset-bottom, 0px)); transform: translateX(-50%); background: var(--ink); color: var(--bg); padding: 13px 18px; border-radius: 14px; font-weight: 700; font-size: 14px; box-shadow: 0 10px 30px rgba(0,0,0,.35); z-index: 60; max-width: min(92vw, 520px); text-align: center; line-height: 1.4; }
   .zoom { position: fixed; inset: 0; background: rgba(0,0,0,.88); display: grid; place-items: center; z-index: 70; cursor: zoom-out; }
   .zoom img { max-width: 94vw; max-height: 94vh; border-radius: 10px; }
+
+  /* Invitados, equipos secretos, sorteo y música */
+  .inv-carga { display: grid; grid-template-columns: 1.4fr 1fr; gap: 16px; }
+  @media (max-width: 700px) { .inv-carga { grid-template-columns: 1fr; } }
+  .inv-archivo { border: 2px dashed var(--cell-border); border-radius: 14px; padding: 14px; display: flex; flex-direction: column; align-items: center; justify-content: center; text-align: center; }
+  .check-row { display: flex; align-items: center; gap: 8px; margin-top: 12px; font-size: 14px; font-weight: 600; cursor: pointer; }
+  .check-row input { width: 18px; height: 18px; accent-color: var(--gold); }
+  .inv-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(230px, 1fr)); gap: 6px 14px; }
+  .inv-row { display: flex; align-items: center; gap: 8px; padding: 6px 8px; border-radius: 9px; background: var(--cell-bg); border: 1px solid var(--cell-border); font-size: 14px; }
+  .inv-row .nom { flex: 1; min-width: 0; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; font-weight: 600; }
+  .inv-row .est { font-family: var(--font-num); font-size: 12px; color: var(--ink-soft); }
+  .inv-row.ok { border-color: var(--correct); }
+  .inv-row .btn-mini { padding: 2px 8px; }
+  .jug-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(330px, 1fr)); gap: 0 18px; }
+  .mini-select { max-width: 130px; padding: 5px 6px; border-radius: 8px; border: 1px solid var(--cell-border); background: var(--cell-bg); color: var(--ink); font-size: 12px; }
+  .reveal-bar { display: flex; flex-wrap: wrap; align-items: center; gap: 10px; padding: 12px 14px; border-radius: 14px; background: var(--cell-bg); border: 1px solid var(--cell-border); }
+  .reveal-bar > span:first-child { font-weight: 800; flex: 1; min-width: 180px; }
+  .reveal-bar.on { border-color: var(--correct); }
+  .sorteo-panel { display: flex; flex-direction: column; align-items: center; gap: 16px; padding: 8px 0; }
+  .sorteo-num { display: flex; flex-direction: column; align-items: center; background: var(--panel-felt); color: var(--parchment-text); border-radius: 20px; padding: 14px 40px; min-width: 240px; }
+  .sorteo-num span { font-size: 12px; font-weight: 700; opacity: .8; text-transform: uppercase; letter-spacing: .08em; }
+  .sorteo-num b { font-family: var(--font-num); font-size: 64px; line-height: 1.05; color: var(--gold-bright); }
+  .sorteo-num em { font-style: normal; font-weight: 700; }
+  .sorteo-gan { margin: 0; padding-left: 22px; columns: 2; font-size: 15px; line-height: 1.8; }
+  .modo-musica { display: grid; grid-template-columns: repeat(3, 1fr); gap: 10px; }
+  @media (max-width: 640px) { .modo-musica { grid-template-columns: 1fr; } }
+  .modo-op { display: flex; flex-direction: column; gap: 2px; padding: 14px; border-radius: 14px; border: 2px solid var(--cell-border); background: var(--cell-bg); cursor: pointer; }
+  .modo-op input { position: absolute; opacity: 0; pointer-events: none; }
+  .modo-op .i { font-size: 26px; }
+  .modo-op small { color: var(--ink-soft); font-size: 12px; }
+  .modo-op.on { border-color: var(--gold); box-shadow: 0 0 0 3px rgba(217,163,49,.25); }
+  .modo-op.off { opacity: .55; cursor: not-allowed; }
+  .modo-op:focus-within { outline: 2px solid var(--focus-ring); }
+  .sp-playlist { display: flex; align-items: center; gap: 12px; padding: 12px 14px; border-radius: 14px; background: #1DB95422; border: 1px solid #1DB954; flex-wrap: wrap; }
+  .sp-playlist small { display: block; color: var(--ink-soft); }
+  .sp-elegir { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; }
+  @media (max-width: 640px) { .sp-elegir { grid-template-columns: 1fr; } }
+  .tema-img { width: 38px; height: 38px; border-radius: 6px; object-fit: cover; flex: none; }
+  .p-eqs { display: grid; gap: 1.6vh 1.4vw; flex: 1; min-height: 0; align-content: start; overflow: hidden; }
+  .p-eq { background: rgba(0,0,0,.22); border-radius: 1.8vh; overflow: hidden; box-shadow: inset 0 0 0 1px rgba(255,255,255,.12); animation: voltear .7s ease both; }
+  .p-eq h3 { margin: 0; background: var(--c); color: #fff; padding: 1.1vh 1vw; font-family: var(--font-display); font-size: 1.5em; text-shadow: 0 1px 3px rgba(0,0,0,.45); }
+  .p-eq ul { list-style: none; margin: 0; padding: .9vh 1vw 1.2vh; columns: 2; column-gap: 1vw; }
+  .p-eq li { font-weight: 700; padding: .25vh 0; break-inside: avoid; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+  .p-eq li.vacio { opacity: .6; font-weight: 500; }
+  @keyframes voltear { 0% { transform: perspective(800px) rotateY(90deg); opacity: 0; } 100% { transform: none; opacity: 1; } }
+  .sorteo-bola { margin: 2vh auto 0; width: 34vh; height: 34vh; border-radius: 50%; background: radial-gradient(circle at 35% 30%, #fff, #f1e4c2 45%, #c9a04a); color: #16283A; display: flex; flex-direction: column; align-items: center; justify-content: center; box-shadow: 0 3vh 6vh -2vh rgba(0,0,0,.55); }
+  .sorteo-bola .ball-label { font-size: 2.2vh; font-weight: 800; text-transform: uppercase; letter-spacing: .1em; opacity: .7; }
+  .sorteo-bola .ball-number { font-size: 14vh; }
+  .sorteo-bola.gano { animation: pop .6s ease; box-shadow: 0 0 0 1.2vh var(--gold-bright), 0 3vh 8vh -1vh rgba(0,0,0,.6); }
+  .sorteo-nombre { font-family: var(--font-display); font-weight: 700; font-size: 7vh; margin: 2vh 0 0; min-height: 1.2em; opacity: 0; transform: translateY(2vh); transition: all .5s ease; }
+  .sorteo-nombre.ver { opacity: 1; transform: none; }
+  .sorteo-prev { justify-content: center; margin-top: auto; }
+  .j-instalar { display: flex; align-items: center; gap: 10px; background: var(--panel-felt); color: var(--parchment-text); border-radius: 14px; padding: 10px 12px; }
+  .j-instalar b { display: block; font-size: 14px; }
+  .j-instalar small { font-size: 12px; opacity: .9; }
+  .j-instalar button { border: 0; border-radius: 10px; font-weight: 800; cursor: pointer; }
+  .j-instalar #btnInstalar { background: var(--gold); color: var(--on-gold); padding: 9px 14px; }
+  .j-instalar .x { background: transparent; color: var(--parchment-text); font-size: 16px; padding: 4px 6px; }
+  .j-num { text-align: center; background: var(--gold); color: var(--on-gold); border-radius: 12px; padding: 4px 10px; flex: none; }
+  .j-num small { display: block; font-size: 9.5px; font-weight: 800; text-transform: uppercase; letter-spacing: .06em; color: var(--on-gold) !important; }
+  .j-num b { font-family: var(--font-num); font-size: 22px; line-height: 1; }
+  .j-inv, .j-temas { display: flex; flex-direction: column; gap: 8px; margin-top: 10px; max-height: 52vh; overflow-y: auto; }
+  .j-inv-op { display: flex; align-items: center; justify-content: space-between; gap: 10px; text-align: left; padding: 14px; border-radius: 12px; border: 1px solid var(--cell-border); background: var(--cell-bg); color: var(--ink); font-size: 16px; font-weight: 700; cursor: pointer; }
+  .j-inv-op small { color: var(--gold); font-weight: 800; font-size: 12px; white-space: nowrap; }
+  .j-inv-op:disabled { opacity: .45; cursor: default; }
+  .j-inv-op:disabled small { color: var(--ink-soft); }
+  .j-confirma { background: var(--cell-bg); border: 2px solid var(--gold); border-radius: 14px; padding: 14px; }
+  .j-confirma p { margin: 0 0 12px; font-size: 17px; }
+  .j-musica { background: var(--bg-alt); border: 1px solid var(--cell-border); border-radius: 18px; padding: 16px; }
+  .j-musica h3 { font-family: var(--font-display); font-size: 18px; margin: 0 0 10px; }
+  .j-mios { margin: 0 0 10px; font-size: 14px; line-height: 1.5; }
+  .j-tema { display: flex; align-items: center; gap: 10px; width: 100%; text-align: left; padding: 8px; border-radius: 12px; border: 1px solid var(--cell-border); background: var(--cell-bg); color: var(--ink); cursor: pointer; }
+  .j-tema img, .j-tema .ph { width: 46px; height: 46px; border-radius: 8px; object-fit: cover; flex: none; display: grid; place-items: center; background: var(--cell-border); font-size: 22px; }
+  .j-tema .tx { min-width: 0; flex: 1; }
+  .j-tema b { display: block; font-size: 15px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+  .j-tema small { display: block; color: var(--ink-soft); font-size: 13px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+  .j-tema .exp { font-style: normal; font-size: 10px; background: var(--ink-soft); color: var(--bg); border-radius: 3px; padding: 0 4px; vertical-align: middle; }
+  .j-eq-nombre { font-size: 34px !important; color: var(--team, var(--panel-felt)); margin: 6px 0 !important; animation: pop .6s ease; }
+  .j-gane { border: 3px solid var(--gold); animation: pop .6s ease; }
   @media (prefers-reduced-motion: reduce) { *, *::before, *::after { animation: none !important; transition: none !important; } }
 </style>
 </head>
@@ -453,7 +537,10 @@
     <button type="button" class="game-tab" data-tab="inicio">🏠 Inicio</button>
     <button type="button" class="game-tab" data-tab="vivo">🧠 Juego en vivo</button>
     <button type="button" class="game-tab" data-tab="preguntas">✏️ Preguntas</button>
+    <button type="button" class="game-tab" data-tab="invitados">📋 Invitados</button>
     <button type="button" class="game-tab" data-tab="equipos">👥 Equipos</button>
+    <button type="button" class="game-tab" data-tab="sorteo">🎟️ Sorteo</button>
+    <button type="button" class="game-tab" data-tab="musica">🎵 Música</button>
     <button type="button" class="game-tab" data-tab="tesoro">🔎 Tesoro</button>
   </div>
   <div class="sport-switcher-row">
@@ -463,7 +550,10 @@
   <div id="tabInicio" class="tab-page"></div>
   <div id="tabVivo" class="tab-page" hidden></div>
   <div id="tabPreguntas" class="tab-page" hidden></div>
+  <div id="tabInvitados" class="tab-page" hidden></div>
   <div id="tabEquipos" class="tab-page" hidden></div>
+  <div id="tabSorteo" class="tab-page" hidden></div>
+  <div id="tabMusica" class="tab-page" hidden></div>
   <div id="tabTesoro" class="tab-page" hidden></div>
 </div>
 
@@ -478,7 +568,7 @@
     <div class="p-tesoro" id="hbTesoro" hidden></div>
     <div class="hb-body">
       <section class="hb-tabla"><h2 class="p-title" id="hbTitulo">Tabla por equipos</h2><div class="hb-grid" id="hbGrid"></div></section>
-      <aside class="hb-join"><div class="qr" id="joinQr"></div><h3>¡Sumá a tu equipo!</h3><p>Escaneá con la cámara del celu, elegí tu equipo de la lista y escribí tu nombre.</p><p class="url" id="joinUrl"></p></aside>
+      <aside class="hb-join"><div class="qr" id="joinQr"></div><h3>¡Sumate a la noche!</h3><p>Escaneá con la cámara del celu y entrá con tu nombre. Tu equipo es sorpresa 🤫</p><p class="url" id="joinUrl"></p></aside>
     </div>
   </div>
   <div class="home-flyer" id="homeFlyer" hidden>
@@ -513,9 +603,11 @@
     <img class="club-logo" src="club-logo-gei.png" alt="">
     <div><p class="eyebrow">Club GEI</p><h1>Noche de <span>Genios</span></h1></div>
   </div>
+  <div id="jInstalar" hidden></div>
   <div id="jTeam" hidden></div>
   <div id="jTesoro" hidden></div>
   <div id="jMain"></div>
+  <div id="jMusica" hidden></div>
 </div>
 
 <audio id="musica" preload="none"></audio>
@@ -668,7 +760,7 @@
   function estadoInicial() {
     return {
       rev: 0, fase: 'inicio', ronda: null, item: null, inicio: 0,
-      equipos: {}, clientes: {}, resp: {}, ultimos: {},
+      equipos: {}, clientes: {}, resp: {}, ultimos: {}, jugadores: {}, pedidos: [], sorteo: { ganadores: [] }, revelados: false,
       fotos: [], qrActivo: false, qrReclamos: {}, hechos: [],
       club: 'gei', buffet: {}, precios: {}, segundos: 15
     };
@@ -752,13 +844,16 @@
       if (e.bot && !e.integrantes.length) crearIntegrantesBot(e);
       e.integrantes.forEach(function (x) { if (!G.jugadores[x.cliente]) G.jugadores[x.cliente] = { nombre: x.nombre, equipoId: e.id, puntos: 0, bot: !!e.bot }; });
     });
-    Object.keys(G.resp || {}).forEach(function (k) { if (!G.resp[k] || !G.resp[k].equipoId) delete G.resp[k]; });
+    Object.keys(G.resp || {}).forEach(function (k) { if (!G.resp[k]) delete G.resp[k]; });
+    G.pedidos = G.pedidos || []; G.sorteo = G.sorteo || { ganadores: [] }; G.sorteo.ganadores = G.sorteo.ganadores || [];
+    if (G.revelados == null) G.revelados = Object.keys(G.jugadores).some(function (c) { return !G.jugadores[c].bot; });
+    Object.keys(G.jugadores).forEach(function (c) { var j = G.jugadores[c]; if (!j.bot && !j.numero) j.numero = numeroLibre(); });
   }
 
   function tiempoDe(it, r) { return Number(it && it.tiempo) || Number(r && r.tiempo) || 20; }
   function poolDe(it, r) { return (Number(it && it.puntos) || Number(r && r.puntos) || 1000) * (r && r.doble ? 2 : 1); }
   function esEleccion(it) { return it.tipo !== 'estimacion'; }
-  function totalJugadores() { var n = 0; Object.keys(G.equipos).forEach(function (k) { n += (G.equipos[k].integrantes || []).length; }); return n; }
+  function totalJugadores() { return Object.keys(G.jugadores || {}).filter(esActivo).length; }
   // Reparte "pool" en enteros, proporcional a los pesos (método del resto mayor: la suma da exacto)
   function repartir(pool, pesos) {
     var ids = Object.keys(pesos).filter(function (k) { return pesos[k] > 0; });
@@ -778,18 +873,29 @@
   function vistaPublica() {
     var r = rondaAct(), it = itemAct();
     var eqs = Object.keys(G.equipos).map(function (k) { return G.equipos[k]; }).sort(function (a, b) { return b.puntos - a.puntos; });
-    var jug = Object.keys(G.jugadores || {}).filter(function (c) { return G.equipos[G.jugadores[c].equipoId]; }).map(function (c) {
-      var j = G.jugadores[c], e = G.equipos[j.equipoId];
-      return { c: c, nombre: j.nombre, equipo: e.nombre, color: e.color, puntos: j.puntos, bot: !!j.bot };
+    // Antes de develar los equipos, nadie (ni mirando los datos) sabe quién está con quién
+    var ver = !!G.revelados;
+    var nTemas = {}; (G.pedidos || []).forEach(function (p) { nTemas[p.c] = (nTemas[p.c] || 0) + 1; });
+    var jug = Object.keys(G.jugadores || {}).filter(esActivo).map(function (c) {
+      var j = G.jugadores[c], e = ver || j.bot ? G.equipos[j.equipoId] : null;
+      return { c: c, nombre: j.nombre, equipo: e ? e.nombre : '', color: e ? e.color : '', puntos: j.puntos, bot: !!j.bot, num: j.numero || 0, tm: nTemas[c] || 0 };
     }).sort(function (a, b) { return b.puntos - a.puntos; });
     var v = {
       sesion: SESION, rev: G.rev, ahora: Date.now(), fase: G.fase, titulo: contenido.titulo,
       club: G.club, buffet: G.buffet, precios: G.precios, segundos: G.segundos,
       ranking: eqs.map(function (e) { return { id: e.id, nombre: e.nombre, puntos: e.puntos, color: e.color, n: (e.integrantes || []).length }; }),
       jugadores: jug,
-      clientes: G.clientes, qrActivo: G.qrActivo, qrTotal: contenido.tesoro.length,
-      qrEquipo: {}
+      clientes: ver ? G.clientes : {}, revelados: ver, qrActivo: G.qrActivo, qrTotal: contenido.tesoro.length,
+      qrEquipo: {},
+      musica: (function () { var m = musicaCfg(); return { modo: m.modo, porJugador: m.porJugador, sinExplicitos: !!m.sinExplicitos, n: m.lista.length }; })(),
+      instalar: contenido.ofrecerApp !== false
     };
+    if (ver && G.fase === 'equipos') v.equiposDet = eqs.filter(function (e) { return !e.bot; }).map(function (e) { return { nombre: e.nombre, color: e.color, miembros: (e.integrantes || []).map(function (x) { return x.nombre; }) }; });
+    var so = G.sorteo || {};
+    if (so.actual && G.jugadores[so.actual]) {
+      v.sorteo = { c: so.actual, num: G.jugadores[so.actual].numero, nombre: G.jugadores[so.actual].nombre, t: so.t || 0, n: (so.ganadores || []).length,
+        previos: (so.ganadores || []).slice(0, -1).slice(-8).reverse().map(function (c) { var j = G.jugadores[c]; return j ? { num: j.numero, nombre: j.nombre } : null; }).filter(Boolean) };
+    }
     Object.keys(G.qrReclamos).forEach(function (cod) { (G.qrReclamos[cod] || []).forEach(function (id) { v.qrEquipo[id] = (v.qrEquipo[id] || 0) + 1; }); });
     if (r) v.ronda = { nombre: r.nombre, tipo: r.tipo, doble: !!r.doble, num: G.ronda + 1, item: G.item + 1, total: r.items.length };
     if (it && (G.fase === 'pregunta' || G.fase === 'revelado')) {
@@ -825,6 +931,7 @@
     tEmit = setTimeout(function () { socket.emit('estado', vistaPublica()); }, 120);
     clearTimeout(tResp);
     tResp = setTimeout(function () { socket.emit('respaldo', G); }, 2000);
+    compartirListas();
     renderConsolaVivo();
   }
   function guardarContenido() {
@@ -850,9 +957,10 @@
 
   socket.on('estado', function (v) { if (role === 'pantalla' || role === 'jugador') recibirVista(v); });
   socket.on('pedirEstado', function () { if (role === 'control') publicar(); });
+  socket.on('spotifyRefresh', function (rt) { if (role === 'control' && rt) lsSet('spotify', rt); });
   socket.on('connect', function () {
     if (role === 'pantalla' || role === 'jugador') socket.emit('hola', role);
-    if (role === 'control' && pinGuardado) socket.emit('login', pinGuardado, function () { publicar(); sincronizarImagenes(); });
+    if (role === 'control' && pinGuardado) socket.emit('login', pinGuardado, function () { publicar(); compartirListas(true); sincronizarImagenes(); pedirEstadoSpotify(); });
   });
   // Si el celular o el proyector pasan un rato sin novedades (pantalla apagada, señal que se cortó), piden el estado de nuevo
   function pedirEstado() { if (role === 'pantalla' || role === 'jugador') socket.emit('hola', role); }
@@ -936,8 +1044,9 @@
   function responder(cl, valor) {
     var r = rondaAct(), it = itemAct();
     if (G.fase !== 'pregunta' || !it) return { ok: false, msg: 'Ahora no hay pregunta abierta.' };
-    var eqId = cl ? G.clientes[cl] : null;
-    if (!eqId || !G.equipos[eqId]) return { ok: false, msg: 'Primero sumate a un equipo.' };
+    var jj = cl ? G.jugadores[cl] : null;
+    if (!jj) return { ok: false, msg: 'Primero entrá con tu nombre.' };
+    var eqId = jj.equipoId && G.equipos[jj.equipoId] ? jj.equipoId : null;
     if (G.resp[cl]) return { ok: false, msg: 'Ya respondiste esta pregunta.' };
     var t = Math.max(0, Date.now() - G.inicio);
     if (t > tiempoDe(it, r) * 1000 + 2000) return { ok: false, msg: 'Se terminó el tiempo para esta pregunta.' };
@@ -950,12 +1059,61 @@
     return { ok: true };
   }
 
+  // ---- Jugadores y equipos: el jugador entra con su nombre y el sistema le asigna equipo al azar ----
+  function esActivo(c) { var j = G.jugadores[c]; return !!j && (!j.equipoId || !!G.equipos[j.equipoId]); }
+  function equiposReales() { return Object.keys(G.equipos).filter(function (k) { return !G.equipos[k].bot; }); }
+  function ponerEnEquipo(cl, eqId) {
+    sacarIntegrante(cl);
+    var j = G.jugadores[cl]; if (!j) return;
+    j.equipoId = eqId || null;
+    if (eqId && G.equipos[eqId]) {
+      var e = G.equipos[eqId]; e.integrantes = e.integrantes || [];
+      e.integrantes.push({ cliente: cl, nombre: j.nombre });
+      G.clientes[cl] = eqId;
+    }
+  }
+  // El equipo con menos integrantes; si hay empate, uno al azar
+  function equipoConMenos() {
+    var ids = equiposReales(); if (!ids.length) return null;
+    var min = Math.min.apply(null, ids.map(function (k) { return (G.equipos[k].integrantes || []).length; }));
+    var cand = ids.filter(function (k) { return (G.equipos[k].integrantes || []).length === min; });
+    return cand[Math.floor(Math.random() * cand.length)];
+  }
+  function repartirSinEquipo() {
+    var sin = Object.keys(G.jugadores).filter(function (c) { var j = G.jugadores[c]; return !j.bot && (!j.equipoId || !G.equipos[j.equipoId]); });
+    sin.sort(function () { return Math.random() - 0.5; }).forEach(function (c) { var e = equipoConMenos(); if (e) ponerEnEquipo(c, e); });
+  }
+  // Mientras los equipos son secretos, al agregar uno nuevo se emparejan: pasan jugadores al azar de los más grandes a los más chicos
+  function balancear() {
+    for (var vuelta = 0; vuelta < 500; vuelta++) {
+      var ids = equiposReales(); if (ids.length < 2) return;
+      var tam = function (k) { return (G.equipos[k].integrantes || []).length; };
+      ids.sort(function (a, b) { return tam(b) - tam(a); });
+      var grande = ids[0], chico = ids[ids.length - 1];
+      if (tam(grande) - tam(chico) <= 1) return;
+      var ms = G.equipos[grande].integrantes;
+      ponerEnEquipo(ms[Math.floor(Math.random() * ms.length)].cliente, chico);
+    }
+  }
+  function repartirTodos() {
+    Object.keys(G.jugadores).forEach(function (c) { if (!G.jugadores[c].bot) ponerEnEquipo(c, null); });
+    repartirSinEquipo();
+    publicar();
+  }
+  function numeroLibre() {
+    var usados = {};
+    Object.keys(G.jugadores).forEach(function (c) { if (G.jugadores[c].numero) usados[G.jugadores[c].numero] = 1; });
+    var libres = []; for (var n = 100; n <= 999; n++) if (!usados[n]) libres.push(n);
+    return libres.length ? libres[Math.floor(Math.random() * libres.length)] : null;
+  }
   function crearEquipo(nombre) {
     nombre = String(nombre || '').trim().replace(/\s+/g, ' ').slice(0, 30);
     if (nombre.length < 2) return { ok: false, msg: 'El nombre del equipo tiene que tener al menos 2 letras.' };
     var existe = Object.keys(G.equipos).some(function (k) { return G.equipos[k].nombre.toLowerCase() === nombre.toLowerCase(); });
     if (existe) return { ok: false, msg: 'Ya hay un equipo con ese nombre.' };
     var id = uid('e'); G.equipos[id] = { id: id, nombre: nombre, puntos: 0, integrantes: [], color: colorLibre() };
+    repartirSinEquipo();
+    if (!G.revelados) balancear();
     publicar();
     return { ok: true, id: id };
   }
@@ -966,30 +1124,168 @@
     delete G.clientes[cl];
   }
   function borrarEquipo(id) {
+    var e = G.equipos[id]; if (!e) return;
+    (e.integrantes || []).forEach(function (x) {
+      if (e.bot) { delete G.jugadores[x.cliente]; delete G.resp[x.cliente]; }
+      else if (G.jugadores[x.cliente]) G.jugadores[x.cliente].equipoId = null;
+      delete G.clientes[x.cliente];
+    });
     delete G.equipos[id];
-    Object.keys(G.clientes).forEach(function (c) { if (G.clientes[c] === id) delete G.clientes[c]; });
-    Object.keys(G.jugadores).forEach(function (c) { if (G.jugadores[c].equipoId === id) delete G.jugadores[c]; });
-    Object.keys(G.resp).forEach(function (c) { if (G.resp[c].equipoId === id) delete G.resp[c]; });
+    Object.keys(G.resp).forEach(function (c) { if (G.resp[c].equipoId === id) G.resp[c].equipoId = null; });
+    repartirSinEquipo();
   }
-  function unirse(equipoId, persona, cl) {
-    var eq = G.equipos[equipoId];
-    if (!eq) return { ok: false, msg: 'Elegí tu equipo de la lista.' };
+  // ---- Lista de invitados: la carga el conductor; el jugador se busca y se toca ----
+  function invitados() { contenido.invitados = contenido.invitados || []; return contenido.invitados; }
+  function normNombre(s) { return String(s || '').normalize('NFD').replace(/[\u0300-\u036f]/g, '').toLowerCase().replace(/\s+/g, ' ').trim(); }
+  function agregarInvitados(nombres) {
+    var l = invitados(), ya = {}, n = 0;
+    l.forEach(function (x) { ya[normNombre(x.nombre)] = 1; });
+    nombres.forEach(function (s) {
+      s = limpio(s, 40); if (s.length < 2) return;
+      var k = normNombre(s); if (ya[k]) return; ya[k] = 1;
+      l.push({ id: uid('i'), nombre: s }); n++;
+    });
+    l.sort(function (a, b) { return a.nombre.localeCompare(b.nombre, 'es'); });
+    guardarContenido(); compartirListas(true);
+    return n;
+  }
+  function quienEs(invId) { var r = null; Object.keys(G.jugadores).forEach(function (c) { if (G.jugadores[c].invitado === invId) r = c; }); return r; }
+  // Las listas largas no viajan en cada actualización: los celulares las piden cuando las necesitan
+  var firmaListas = '';
+  function compartirListas(forzar) {
+    if (role !== 'control') return;
+    var tomados = {}; Object.keys(G.jugadores).forEach(function (c) { if (G.jugadores[c].invitado) tomados[G.jugadores[c].invitado] = 1; });
+    var inv = invitados().map(function (x) { return [x.id, x.nombre, tomados[x.id] ? 1 : 0]; });
+    var mc = musicaCfg();
+    var lista = mc.lista.map(function (t) { return { id: t.id, titulo: t.titulo, artista: t.artista || '', img: t.img || '' }; });
+    var f = JSON.stringify([inv, lista]);
+    if (!forzar && f === firmaListas) return; firmaListas = f;
+    socket.emit('publico', { clave: 'invitados', datos: { lista: inv, abierto: contenido.soloInvitados === false || !inv.length } });
+    socket.emit('publico', { clave: 'temas', datos: lista });
+  }
+  function unirse(persona, cl, invId) {
+    if (!cl) return { ok: false, msg: 'No se pudo identificar este celular.' };
+    var inv = null;
+    if (invId) {
+      inv = invitados().filter(function (x) { return x.id === invId; })[0];
+      if (!inv) return { ok: false, msg: 'Ese nombre ya no está en la lista. Buscalo de nuevo.' };
+      var otro = quienEs(invId);
+      if (otro && otro !== cl) return { ok: false, msg: 'Ese nombre ya entró desde otro celular. Si sos vos, avisale al conductor.' };
+      persona = inv.nombre;
+    } else if (invitados().length && contenido.soloInvitados !== false) return { ok: false, msg: 'Buscá tu nombre en la lista de invitados.' };
     persona = String(persona || '').trim().replace(/\s+/g, ' ').slice(0, 30);
     if (persona.length < 2) return { ok: false, msg: 'Escribí tu nombre (al menos 2 letras).' };
-    if (!cl) return { ok: false, msg: 'No se pudo identificar este celular.' };
-    // Si alguien se suma a un equipo de prueba, sus jugadores simulados se van y el equipo deja de responder solo
-    if (eq.bot) {
-      (eq.integrantes || []).forEach(function (x) { delete G.jugadores[x.cliente]; delete G.clientes[x.cliente]; delete G.resp[x.cliente]; });
-      eq.integrantes = []; delete eq.bot;
+    var j = G.jugadores[cl];
+    if (j && !j.bot) {
+      j.nombre = persona;
+      if (j.equipoId && G.equipos[j.equipoId]) G.equipos[j.equipoId].integrantes.forEach(function (x) { if (x.cliente === cl) x.nombre = persona; });
+    } else {
+      j = G.jugadores[cl] = { nombre: persona, equipoId: null, puntos: 0, numero: numeroLibre() };
+      var e = equipoConMenos(); if (e) ponerEnEquipo(cl, e);
     }
-    sacarIntegrante(cl);
-    eq.integrantes = eq.integrantes || [];
-    eq.integrantes.push({ cliente: cl, nombre: persona });
-    G.clientes[cl] = eq.id;
-    var previo = G.jugadores[cl];
-    G.jugadores[cl] = { nombre: persona, equipoId: eq.id, puntos: previo ? previo.puntos : 0 };
+    j.invitado = inv ? inv.id : null;
+    if (!j.numero) j.numero = numeroLibre();
     publicar();
-    return { ok: true, equipoId: eq.id, nombre: eq.nombre };
+    return { ok: true };
+  }
+  function borrarJugador(cl) {
+    if (!G.jugadores[cl]) return;
+    sacarIntegrante(cl); delete G.jugadores[cl]; delete G.resp[cl];
+    G.pedidos = (G.pedidos || []).filter(function (p) { return p.c !== cl; });
+    publicar();
+  }
+  function moverJugador(cl, eqId) { if (!G.jugadores[cl]) return; ponerEnEquipo(cl, eqId && G.equipos[eqId] ? eqId : null); publicar(); }
+  function develarEquipos() { repartirSinEquipo(); G.revelados = true; irA('equipos'); }
+  function ocultarEquipos() { G.revelados = false; if (G.fase === 'equipos') G.fase = 'inicio'; publicar(); }
+
+  // ---- Sorteo por número ----
+  function participantesSorteo() { return Object.keys(G.jugadores).filter(function (c) { var j = G.jugadores[c]; return esActivo(c) && !j.bot && j.numero; }); }
+  function sortear() {
+    G.sorteo = G.sorteo || { ganadores: [] };
+    var ya = G.sorteo.ganadores || [];
+    var pool = participantesSorteo().filter(function (c) { return ya.indexOf(c) < 0; });
+    if (!pool.length) { toast(participantesSorteo().length ? 'Ya salieron todos los números.' : 'Todavía no hay jugadores con número.'); return; }
+    var c = pool[Math.floor(Math.random() * pool.length)];
+    ya.push(c); G.sorteo.ganadores = ya; G.sorteo.actual = c; G.sorteo.t = Date.now() + 600;
+    irA('sorteo');
+  }
+  function reiniciarSorteo() { G.sorteo = { ganadores: [] }; if (G.fase === 'sorteo') G.fase = 'inicio'; publicar(); }
+
+  // ---- Temas musicales pedidos por los jugadores ----
+  var spotify = { configurado: false, conectado: false, playlist: null, nombre: '', url: '', usuario: '' };
+  function musicaCfg() {
+    contenido.musica = contenido.musica || {};
+    var m = contenido.musica;
+    if (!m.modo) m.modo = 'apagado';
+    if (!m.lista) m.lista = [];
+    if (!m.porJugador) m.porJugador = 1;
+    if (m.sinExplicitos == null) m.sinExplicitos = true;
+    return m;
+  }
+  var URI_TEMA = /^spotify:track:[A-Za-z0-9]{22}$/;
+  function limpio(t, n) { return String(t == null ? '' : t).replace(/\s+/g, ' ').trim().slice(0, n || 90); }
+  function pedirTema(cl, item) {
+    var mc = musicaCfg(); item = item || {};
+    if (mc.modo === 'apagado') return { ok: false, msg: 'La elección de temas está cerrada por ahora.' };
+    var j = G.jugadores[cl]; if (!j || j.bot) return { ok: false, msg: 'Primero entrá con tu nombre.' };
+    G.pedidos = G.pedidos || [];
+    var mios = G.pedidos.filter(function (p) { return p.c === cl; });
+    if (mios.length >= mc.porJugador) return { ok: false, msg: mc.porJugador > 1 ? 'Ya elegiste tus ' + mc.porJugador + ' temas.' : 'Ya elegiste tu tema.' };
+    var t;
+    if (mc.modo === 'lista') {
+      t = mc.lista.filter(function (x) { return x.id === item.id; })[0];
+      if (!t) return { ok: false, msg: 'Ese tema ya no está en la lista.' };
+    } else {
+      if (!URI_TEMA.test(item.uri || '')) return { ok: false, msg: 'Elegí un tema de los resultados de la búsqueda.' };
+      if (mc.sinExplicitos && item.explicit) return { ok: false, msg: 'Ese tema tiene letra explícita. Elegí otro.' };
+      t = { titulo: limpio(item.titulo), artista: limpio(item.artista), uri: item.uri, img: /^https:\/\/i\.scdn\.co\//.test(item.img || '') ? item.img : '' };
+    }
+    if (t.uri && mios.some(function (p) { return p.uri === t.uri; })) return { ok: false, msg: 'Ya elegiste ese tema.' };
+    var p = { id: uid('p'), c: cl, nombre: j.nombre, titulo: t.titulo, artista: t.artista || '', img: t.img || '', uri: t.uri || '', estado: 'pendiente' };
+    G.pedidos.push(p);
+    agregarASpotify(p);
+    publicar();
+    return { ok: true, titulo: p.titulo };
+  }
+  function agregarASpotify(p) {
+    if (!p.uri) { p.estado = 'lista'; return; }
+    if (G.pedidos.some(function (q) { return q !== p && q.uri === p.uri && q.estado === 'ok'; })) { p.estado = 'repetido'; return; }
+    if (!spotify.conectado || !spotify.playlist) { p.estado = 'sin-spotify'; return; }
+    p.estado = 'pendiente';
+    socket.timeout(20000).emit('spotifyAgregar', { uri: p.uri }, function (err, r) {
+      p.estado = !err && r && r.ok ? 'ok' : 'error'; p.error = err ? 'Spotify no respondió.' : (r && r.msg) || '';
+      publicar();
+    });
+  }
+  function reintentarPedidos() {
+    var hubo = false;
+    (G.pedidos || []).forEach(function (p) { if (p.uri && (p.estado === 'sin-spotify' || p.estado === 'error')) { hubo = true; agregarASpotify(p); } });
+    if (hubo) publicar();
+  }
+  function quitarPedido(id) {
+    var p = (G.pedidos || []).filter(function (x) { return x.id === id; })[0]; if (!p) return;
+    G.pedidos = G.pedidos.filter(function (x) { return x.id !== id; });
+    var sigue = G.pedidos.some(function (q) { return q.uri && q.uri === p.uri; });
+    if (p.estado === 'ok' && !sigue && spotify.conectado) socket.emit('spotifyQuitar', { uri: p.uri });
+    // si otro pedido del mismo tema quedó como "repetido", ahora pasa a ser el que cuenta
+    if (p.estado === 'ok' && sigue) G.pedidos.forEach(function (q) { if (q.uri === p.uri && q.estado === 'repetido') q.estado = 'ok'; });
+    publicar();
+  }
+  socket.on('spotifyEstado', function (e) { if (role !== 'control' || !e) return; aplicarSpotify(e); });
+  function aplicarSpotify(e) {
+    spotify = e;
+    var mc = musicaCfg();
+    if (e.playlist && (!mc.playlist || mc.playlist.id !== e.playlist.id)) { mc.playlist = e.playlist; guardarContenido(); }
+    if (!e.conectado && mc.modo === 'spotify') toast('⚠️ Spotify se desconectó: los jugadores no pueden buscar temas.', 6000);
+    if (e.conectado && e.playlist) reintentarPedidos();
+    if (tabActiva === 'musica') renderMusica();
+  }
+  function pedirEstadoSpotify() {
+    var rt = lsGet('spotify');
+    if (rt) socket.emit('spotifyToken', rt);
+    var pl = musicaCfg().playlist;
+    if (pl && pl.id) socket.emit('spotifyRecordarPlaylist', pl);
+    socket.emit('spotifyEstado', null, function (e) { if (e) aplicarSpotify(e); });
   }
 
   function reclamarQR(equipoId, codigo) {
@@ -1022,8 +1318,8 @@
   function procesarAccion(a) {
     var eq = a.cliente ? G.clientes[a.cliente] : null;
     switch (a.tipo) {
-      case 'unirse': return unirse(a.equipoId, a.persona, a.cliente);
-      case 'salir': if (a.cliente) { sacarIntegrante(a.cliente); publicar(); } return { ok: true };
+      case 'unirse': return unirse(a.persona, a.cliente, a.invitado);
+      case 'tema': return pedirTema(a.cliente, a.tema);
       case 'responder': return responder(a.cliente, a.valor);
       case 'foto': return registrarFoto(eq, a.fotoId);
       case 'qr': return reclamarQR(eq, a.codigo);
@@ -1191,7 +1487,7 @@
       if (canal) canal.postMessage({ type: 'pedir' });
       socket.emit('hola', r);
       if (r === 'pantalla') { pintarQrUnion(); renderPantalla(); }
-      if (r === 'jugador') renderJugador();
+      if (r === 'jugador') { registrarApp(); renderJugador(); }
     }
   }
   var ventanaProyector = null;
@@ -1216,6 +1512,7 @@
       pinGuardado = pin; try { sessionStorage.setItem('ndg-pin', pin); } catch (e) { }
       if (!lsGet('contenido') && r.contenido) { contenido = migrarContenido(r.contenido); lsSet('contenido', contenido); }
       if (!lsGet('estado') && r.respaldo) { G = r.respaldo; lsSet('estado', G); }
+      if (r.spotify) spotify = r.spotify;
       activarRol('control');
     });
   };
@@ -1259,16 +1556,21 @@
     publicar();
     socket.emit('contenido', contenido);
     sincronizarImagenes();
+    compartirListas(true);
+    pedirEstadoSpotify();
   }
 
   function mostrarTab(t) {
     tabActiva = t; lsSet('tab', t);
     document.querySelectorAll('.game-tab').forEach(function (b) { b.classList.toggle('active', b.dataset.tab === t); });
-    ['inicio', 'vivo', 'preguntas', 'equipos', 'tesoro'].forEach(function (k) { $('tab' + k.charAt(0).toUpperCase() + k.slice(1)).hidden = k !== t; });
+    ['inicio', 'vivo', 'preguntas', 'invitados', 'equipos', 'sorteo', 'musica', 'tesoro'].forEach(function (k) { $('tab' + k.charAt(0).toUpperCase() + k.slice(1)).hidden = k !== t; });
     if (t === 'inicio') renderInicio();
     if (t === 'vivo') renderConsolaVivo();
     if (t === 'preguntas') renderPreguntas();
     if (t === 'equipos') renderEquipos();
+    if (t === 'invitados') renderInvitados();
+    if (t === 'sorteo') renderSorteo();
+    if (t === 'musica') renderMusica();
     if (t === 'tesoro') renderTesoro();
     aplicarDeporte(G.club);
   }
@@ -1357,10 +1659,13 @@
     if (role !== 'control') return;
     marcarTabEnVivo();
     if (tabActiva === 'equipos') renderEquipos();
+    if (tabActiva === 'invitados') renderInvitadosLista();
+    if (tabActiva === 'sorteo') renderSorteo();
+    if (tabActiva === 'musica') renderPedidos();
     if (tabActiva === 'tesoro') renderTesoroConteo();
     if (tabActiva !== 'vivo') return;
     var r = rondaAct(), it = itemAct();
-    var nombresFase = { inicio: 'Cartelera: tablas, buffet y precios', pregunta: 'Pregunta en juego', revelado: 'Respuesta revelada', ranking: 'Mostrando el ranking', desafio: 'Desafío de fotos', fin: 'Podio final' };
+    var nombresFase = { inicio: 'Cartelera: tablas, buffet y precios', pregunta: 'Pregunta en juego', revelado: 'Respuesta revelada', ranking: 'Mostrando el ranking', desafio: 'Desafío de fotos', fin: 'Podio final', equipos: 'Mostrando los equipos', sorteo: 'Sorteo' };
     var total = totalJugadores(), nResp = Object.keys(G.resp).length;
     var ventana;
     var correctaTxt = it && it.opciones ? LETRAS[it.correcta] + ' · ' + esc(it.opciones[it.correcta]) : '';
@@ -1608,26 +1913,34 @@
     var activo = document.activeElement && document.activeElement.id === 'inEquipo' ? $('inEquipo').value : null;
     var lista = Object.keys(G.equipos).map(function (k) { return G.equipos[k]; }).sort(function (a, b) { return b.puntos - a.puntos; });
     var hayBots = lista.some(function (e) { return e.bot; });
-    var jug = Object.keys(G.jugadores || {}).filter(function (c) { return G.equipos[G.jugadores[c].equipoId]; }).map(function (c) { return { c: c, j: G.jugadores[c] }; }).sort(function (a, b) { return b.j.puntos - a.j.puntos; });
+    var reales = lista.filter(function (e) { return !e.bot; }).slice().sort(function (a, b) { return a.nombre.localeCompare(b.nombre, 'es'); });
+    var jug = Object.keys(G.jugadores || {}).filter(function (c) { return esActivo(c) && !G.jugadores[c].bot; }).map(function (c) { return { c: c, j: G.jugadores[c] }; }).sort(function (a, b) { return b.j.puntos - a.j.puntos || a.j.nombre.localeCompare(b.j.nombre, 'es'); });
+    var sinEq = jug.filter(function (x) { return !x.j.equipoId || !G.equipos[x.j.equipoId]; }).length;
+    var opcionesEq = function (sel) { return '<option value="">Sin equipo</option>' + reales.map(function (e) { return '<option value="' + e.id + '"' + (e.id === sel ? ' selected' : '') + '>' + esc(e.nombre) + '</option>'; }).join(''); };
     $('tabEquipos').innerHTML =
-      '<section class="card"><div class="card-head"><h2>Equipos (' + lista.length + ')</h2><p>Cargá acá los equipos. En el celular, cada persona elige el suyo y escribe su nombre. El color es el fondo de su celular.</p></div>' +
-      '<form id="fEquipo" class="row-actions" style="margin:0 0 14px"><span class="field" style="flex:1;min-width:200px"><input type="text" id="inEquipo" maxlength="30" autocomplete="off" placeholder="Nombre del equipo (ej.: Mesa 1, Los Genios)" aria-label="Nombre del equipo nuevo"></span><button type="submit" class="btn btn-gold">＋ Agregar equipo</button></form>' +
+      '<section class="card"><div class="card-head"><h2>Equipos (' + lista.length + ')</h2><p>Cargá los equipos. Cada jugador entra con su nombre y el sistema lo pone en el equipo que tiene menos gente. <b>Nadie sabe su equipo hasta que lo develes.</b> El color es el fondo de su celular.</p></div>' +
+      '<div class="reveal-bar ' + (G.revelados ? 'on' : '') + '"><span>' + (G.revelados ? '🎭 Los equipos están a la vista' : '🤫 Los equipos son secretos') + '</span>' +
+        (G.revelados ? '<button type="button" class="btn-mini" id="eMostrar">📺 Mostrarlos otra vez</button><button type="button" class="btn-mini" id="eOcultar">🙈 Volver a ocultar</button>' : '<button type="button" class="btn btn-gold" id="eDevelar">🎭 Develar los equipos</button>') +
+        (confirmando === 'repartir' ? '<span class="confirm-inline">¿Mezclar a todos de nuevo? <button type="button" class="btn-mini danger" id="eRepOk">Sí, mezclar</button><button type="button" class="btn-mini" id="eRepNo">No</button></span>' : '<button type="button" class="btn-mini" id="eRepartir">🔀 Repartir de nuevo al azar</button>') + '</div>' +
+      '<form id="fEquipo" class="row-actions" style="margin:14px 0"><span class="field" style="flex:1;min-width:200px"><input type="text" id="inEquipo" maxlength="30" autocomplete="off" placeholder="Nombre del equipo (ej.: Mesa 1, Los Genios)" aria-label="Nombre del equipo nuevo"></span><button type="submit" class="btn btn-gold">＋ Agregar equipo</button></form>' +
       (lista.length ? lista.map(function (e, i) {
-        var miembros = (e.integrantes || []).map(function (x) { var j = G.jugadores[x.cliente]; return esc(x.nombre) + (j ? ' (' + fmt(j.puntos) + ')' : ''); }).join(', ');
-        return '<div class="eq-row"><span class="pos">' + (i + 1) + '</span><input type="color" value="' + esc(e.color || '#888888') + '" data-color="' + e.id + '" aria-label="Color de ' + esc(e.nombre) + '" style="width:34px;height:30px;border:0;background:none;padding:0;cursor:pointer;flex:none"><span class="nom">' + esc(e.nombre) + (e.bot ? ' 🤖' : '') + '<small style="display:block;font-weight:500;color:var(--ink-soft);font-size:12px;white-space:normal">' + (e.bot ? 'Equipo de prueba: 3 jugadores simulados' : (miembros || 'Todavía no se sumó nadie')) + '</small></span><span class="pts">' + fmt(e.puntos) + '</span>' +
+        var miembros = (e.integrantes || []).map(function (x) { return esc(x.nombre); }).join(', ');
+        return '<div class="eq-row"><span class="pos">' + (i + 1) + '</span><input type="color" value="' + esc(e.color || '#888888') + '" data-color="' + e.id + '" aria-label="Color de ' + esc(e.nombre) + '" style="width:34px;height:30px;border:0;background:none;padding:0;cursor:pointer;flex:none"><span class="nom">' + esc(e.nombre) + (e.bot ? ' 🤖' : ' <small style="font-weight:600;color:var(--ink-soft)">(' + (e.integrantes || []).length + ')</small>') + '<small style="display:block;font-weight:500;color:var(--ink-soft);font-size:12px;white-space:normal">' + (e.bot ? 'Equipo de prueba: 3 jugadores simulados' : (miembros || 'Todavía no le tocó a nadie')) + '</small></span><span class="pts">' + fmt(e.puntos) + '</span>' +
           '<button type="button" class="btn-mini" data-aj="' + e.id + '" data-d="100">+100</button><button type="button" class="btn-mini" data-aj="' + e.id + '" data-d="-100">−100</button>' +
           (confirmando === e.id ? '<button type="button" class="btn-mini danger" data-borrarok="' + e.id + '">¿Borrar?</button>' : '<button type="button" class="btn-mini danger" data-borrar="' + e.id + '" aria-label="Borrar equipo">🗑️</button>') + '</div>';
-      }).join('') : '<p class="muted">Todavía no cargaste equipos. Escribí el nombre arriba y tocá "Agregar equipo".</p>') +
+      }).join('') : '<p class="muted">Todavía no cargaste equipos. Escribí el nombre arriba y tocá "Agregar equipo". Los que ya entraron se reparten solos.</p>') +
       '</section>' +
-      '<section class="card"><div class="card-head"><h2>Tabla individual (' + jug.length + ')</h2><p>Cada pregunta reparte también los mismos puntos entre los jugadores que acertaron.</p></div>' +
-      (jug.length ? '<div style="display:grid;grid-template-columns:repeat(auto-fill,minmax(240px,1fr));gap:0 18px">' + jug.map(function (x, i) {
+      '<section class="card"><div class="card-head"><h2>Jugadores (' + jug.length + ')</h2><p>Ordenados por puntos. Podés pasar a alguien de equipo o sacarlo (si se equivocó de nombre, vuelve a entrar desde el celu).' + (sinEq ? ' <b>' + sinEq + ' sin equipo</b>: se reparten cuando agregues equipos.' : '') + '</p></div>' +
+      (jug.length ? '<div class="jug-grid">' + jug.map(function (x, i) {
         var e = G.equipos[x.j.equipoId];
-        return '<div class="eq-row"><span class="pos">' + (i + 1) + '</span><i class="dot-eq" style="background:' + esc(e.color) + '"></i><span class="nom">' + esc(x.j.nombre) + '<small style="display:block;font-weight:500;color:var(--ink-soft);font-size:12px">' + esc(e.nombre) + '</small></span><span class="pts">' + fmt(x.j.puntos) + '</span></div>';
-      }).join('') + '</div>' : '<p class="muted" style="margin:0">Cuando la gente se sume desde el celular, aparece acá.</p>') + '</section>' +
-      '<section class="card"><div class="card-head"><h2>Probar sin celulares</h2><p>Cada equipo de prueba 🤖 tiene 3 jugadores simulados que responden solos (aciertan más o menos 6 de cada 10).</p></div>' +
+        return '<div class="eq-row"><span class="pos">' + (i + 1) + '</span><i class="dot-eq" style="background:' + esc(e ? e.color : '#ccc') + '"></i><span class="nom">' + esc(x.j.nombre) + '<small style="display:block;font-weight:500;color:var(--ink-soft);font-size:12px">🎟️ #' + (x.j.numero || '—') + '</small></span>' +
+          '<select class="mini-select" data-mover="' + x.c + '" aria-label="Equipo de ' + esc(x.j.nombre) + '">' + opcionesEq(x.j.equipoId) + '</select><span class="pts">' + fmt(x.j.puntos) + '</span>' +
+          (confirmando === 'j:' + x.c ? '<button type="button" class="btn-mini danger" data-jdelok="' + x.c + '">¿Sacar?</button>' : '<button type="button" class="btn-mini danger" data-jdel="' + x.c + '" aria-label="Sacar jugador">✕</button>') + '</div>';
+      }).join('') + '</div>' : '<p class="muted" style="margin:0">Cuando la gente entre desde el celular, aparece acá.</p>') + '</section>' +
+      '<section class="card"><div class="card-head"><h2>Probar sin celulares</h2><p>Cada equipo de prueba 🤖 tiene 3 jugadores simulados que responden solos (aciertan más o menos 6 de cada 10). A los equipos de prueba no se suma gente real.</p></div>' +
       '<div class="row-actions" style="margin:0"><button type="button" class="btn btn-gold" id="bots5">🤖 Agregar 5 equipos de prueba</button>' + (hayBots ? '<button type="button" class="btn-mini danger" id="botsFuera">Sacar los equipos de prueba</button>' : '') +
       (confirmando === 'puntos' ? '<span class="confirm-inline">¿Poner todos en 0 y borrar fotos y tesoro? <button type="button" class="btn-mini danger" id="ceroOk">Sí</button><button type="button" class="btn-mini" id="ceroNo">No</button></span>' : '<button type="button" class="btn-mini" id="cero">↺ Puntos a cero</button>') +
-      (confirmando === 'todo' ? '<span class="confirm-inline">¿Borrar todos los equipos y empezar de nuevo? <button type="button" class="btn-mini danger" id="todoOk">Sí, borrar todo</button><button type="button" class="btn-mini" id="todoNo">No</button></span>' : '<button type="button" class="btn-mini danger" id="todo">🗑️ Empezar la noche de cero</button>') +
+      (confirmando === 'todo' ? '<span class="confirm-inline">¿Borrar equipos, jugadores, sorteo y temas elegidos (también se sacan de la playlist)? La lista de invitados queda. <button type="button" class="btn-mini danger" id="todoOk">Sí, borrar todo</button><button type="button" class="btn-mini" id="todoNo">No</button></span>' : '<button type="button" class="btn-mini danger" id="todo">🗑️ Empezar la noche de cero</button>') +
       '</div></section>';
     var T = $('tabEquipos');
     if (activo != null) { $('inEquipo').value = activo; $('inEquipo').focus(); }
@@ -1635,6 +1948,19 @@
     T.querySelectorAll('[data-color]').forEach(function (inp) { inp.onchange = function () { var e = G.equipos[inp.dataset.color]; if (e) { e.color = inp.value; publicar(); } }; });
     T.querySelectorAll('[data-borrar]').forEach(function (b) { b.onclick = function () { confirmando = b.dataset.borrar; renderEquipos(); }; });
     T.querySelectorAll('[data-borrarok]').forEach(function (b) { b.onclick = function () { borrarEquipo(b.dataset.borrarok); confirmando = null; publicar(); }; });
+    T.querySelectorAll('[data-mover]').forEach(function (s) { s.onchange = function () { moverJugador(s.dataset.mover, s.value); }; });
+    T.querySelectorAll('[data-jdel]').forEach(function (b) { b.onclick = function () { confirmando = 'j:' + b.dataset.jdel; renderEquipos(); }; });
+    T.querySelectorAll('[data-jdelok]').forEach(function (b) { b.onclick = function () { confirmando = null; borrarJugador(b.dataset.jdelok); }; });
+    if ($('eDevelar')) $('eDevelar').onclick = function () {
+      if (!reales.length) { toast('Primero cargá los equipos.'); return; }
+      if (G.fase === 'pregunta') { toast('Esperá a que termine la pregunta.'); return; }
+      develarEquipos(); toast('🎭 ¡Equipos develados! Se ven en el proyector y en cada celular.');
+    };
+    if ($('eMostrar')) $('eMostrar').onclick = function () { if (G.fase === 'pregunta') { toast('Esperá a que termine la pregunta.'); return; } irA('equipos'); };
+    if ($('eOcultar')) $('eOcultar').onclick = ocultarEquipos;
+    if ($('eRepartir')) $('eRepartir').onclick = function () { confirmando = 'repartir'; renderEquipos(); };
+    if ($('eRepNo')) $('eRepNo').onclick = function () { confirmando = null; renderEquipos(); };
+    if ($('eRepOk')) $('eRepOk').onclick = function () { confirmando = null; repartirTodos(); toast('🔀 Equipos mezclados de nuevo'); };
     $('bots5').onclick = function () { agregarBots(5); };
     $('fEquipo').onsubmit = function (ev) {
       ev.preventDefault();
@@ -1648,8 +1974,255 @@
     if ($('ceroOk')) $('ceroOk').onclick = function () { Object.keys(G.equipos).forEach(function (k) { G.equipos[k].puntos = 0; }); Object.keys(G.jugadores).forEach(function (c) { G.jugadores[c].puntos = 0; }); G.fotos = []; G.qrReclamos = {}; G.hechos = []; confirmando = null; publicar(); };
     if ($('ceroNo')) $('ceroNo').onclick = function () { confirmando = null; renderEquipos(); };
     if ($('todo')) $('todo').onclick = function () { confirmando = 'todo'; renderEquipos(); };
-    if ($('todoOk')) $('todoOk').onclick = function () { var keep = { club: G.club, buffet: G.buffet, precios: G.precios, segundos: G.segundos, rev: G.rev }; G = estadoInicial(); Object.assign(G, keep); normalizarEstado(); confirmando = null; token++; publicar(); };
+    if ($('todoOk')) $('todoOk').onclick = function () {
+      (G.pedidos || []).forEach(function (p) { if (p.estado === 'ok' && spotify.conectado) socket.emit('spotifyQuitar', { uri: p.uri }); });
+      var keep = { club: G.club, buffet: G.buffet, precios: G.precios, segundos: G.segundos, rev: G.rev }; G = estadoInicial(); Object.assign(G, keep); normalizarEstado(); confirmando = null; token++; publicar();
+    };
     if ($('todoNo')) $('todoNo').onclick = function () { confirmando = null; renderEquipos(); };
+  }
+
+  // ---- Invitados ----
+  var filtroInv = '';
+  // Lee la primera hoja de un Excel (.xlsx) sin librerías: un .xlsx es un zip con XML adentro
+  function leerXlsx(buf) {
+    var dv = new DataView(buf), u8 = new Uint8Array(buf), dec = new TextDecoder();
+    var fin = -1;
+    for (var i = u8.length - 22; i >= Math.max(0, u8.length - 66000); i--) if (dv.getUint32(i, true) === 0x06054b50) { fin = i; break; }
+    if (fin < 0) return Promise.reject(new Error('No es un Excel .xlsx'));
+    var n = dv.getUint16(fin + 10, true), off = dv.getUint32(fin + 16, true), arch = {};
+    for (var k = 0; k < n; k++) {
+      var nl = dv.getUint16(off + 28, true), el = dv.getUint16(off + 30, true), cl = dv.getUint16(off + 32, true);
+      arch[dec.decode(u8.subarray(off + 46, off + 46 + nl))] = { met: dv.getUint16(off + 10, true), tam: dv.getUint32(off + 20, true), lo: dv.getUint32(off + 42, true) };
+      off += 46 + nl + el + cl;
+    }
+    function texto(nombre) {
+      var f = arch[nombre]; if (!f) return Promise.resolve('');
+      var ini = f.lo + 30 + dv.getUint16(f.lo + 26, true) + dv.getUint16(f.lo + 28, true);
+      var datos = u8.slice(ini, ini + f.tam);
+      if (f.met === 0) return Promise.resolve(dec.decode(datos));
+      return new Response(new Blob([datos]).stream().pipeThrough(new DecompressionStream('deflate-raw'))).text();
+    }
+    var hojas = Object.keys(arch).filter(function (x) { return /^xl\/worksheets\/sheet\d+\.xml$/.test(x); }).sort(function (a, b) { return parseInt(a.replace(/\D/g, ''), 10) - parseInt(b.replace(/\D/g, ''), 10); });
+    if (!hojas.length) return Promise.reject(new Error('El Excel no tiene hojas'));
+    return Promise.all([texto('xl/sharedStrings.xml'), texto(hojas[0])]).then(function (r) {
+      var P = new DOMParser(), comp = [];
+      if (r[0]) Array.prototype.forEach.call(P.parseFromString(r[0], 'application/xml').getElementsByTagName('si'), function (si) {
+        comp.push(Array.prototype.map.call(si.getElementsByTagName('t'), function (t) { return t.textContent; }).join(''));
+      });
+      var filas = [];
+      Array.prototype.forEach.call(P.parseFromString(r[1], 'application/xml').getElementsByTagName('row'), function (row) {
+        var fila = [];
+        Array.prototype.forEach.call(row.getElementsByTagName('c'), function (c, idx) {
+          var ref = c.getAttribute('r') || '', letras = (ref.match(/^[A-Z]+/) || [''])[0], col = idx;
+          if (letras) { col = 0; for (var q = 0; q < letras.length; q++) col = col * 26 + letras.charCodeAt(q) - 64; col--; }
+          var t = c.getAttribute('t'), v = c.getElementsByTagName('v')[0], val = '';
+          if (t === 's' && v) val = comp[parseInt(v.textContent, 10)] || '';
+          else if (t === 'inlineStr') val = Array.prototype.map.call(c.getElementsByTagName('t'), function (x) { return x.textContent; }).join('');
+          else if (v) val = v.textContent;
+          fila[col] = val;
+        });
+        filas.push(fila);
+      });
+      return filas;
+    });
+  }
+  function leerCsv(txt) {
+    var lineas = txt.replace(/^﻿/, '').split(/\r?\n/).filter(function (l) { return l.trim(); });
+    var sep = [';', '\t', ','].filter(function (x) { return (lineas[0] || '').indexOf(x) >= 0; })[0];
+    return lineas.map(function (l) { return sep ? l.split(sep).map(function (x) { return x.replace(/^"|"$/g, '').trim(); }) : [l.trim()]; });
+  }
+  // De una tabla saca los nombres: si hay columnas "Nombre" y "Apellido" las junta; si no, usa la primera columna con texto
+  function nombresDeFilas(filas) {
+    if (!filas.length) return [];
+    var cab = (filas[0] || []).map(function (x) { return normNombre(x); });
+    var iNom = -1, iApe = -1;
+    cab.forEach(function (x, i) {
+      if (iApe < 0 && /apellido/.test(x)) iApe = i;
+      else if (iNom < 0 && /nombre|invitad|jugador|participante|socio/.test(x)) iNom = i;
+    });
+    var cuerpo = filas;
+    if (iNom >= 0 || iApe >= 0) cuerpo = filas.slice(1);
+    return cuerpo.map(function (f) {
+      f = f || [];
+      if (iNom >= 0 || iApe >= 0) return [f[iNom], f[iApe]].filter(function (x) { return x && String(x).trim(); }).join(' ');
+      for (var i = 0; i < f.length; i++) if (f[i] && /[a-záéíóúñ]/i.test(f[i])) return f[i];
+      return '';
+    }).map(function (x) { return String(x || '').trim(); }).filter(function (x) { return x.length >= 2; });
+  }
+  function importarArchivo(file) {
+    var nombre = file.name.toLowerCase();
+    var prom;
+    if (/\.xlsx$/.test(nombre)) prom = file.arrayBuffer().then(leerXlsx);
+    else if (/\.(csv|txt)$/.test(nombre)) prom = file.text().then(leerCsv);
+    else { toast('Usá un Excel (.xlsx) o un .csv. Si tenés un .xls viejo, abrilo y guardalo como .xlsx.', 7000); return; }
+    prom.then(function (filas) {
+      var nombres = nombresDeFilas(filas);
+      if (!nombres.length) { toast('No encontré nombres en ese archivo. Poné los nombres en la primera columna.', 6000); return; }
+      var n = agregarInvitados(nombres);
+      toast('📋 Se agregaron ' + n + ' invitados' + (nombres.length > n ? ' (' + (nombres.length - n) + ' ya estaban)' : ''), 5000);
+      renderInvitados();
+    }).catch(function (e) { toast('No se pudo leer el archivo: ' + esc(e.message || e), 6000); });
+  }
+  function renderInvitados() {
+    if (tabActiva !== 'invitados') return;
+    var l = invitados();
+    $('tabInvitados').innerHTML =
+      '<section class="card"><div class="card-head"><h2>Lista de invitados</h2><p>Cargá la lista y cada invitado, en el celular, busca su nombre y lo toca para entrar. Así no hay nombres repetidos ni mal escritos.</p></div>' +
+      '<div class="inv-carga">' +
+        '<div><label class="field">Escribí o pegá los nombres (uno por renglón)<textarea id="invTexto" rows="6" placeholder="Juan Pérez&#10;María Gómez&#10;…"></textarea></label><div class="row-actions" style="margin:8px 0 0"><button type="button" class="btn btn-gold" id="invAgregar">＋ Agregar a la lista</button></div></div>' +
+        '<div class="inv-archivo"><span style="font-size:34px">📄</span><b>Subir un Excel o CSV</b><p class="hint" style="margin:4px 0 10px">Los nombres en la primera columna. Si hay columnas "Nombre" y "Apellido", se juntan solas.</p><label class="btn-mini" for="invArchivo" style="cursor:pointer">Elegir archivo…</label><input type="file" id="invArchivo" accept=".xlsx,.csv,.txt" hidden></div>' +
+      '</div>' +
+      '<label class="check-row"><input type="checkbox" id="invAbierto"' + (contenido.soloInvitados === false ? ' checked' : '') + '> Dejar entrar también a quien no está en la lista (escribe su nombre a mano)</label>' +
+      '<label class="check-row"><input type="checkbox" id="invApp"' + (contenido.ofrecerApp !== false ? ' checked' : '') + '> Ofrecer en el celular el botón "📲 Instalar la app"</label>' +
+      '</section>' +
+      '<section class="card"><div class="card-head"><h2 id="invTitulo"></h2>' +
+        (l.length ? (confirmando === 'invitados' ? '<span class="confirm-inline">¿Borrar toda la lista? <button type="button" class="btn-mini danger" id="invBorrarOk">Sí</button><button type="button" class="btn-mini" id="invBorrarNo">No</button></span>' : '<button type="button" class="btn-mini danger" id="invBorrar">🗑️ Borrar la lista</button>') : '') +
+      '</div>' +
+      (l.length ? '<span class="field" style="display:block;margin-bottom:10px"><input type="search" id="invFiltro" placeholder="🔎 Buscar en la lista" value="' + esc(filtroInv) + '" aria-label="Buscar invitado"></span>' : '') +
+      '<div id="invLista"></div></section>';
+    $('invAgregar').onclick = function () {
+      var lineas = $('invTexto').value.split(/\r?\n/).map(function (x) { return x.trim(); }).filter(Boolean);
+      if (!lineas.length) { toast('Escribí al menos un nombre.'); return; }
+      var n = agregarInvitados(lineas); toast('Se agregaron ' + n + ' invitados'); $('invTexto').value = ''; renderInvitados();
+    };
+    $('invArchivo').onchange = function () { var f = this.files[0]; if (f) importarArchivo(f); this.value = ''; };
+    $('invAbierto').onchange = function () { contenido.soloInvitados = !this.checked; guardarContenido(); compartirListas(true); };
+    $('invApp').onchange = function () { contenido.ofrecerApp = this.checked; guardarContenido(); publicar(); };
+    if ($('invFiltro')) $('invFiltro').oninput = function () { filtroInv = this.value; renderInvitadosLista(); };
+    if ($('invBorrar')) $('invBorrar').onclick = function () { confirmando = 'invitados'; renderInvitados(); };
+    if ($('invBorrarNo')) $('invBorrarNo').onclick = function () { confirmando = null; renderInvitados(); };
+    if ($('invBorrarOk')) $('invBorrarOk').onclick = function () { contenido.invitados = []; confirmando = null; guardarContenido(); compartirListas(true); renderInvitados(); };
+    renderInvitadosLista();
+  }
+  function renderInvitadosLista() {
+    var box = $('invLista'); if (!box || tabActiva !== 'invitados') return;
+    var l = invitados(), por = {};
+    Object.keys(G.jugadores).forEach(function (c) { var j = G.jugadores[c]; if (j.invitado) por[j.invitado] = c; });
+    var entraron = l.filter(function (x) { return por[x.id]; }).length;
+    var sueltos = Object.keys(G.jugadores).filter(function (c) { var j = G.jugadores[c]; return !j.bot && !j.invitado; });
+    $('invTitulo').textContent = l.length ? 'Invitados: ' + l.length + ' · ya entraron ' + entraron : 'Todavía no cargaste invitados';
+    var f = normNombre(filtroInv);
+    var vis = l.filter(function (x) { return !f || normNombre(x.nombre).indexOf(f) >= 0; });
+    box.innerHTML = (l.length ? '<div class="inv-grid">' + vis.slice(0, 400).map(function (x) {
+      var c = por[x.id], j = c && G.jugadores[c];
+      return '<div class="inv-row' + (j ? ' ok' : '') + '"><span class="nom">' + esc(x.nombre) + '</span><span class="est">' + (j ? '✅ #' + j.numero : '—') + '</span><button type="button" class="btn-mini danger" data-invdel="' + x.id + '" aria-label="Quitar de la lista">✕</button></div>';
+    }).join('') + '</div>' + (vis.length > 400 ? '<p class="hint">Mostrando 400 de ' + vis.length + '. Usá el buscador.</p>' : '') : '<p class="muted" style="margin:0">Si no cargás lista, cada jugador escribe su nombre a mano.</p>') +
+      (sueltos.length ? '<p class="hint" style="margin-top:12px">Entraron sin estar en la lista: ' + sueltos.map(function (c) { return esc(G.jugadores[c].nombre); }).join(', ') + '</p>' : '');
+    box.querySelectorAll('[data-invdel]').forEach(function (b) {
+      b.onclick = function () { contenido.invitados = invitados().filter(function (x) { return x.id !== b.dataset.invdel; }); guardarContenido(); compartirListas(true); renderInvitadosLista(); };
+    });
+  }
+
+  // ---- Sorteo ----
+  function renderSorteo() {
+    if (tabActiva !== 'sorteo') return;
+    var part = participantesSorteo().map(function (c) { return { c: c, j: G.jugadores[c] }; }).sort(function (a, b) { return a.j.numero - b.j.numero; });
+    var gan = (G.sorteo && G.sorteo.ganadores) || [];
+    var actual = G.sorteo && G.sorteo.actual && G.jugadores[G.sorteo.actual];
+    $('tabSorteo').innerHTML =
+      '<section class="card"><div class="card-head"><h2>Sorteo por número</h2><p>Cada jugador recibe un número al azar cuando entra (lo ve en su celular). Al sortear, el proyector muestra el número girando y después el ganador.</p></div>' +
+      '<div class="sorteo-panel"><div class="sorteo-num">' + (actual ? '<span>Último número</span><b>' + actual.numero + '</b><em>' + esc(actual.nombre) + '</em>' : '<span>Participan</span><b>' + part.length + '</b><em>jugadores con número</em>') + '</div>' +
+      '<div class="row-actions" style="margin:0;justify-content:center"><button type="button" class="btn btn-gold" id="sSortear" style="font-size:18px;padding:14px 26px">🎲 Sortear un número</button>' +
+      (G.fase === 'sorteo' ? '<button type="button" class="btn-mini" id="sVolver">🏠 Volver a la cartelera</button>' : (actual ? '<button type="button" class="btn-mini" id="sMostrar">📺 Mostrar el último ganador</button>' : '')) + '</div></div>' +
+      '<p class="hint" style="text-align:center">No se repiten ganadores y no participan los jugadores de prueba 🤖.</p></section>' +
+      (gan.length ? '<section class="card"><div class="card-head"><h2>Ganadores (' + gan.length + ')</h2>' +
+        (confirmando === 'sorteo' ? '<span class="confirm-inline">¿Borrar los ganadores y empezar de nuevo? <button type="button" class="btn-mini danger" id="sResetOk">Sí</button><button type="button" class="btn-mini" id="sResetNo">No</button></span>' : '<button type="button" class="btn-mini" id="sReset">↺ Reiniciar sorteo</button>') + '</div>' +
+        '<ol class="sorteo-gan">' + gan.map(function (c) { var j = G.jugadores[c]; return j ? '<li><b>#' + j.numero + '</b> ' + esc(j.nombre) + '</li>' : ''; }).join('') + '</ol></section>' : '') +
+      '<section class="card"><div class="card-head"><h2>Números (' + part.length + ')</h2></div>' +
+      (part.length ? '<div class="inv-grid">' + part.map(function (x) { var g = gan.indexOf(x.c) >= 0; return '<div class="inv-row' + (g ? ' ok' : '') + '"><span class="est" style="min-width:3.2em;text-align:left">#' + x.j.numero + '</span><span class="nom">' + esc(x.j.nombre) + '</span>' + (g ? '<span>🏆</span>' : '') + '</div>'; }).join('') + '</div>' : '<p class="muted" style="margin:0">Cuando la gente entre desde el celular, aparece acá con su número.</p>') + '</section>';
+    $('sSortear').onclick = sortear;
+    if ($('sVolver')) $('sVolver').onclick = function () { irA('inicio'); };
+    if ($('sMostrar')) $('sMostrar').onclick = function () { G.sorteo.t = Date.now(); irA('sorteo'); };
+    if ($('sReset')) $('sReset').onclick = function () { confirmando = 'sorteo'; renderSorteo(); };
+    if ($('sResetNo')) $('sResetNo').onclick = function () { confirmando = null; renderSorteo(); };
+    if ($('sResetOk')) $('sResetOk').onclick = function () { confirmando = null; reiniciarSorteo(); };
+  }
+
+  // ---- Música ----
+  var resultadosConsola = [];
+  var ESTADO_PEDIDO = { ok: ['✅', 'En la playlist'], repetido: ['🔁', 'Ya estaba en la playlist'], pendiente: ['⏳', 'Agregando…'], 'sin-spotify': ['📝', 'Sin Spotify: pasalo a mano'], error: ['⚠️', 'No se pudo agregar'], lista: ['📝', 'Anotado'] };
+  function renderMusica() {
+    if (tabActiva !== 'musica') return;
+    var mc = musicaCfg();
+    var conSp = spotify.conectado;
+    var bloqueSp;
+    if (!spotify.configurado) bloqueSp = '<p class="muted" style="margin:0;line-height:1.5">Para conectar Spotify falta configurar el servidor (SPOTIFY_CLIENT_ID y SPOTIFY_CLIENT_SECRET en Render). Mientras tanto, los temas que elijan quedan anotados abajo y los pasás vos a mano.</p>';
+    else if (!conSp) bloqueSp = '<p class="muted" style="margin:0 0 12px">Conectá la cuenta de Spotify del evento (tiene que ser Premium). Los temas que elijan se suman solos a la playlist.</p><button type="button" class="btn btn-green" id="spConectar">🟢 Conectar Spotify</button>';
+    else bloqueSp = '<p style="margin:0 0 12px">✅ Conectado' + (spotify.usuario ? ' como <b>' + esc(spotify.usuario) + '</b>' : '') + ' <button type="button" class="btn-mini" id="spDesc">Desconectar</button></p>' +
+      (spotify.playlist ? '<div class="sp-playlist"><span style="font-size:28px">🎶</span><div style="flex:1"><b>' + esc(spotify.playlist.nombre) + '</b><small>Acá se suman los temas que eligen</small></div>' + (spotify.playlist.url ? '<a class="btn-mini" href="' + esc(spotify.playlist.url) + '" target="_blank" rel="noopener" style="text-decoration:none">Abrir en Spotify</a>' : '') + '<button type="button" class="btn-mini" id="spCambiar">Cambiar</button></div>'
+        : '<div class="sp-elegir"><div><label class="field">Crear una playlist nueva<input type="text" id="spNombre" value="Noche de Genios · Club GEI" maxlength="90"></label><button type="button" class="btn btn-gold" id="spCrear" style="margin-top:8px">＋ Crear playlist</button></div><div><label class="field">…o usar una tuya (pegá el link)<input type="text" id="spLink" placeholder="https://open.spotify.com/playlist/…"></label><button type="button" class="btn-mini" id="spUsar" style="margin-top:8px">Usar esta playlist</button></div></div>');
+    var pedidos = G.pedidos || [];
+    $('tabMusica').innerHTML =
+      '<section class="card"><div class="card-head"><h2>Temas que eligen los jugadores</h2><p>Cada jugador elige desde el celular el tema que quiere escuchar en la noche.</p></div>' +
+      '<div class="modo-musica">' + [['apagado', '🔕', 'Cerrado', 'No se pueden elegir temas'], ['lista', '📋', 'De mi lista', 'Eligen de los temas que cargás vos'], ['spotify', '🔎', 'Buscar en Spotify', conSp ? 'Buscan cualquier tema en Spotify' : 'Necesita Spotify conectado']].map(function (o) {
+        return '<label class="modo-op' + (mc.modo === o[0] ? ' on' : '') + (o[0] === 'spotify' && !conSp ? ' off' : '') + '"><input type="radio" name="mModo" value="' + o[0] + '"' + (mc.modo === o[0] ? ' checked' : '') + (o[0] === 'spotify' && !conSp && mc.modo !== 'spotify' ? ' disabled' : '') + '><span class="i">' + o[1] + '</span><b>' + o[2] + '</b><small>' + o[3] + '</small></label>';
+      }).join('') + '</div>' +
+      '<div class="inline-row" style="margin-top:14px;flex-wrap:wrap;gap:16px"><span><label for="mPor">Temas por jugador:</label> <input type="number" id="mPor" min="1" max="5" value="' + mc.porJugador + '"></span>' +
+      '<label class="check-row" style="margin:0"><input type="checkbox" id="mExp"' + (mc.sinExplicitos ? ' checked' : '') + '> No permitir temas con letra explícita</label></div>' +
+      '</section>' +
+      '<section class="card"><div class="card-head"><h2>Spotify</h2></div>' + bloqueSp + '</section>' +
+      '<section class="card"><div class="card-head"><h2>Mi lista de temas (' + mc.lista.length + ')</h2><p>La usan en el modo "De mi lista".' + (conSp ? ' Buscalos en Spotify para que después se sumen solos a la playlist.' : ' Sin Spotify conectado, escribilos a mano.') + '</p></div>' +
+      (conSp ? '<form id="mBuscarF" class="row-actions" style="margin:0 0 10px"><span class="field" style="flex:1;min-width:200px"><input type="search" id="mBuscar" placeholder="Buscar en Spotify: tema o artista" autocomplete="off"></span><button type="submit" class="btn-mini">🔎 Buscar</button></form><div id="mResultados"></div>' : '') +
+      '<form id="mManualF" class="row-actions" style="margin:0 0 12px"><span class="field" style="flex:1;min-width:200px"><input type="text" id="mManual" maxlength="90" placeholder="' + (conSp ? 'O escribilo a mano: ' : '') + 'Tema – Artista"></span><button type="submit" class="btn-mini">＋ Agregar</button></form>' +
+      (mc.lista.length ? '<div class="item-list">' + mc.lista.map(function (t, i) { return '<div class="item"><span class="num">' + (i + 1) + '</span>' + (t.img ? '<img src="' + esc(t.img) + '" alt="" class="tema-img">' : '') + '<span style="flex:1"><b>' + esc(t.titulo) + '</b>' + (t.artista ? '<small style="display:block;color:var(--ink-soft)">' + esc(t.artista) + '</small>' : '') + '</span>' + (t.uri ? '<span class="badge ok">Spotify</span>' : '') + '<button type="button" class="btn-mini danger" data-mdel="' + t.id + '" aria-label="Quitar">🗑️</button></div>'; }).join('') + '</div>' : '<p class="muted" style="margin:0">Todavía no cargaste temas.</p>') +
+      '</section>' +
+      '<section class="card"><div class="card-head"><h2 id="pedTitulo"></h2><button type="button" class="btn-mini" id="pedReintentar" hidden>↻ Reintentar los que faltan</button></div><div id="pedLista"></div></section>';
+    var T = $('tabMusica');
+    T.querySelectorAll('input[name="mModo"]').forEach(function (r) { r.onchange = function () { mc.modo = r.value; guardarContenido(); publicar(); renderMusica(); }; });
+    $('mPor').onchange = function () { mc.porJugador = Math.max(1, Math.min(5, parseInt(this.value, 10) || 1)); guardarContenido(); publicar(); };
+    $('mExp').onchange = function () { mc.sinExplicitos = this.checked; guardarContenido(); publicar(); };
+    if ($('spConectar')) $('spConectar').onclick = function () {
+      var w = window.open('about:blank', 'ndg-spotify', 'popup=yes,width=520,height=760');
+      socket.emit('spotifyTicket', null, function (r) {
+        if (!r || !r.ok) { if (w) w.close(); toast('No se pudo iniciar la conexión.'); return; }
+        var url = location.origin + r.url; if (w) w.location.href = url; else location.href = url;
+      });
+    };
+    if ($('spDesc')) $('spDesc').onclick = function () { try { localStorage.removeItem('ndg-gei:spotify'); } catch (e) { } delete mc.playlist; guardarContenido(); socket.emit('spotifyDesconectar'); };
+    if ($('spCambiar')) $('spCambiar').onclick = function () { spotify.playlist = null; delete mc.playlist; guardarContenido(); renderMusica(); };
+    var usarPl = function (r) { if (!r || !r.ok) { toast(esc((r && r.msg) || 'No se pudo.'), 6000); return; } mc.playlist = r.playlist; spotify.playlist = r.playlist; guardarContenido(); reintentarPedidos(); renderMusica(); toast('🎶 Playlist lista: ' + esc(r.playlist.nombre)); };
+    if ($('spCrear')) $('spCrear').onclick = function () { this.disabled = true; socket.timeout(20000).emit('spotifyCrearPlaylist', $('spNombre').value, function (err, r) { usarPl(err ? { ok: false, msg: 'Spotify no respondió.' } : r); }); };
+    if ($('spUsar')) $('spUsar').onclick = function () { socket.timeout(20000).emit('spotifyUsarPlaylist', $('spLink').value, function (err, r) { usarPl(err ? { ok: false, msg: 'Spotify no respondió.' } : r); }); };
+    if ($('mBuscarF')) $('mBuscarF').onsubmit = function (ev) {
+      ev.preventDefault();
+      socket.timeout(15000).emit('spotifyBuscar', $('mBuscar').value, function (err, r) {
+        if (err || !r || !r.ok) { toast(esc((r && r.msg) || 'No se pudo buscar.')); return; }
+        resultadosConsola = r.temas;
+        $('mResultados').innerHTML = r.temas.length ? '<div class="item-list" style="margin-bottom:12px">' + r.temas.map(function (t, i) { return '<div class="item">' + (t.img ? '<img src="' + esc(t.img) + '" alt="" class="tema-img">' : '') + '<span style="flex:1"><b>' + esc(t.titulo) + '</b>' + (t.explicit ? ' <span class="badge">E</span>' : '') + '<small style="display:block;color:var(--ink-soft)">' + esc(t.artista) + '</small></span><button type="button" class="btn-mini" data-madd="' + i + '">＋ A mi lista</button></div>'; }).join('') + '</div>' : '<p class="muted">No encontré nada.</p>';
+        $('mResultados').querySelectorAll('[data-madd]').forEach(function (b) {
+          b.onclick = function () {
+            var t = resultadosConsola[Number(b.dataset.madd)];
+            if (mc.lista.some(function (x) { return x.uri === t.uri; })) { toast('Ya está en tu lista.'); return; }
+            mc.lista.push({ id: uid('m'), titulo: limpio(t.titulo), artista: limpio(t.artista), uri: t.uri, img: t.img || '' });
+            guardarContenido(); compartirListas(true); publicar(); b.textContent = '✓ Agregado'; b.disabled = true;
+            var hold = $('mResultados').innerHTML; renderMusica(); $('mResultados').innerHTML = hold;
+            $('mResultados').querySelectorAll('[data-madd]').forEach(function (x) { x.disabled = true; });
+          };
+        });
+      });
+    };
+    $('mManualF').onsubmit = function (ev) {
+      ev.preventDefault();
+      var txt = limpio($('mManual').value); if (txt.length < 2) return;
+      var partes = txt.split(/\s+[–—-]\s+/);
+      mc.lista.push({ id: uid('m'), titulo: partes[0], artista: partes.slice(1).join(' - '), uri: '', img: '' });
+      guardarContenido(); compartirListas(true); publicar(); renderMusica();
+    };
+    T.querySelectorAll('[data-mdel]').forEach(function (b) { b.onclick = function () { mc.lista = mc.lista.filter(function (x) { return x.id !== b.dataset.mdel; }); guardarContenido(); compartirListas(true); publicar(); renderMusica(); }; });
+    $('pedReintentar').onclick = reintentarPedidos;
+    renderPedidos();
+  }
+  function renderPedidos() {
+    var box = $('pedLista'); if (!box || tabActiva !== 'musica') return;
+    var ped = G.pedidos || [];
+    $('pedTitulo').textContent = 'Temas elegidos (' + ped.length + ')';
+    var faltan = ped.some(function (p) { return p.uri && (p.estado === 'sin-spotify' || p.estado === 'error'); });
+    $('pedReintentar').hidden = !(faltan && spotify.conectado && spotify.playlist);
+    box.innerHTML = ped.length ? '<div class="item-list">' + ped.slice().reverse().map(function (p) {
+      var e = ESTADO_PEDIDO[p.estado] || ['', ''];
+      return '<div class="item">' + (p.img ? '<img src="' + esc(p.img) + '" alt="" class="tema-img">' : '<span class="num">🎵</span>') + '<span style="flex:1"><b>' + esc(p.titulo) + '</b>' + (p.artista ? ' · ' + esc(p.artista) : '') + '<small style="display:block;color:var(--ink-soft)">Lo eligió ' + esc(p.nombre) + '</small></span><span class="badge' + (p.estado === 'ok' ? ' ok' : '') + '" title="' + esc(p.error || e[1]) + '">' + e[0] + ' ' + e[1] + '</span><button type="button" class="btn-mini danger" data-pdel="' + p.id + '" aria-label="Quitar">🗑️</button></div>';
+    }).join('') + '</div>' : '<p class="muted" style="margin:0">Cuando los jugadores elijan temas, aparecen acá.</p>';
+    box.querySelectorAll('[data-pdel]').forEach(function (b) { b.onclick = function () { quitarPedido(b.dataset.pdel); }; });
   }
 
   // ---- Tesoro ----
@@ -1744,14 +2317,14 @@
     $('hbTesoro').textContent = '🔎 ¡Búsqueda del tesoro activa! Hay ' + V.qrTotal + ' tarjetas escondidas en el club. Escaneá el QR de cada una con el celu.';
     var f = modo + JSON.stringify(lista); if (f === firmaT) return; firmaT = f;
     var g = $('hbGrid');
-    if (!lista.length) { g.style.gridTemplateRows = ''; g.innerHTML = '<p class="hb-empty">' + (indiv ? 'Todavía no se sumó nadie.' : 'Todavía no hay equipos cargados.') + '<br>Escaneá el QR, elegí tu equipo y escribí tu nombre.</p>'; return; }
+    if (!lista.length) { g.style.gridTemplateRows = ''; g.innerHTML = '<p class="hb-empty">' + (indiv ? 'Todavía no se sumó nadie.' : 'Todavía no hay equipos cargados.') + '<br>Escaneá el QR y entrá con tu nombre.</p>'; return; }
     var cols = lista.length > 30 ? 3 : (lista.length > 12 ? 2 : 1), filas = Math.ceil(lista.length / cols);
     var alto = Math.min(7.5, 62 / filas);
     g.style.gridTemplateRows = 'repeat(' + filas + ', ' + alto + 'vh)';
     g.style.fontSize = Math.max(1.4, Math.min(3.2, alto * 0.45)) + 'vh';
     g.innerHTML = lista.map(function (e, i) {
       var top = i < 3 && e.puntos > 0;
-      return '<div class="hb-row' + (top ? ' top' : '') + '"><span class="n">' + (top ? ['🥇', '🥈', '🥉'][i] : i + 1) + '</span><i class="dot-eq" style="background:' + esc(e.color) + '"></i><span class="nom">' + esc(e.nombre) + (indiv ? '<small> · ' + esc(e.equipo) + '</small>' : '') + '</span><span class="p">' + fmt(e.puntos) + '</span></div>';
+      return '<div class="hb-row' + (top ? ' top' : '') + '"><span class="n">' + (top ? ['🥇', '🥈', '🥉'][i] : i + 1) + '</span><i class="dot-eq" style="background:' + esc(e.color) + '"></i><span class="nom">' + esc(e.nombre) + (indiv && e.equipo ? '<small> · ' + esc(e.equipo) + '</small>' : '') + '</span><span class="p">' + fmt(e.puntos) + '</span></div>';
     }).join('');
   }
 
@@ -1792,13 +2365,13 @@
     $('homeBoard').hidden = true; pararCartelera();
     firmaT = '';
     var r = V.ronda, pr = V.pregunta;
-    $('pRonda').innerHTML = r && V.fase !== 'fin' && V.fase !== 'ranking' ? '<span class="p-pill">' + esc(r.nombre) + ' · ' + r.item + '/' + r.total + '</span>' + (r.doble ? '<span class="p-pill x2">Puntos x2</span>' : '') : '<span class="p-pill">' + V.ranking.length + ' equipos</span>';
+    $('pRonda').innerHTML = r && ['fin', 'ranking', 'equipos', 'sorteo'].indexOf(V.fase) < 0 ? '<span class="p-pill">' + esc(r.nombre) + ' · ' + r.item + '/' + r.total + '</span>' + (r.doble ? '<span class="p-pill x2">Puntos x2</span>' : '') : '<span class="p-pill">' + V.ranking.length + ' equipos</span>';
     $('pTesoro').hidden = !V.qrActivo;
     $('pTesoro').textContent = '🔎 ¡Búsqueda del tesoro activa! Hay ' + V.qrTotal + ' tarjetas escondidas en el club. Escaneen el QR de cada una con el celu.';
     var enPregunta = (V.fase === 'pregunta' || V.fase === 'revelado') && pr;
     var clave = V.fase + '|' + (r ? r.num + '-' + r.item : '');
     if (pResp()) $('pResp').textContent = (V.respondieron || []).length;
-    var firma = enPregunta ? JSON.stringify([V.sesion, clave, pr.texto, pr.img, V.detalle]) : JSON.stringify([V.fase, r, V.ranking, V.jugadores, V.galeria]);
+    var firma = enPregunta ? JSON.stringify([V.sesion, clave, pr.texto, pr.img, V.detalle]) : JSON.stringify([V.fase, r, V.ranking, V.jugadores, V.galeria, V.equiposDet, V.sorteo && [V.sorteo.c, V.sorteo.t]]);
     if (firma === firmaP) return; firmaP = firma;
     var m = $('pMain'), html = '';
     if (enPregunta) {
@@ -1844,14 +2417,28 @@
       html = '<div class="p-felt"><div class="p-q-head"><div style="flex:1"><span class="p-stamp" style="color:var(--gold-bright);font-size:2.6vh">📸 Desafío · ' + fmt(V.desafio.puntos) + ' puntos</span><h2 class="p-desafio">' + esc(V.desafio.texto) + '</h2></div></div>' +
         (V.galeria.length ? '<div class="p-gal">' + V.galeria.slice(-12).reverse().map(function (g) { return '<figure><img data-pfoto="' + g.id + '" alt=""><figcaption>' + esc(g.nombre) + '</figcaption></figure>'; }).join('') + '</div>' : '<p class="p-empty">Saquen la foto desde el celu y mándenla.<br>Las aprobadas aparecen acá.</p>') + '</div>';
     }
+    else if (V.fase === 'equipos' && V.equiposDet) {
+      var ne = V.equiposDet.length, maxM = Math.max.apply(null, [1].concat(V.equiposDet.map(function (e) { return e.miembros.length; })));
+      var colsE = ne <= 4 ? ne : (ne <= 6 ? 3 : (ne <= 8 ? 4 : 5));
+      var tam = Math.max(1.3, Math.min(2.6, 30 / Math.max(maxM, 6) * (colsE > 3 ? 0.8 : 1)));
+      html = '<div class="p-felt"><h2 class="p-title">🎭 ¡Así quedaron los equipos!</h2><div class="p-eqs" style="grid-template-columns:repeat(' + Math.max(1, colsE) + ',1fr);font-size:' + tam + 'vh">' +
+        V.equiposDet.map(function (e, i) {
+          return '<div class="p-eq" style="--c:' + esc(e.color) + ';animation-delay:' + (i * 450) + 'ms"><h3>' + esc(e.nombre) + '</h3><ul>' + (e.miembros.length ? e.miembros.map(function (x) { return '<li>' + esc(x) + '</li>'; }).join('') : '<li class="vacio">Sin jugadores</li>') + '</ul></div>';
+        }).join('') + '</div></div>';
+    }
+    else if (V.fase === 'sorteo' && V.sorteo) {
+      html = '<div class="p-felt" style="text-align:center"><h2 class="p-title">🎟️ Sorteo</h2><div class="sorteo-bola" id="pBola"><span class="ball-label">Número</span><div class="ball-number" id="pSorteoNum">' + V.sorteo.num + '</div></div><p class="sorteo-nombre" id="pSorteoNom"></p>' +
+        (V.sorteo.previos.length ? '<div class="p-chips sorteo-prev"><span class="p-chip">Ya salieron:</span>' + V.sorteo.previos.map(function (x) { return '<span class="p-chip">#' + x.num + ' ' + esc(x.nombre) + '</span>'; }).join('') + '</div>' : '') + '</div>';
+    }
     else if (V.fase === 'fin') {
       var a = V.ranking[0], b = V.ranking[1], c = V.ranking[2], mvp = (V.jugadores || [])[0];
       var col = function (x, n) { return x ? '<div class="esc p' + n + '"><div class="nom" style="animation-delay:' + (4 - n) * 500 + 'ms">' + esc(x.nombre) + '</div><div class="pts">' + fmt(x.puntos) + ' pts</div><div class="base">' + n + '</div></div>' : ''; };
       html = '<div class="p-felt" style="text-align:center"><h2 class="p-title">🏆 Los genios de la noche</h2><div class="podio">' + col(b, 2) + col(a, 1) + col(c, 3) + '</div>' +
-        (mvp && mvp.puntos > 0 ? '<p class="p-mvp">⭐ Mejor jugador: <b>' + esc(mvp.nombre) + '</b> · ' + esc(mvp.equipo) + ' · ' + fmt(mvp.puntos) + ' pts</p>' : '') + '</div>';
+        (mvp && mvp.puntos > 0 ? '<p class="p-mvp">⭐ Mejor jugador: <b>' + esc(mvp.nombre) + '</b>' + (mvp.equipo ? ' · ' + esc(mvp.equipo) : '') + ' · ' + fmt(mvp.puntos) + ' pts</p>' : '') + '</div>';
     }
     m.innerHTML = html;
     m.querySelectorAll('[data-pfoto]').forEach(function (img) { cargarFoto(img.dataset.pfoto, function (src) { img.src = src; }); });
+    if (V.fase === 'sorteo' && V.sorteo) animarSorteo(V.sorteo);
     m.querySelectorAll('.p-img.revelar').forEach(function (img) { setTimeout(function () { img.classList.remove('sombra'); }, 120); });
     // Sonido y video del tema
     if (clave !== medioClave) {
@@ -1866,6 +2453,18 @@
     tickCuentas();
   }
   function pResp() { return $('pResp'); }
+  var tSorteo = null;
+  function animarSorteo(so) {
+    clearInterval(tSorteo);
+    var num = $('pSorteoNum'), nom = $('pSorteoNom'), bola = $('pBola'); if (!num) return;
+    var DUR = 3600, pasado = ahora() - so.t;
+    var final = function () { clearInterval(tSorteo); num.textContent = so.num; bola.classList.add('gano'); nom.innerHTML = '🎉 ' + esc(so.nombre); nom.classList.add('ver'); };
+    if (pasado >= DUR) { final(); return; }
+    tSorteo = setInterval(function () {
+      if (ahora() - so.t >= DUR) { final(); return; }
+      num.textContent = 100 + Math.floor(Math.random() * 900);
+    }, 70);
+  }
 
   // ================= JUGADOR =================
   var cliente = lsGet('cliente'); if (!cliente) { cliente = uid('c'); lsSet('cliente', cliente); }
@@ -1877,7 +2476,7 @@
   }
   function miJugador() {
     var l = (V && V.jugadores) || [];
-    for (var i = 0; i < l.length; i++) if (l[i].c === cliente) return { pos: i + 1, nombre: l[i].nombre, puntos: l[i].puntos, total: l.length };
+    for (var i = 0; i < l.length; i++) if (l[i].c === cliente) return { pos: i + 1, nombre: l[i].nombre, puntos: l[i].puntos, total: l.length, num: l[i].num, tm: l[i].tm || 0 };
     return null;
   }
 
@@ -1889,6 +2488,9 @@
         ok(err ? { ok: false, msg: 'La consola no respondió. Avisale al conductor.' } : (res || { ok: false, msg: 'Error' }));
       });
     });
+  }
+  function pedirPublico(clave) {
+    return new Promise(function (ok) { socket.timeout(8000).emit('pedirPublico', clave, function (err, d) { ok(err ? null : d); }); });
   }
   var tesoroPendiente = new URLSearchParams(location.search).get('tesoro');
   if (tesoroPendiente) { try { history.replaceState(null, '', '/jugar'); } catch (e) { } }
@@ -1906,14 +2508,153 @@
     return '';
   }
 
+  // ---- App instalable ----
+  var promptInstalar = null;
+  var esIOS = /iphone|ipad|ipod/i.test(navigator.userAgent) || (navigator.platform === 'MacIntel' && navigator.maxTouchPoints > 1);
+  var instalada = (window.matchMedia && matchMedia('(display-mode: standalone)').matches) || navigator.standalone === true;
+  window.addEventListener('beforeinstallprompt', function (ev) { ev.preventDefault(); promptInstalar = ev; if (role === 'jugador') pintarInstalar(); });
+  window.addEventListener('appinstalled', function () { instalada = true; promptInstalar = null; pintarInstalar(); toast('📲 ¡Listo! Ya tenés la app en tu pantalla de inicio.'); });
+  function registrarApp() { if ('serviceWorker' in navigator) navigator.serviceWorker.register('/sw.js').catch(function () { }); }
+  function pintarInstalar() {
+    var box = $('jInstalar'); if (!box) return;
+    var mostrar = !instalada && !lsGet('sin-instalar') && (!V || V.instalar !== false) && (promptInstalar || esIOS);
+    box.hidden = !mostrar; if (!mostrar) return;
+    box.innerHTML = '<div class="j-instalar"><span style="font-size:26px">📲</span><div style="flex:1"><b>Instalá la app de la noche</b><small>' + (promptInstalar ? 'Queda en tu pantalla de inicio y se abre directo.' : 'Tocá <b>Compartir</b> <span aria-hidden="true">⬆️</span> y después <b>Agregar a inicio</b>.') + '</small></div>' +
+      (promptInstalar ? '<button type="button" id="btnInstalar">Instalar</button>' : '') + '<button type="button" class="x" id="noInstalar" aria-label="Cerrar">✕</button></div>';
+    if ($('btnInstalar')) $('btnInstalar').onclick = function () { var p = promptInstalar; promptInstalar = null; p.prompt(); p.userChoice.then(function () { pintarInstalar(); }); };
+    $('noInstalar').onclick = function () { lsSet('sin-instalar', 1); pintarInstalar(); };
+  }
+
+  // ---- Entrar con el nombre: buscándose en la lista de invitados o escribiéndolo ----
+  var listaInv = null, invAbierto = true, invPedida = 0, aMano = false;
+  function cargarInvitados(forzar) {
+    if (!forzar && Date.now() - invPedida < 6000) return Promise.resolve(false);
+    invPedida = Date.now();
+    return pedirPublico('invitados').then(function (d) { if (d) { listaInv = d.lista || []; invAbierto = !!d.abierto; } else if (!listaInv) listaInv = []; return true; });
+  }
+  function entrar(datos, btn) {
+    var txt = btn ? btn.textContent : '';
+    if (btn) { btn.disabled = true; btn.textContent = 'Entrando…'; }
+    enviarAccion(Object.assign({ tipo: 'unirse' }, datos)).then(function (r) {
+      if (!r.ok) { toast(esc(r.msg), 5000); if (btn) { btn.disabled = false; btn.textContent = txt; } cargarInvitados(true).then(function () { pintarBusqueda(true); }); }
+      else if (datos.persona) lsSet('persona', datos.persona);
+    });
+  }
+  function pintarLogin(m) {
+    var conLista = listaInv && listaInv.length && !aMano;
+    m.innerHTML = '<div class="j-card"><h2>¡Bienvenidos a la ' + esc(V.titulo) + '!</h2>' +
+      (conLista ? '<p class="muted" style="margin:0 0 12px;line-height:1.5">Buscá tu nombre y tocalo para entrar.</p><input class="j-input" id="inBuscarInv" type="search" autocomplete="off" placeholder="🔎 Escribí tu nombre o apellido" aria-label="Buscar tu nombre"><div id="invResultados" class="j-inv"></div>' +
+          (invAbierto ? '<p class="hint" style="text-align:center;margin:12px 0 0"><button type="button" class="btn-mini" id="noEstoy">No estoy en la lista</button></p>' : '')
+        : '<p class="muted" style="margin:0 0 14px;line-height:1.5">Escribí tu nombre para entrar. El equipo te lo asigna el sistema… ¡y es sorpresa! 🤫</p><form id="fUnion" style="display:flex;flex-direction:column;gap:12px"><input class="j-input" id="inPersona" maxlength="30" autocomplete="name" placeholder="Tu nombre y apellido" value="' + esc(lsGet('persona') || '') + '" aria-label="Tu nombre"><button type="submit" class="btn btn-gold" style="width:100%;font-size:16px">Entrar a jugar</button></form>' +
+          (listaInv && listaInv.length ? '<p class="hint" style="text-align:center;margin:12px 0 0"><button type="button" class="btn-mini" id="volverLista">Buscarme en la lista</button></p>' : '')) + '</div>';
+    if ($('fUnion')) $('fUnion').onsubmit = function (ev) {
+      ev.preventDefault();
+      var persona = $('inPersona').value.trim();
+      if (persona.length < 2) { toast('Escribí tu nombre.'); return; }
+      entrar({ persona: persona }, this.querySelector('button'));
+    };
+    if ($('inBuscarInv')) { $('inBuscarInv').oninput = function () { pintarBusqueda(true); }; pintarBusqueda(true); }
+    if ($('noEstoy')) $('noEstoy').onclick = function () { aMano = true; pintarLogin(m); };
+    if ($('volverLista')) $('volverLista').onclick = function () { aMano = false; pintarLogin(m); };
+  }
+  function pintarBusqueda(forzar) {
+    var box = $('invResultados'), inp = $('inBuscarInv'); if (!box || !inp || !listaInv) return;
+    if ($('siSoy') && forzar !== true) return;
+    var q = normNombre(inp.value);
+    if (q.length < 2) { box.innerHTML = '<p class="hint" style="margin:8px 0 0">Escribí al menos 2 letras.</p>'; return; }
+    var partes = q.split(' ');
+    var res = listaInv.filter(function (x) { var n = normNombre(x[1]); return partes.every(function (p) { return n.indexOf(p) >= 0; }); }).slice(0, 25);
+    box.innerHTML = res.length ? res.map(function (x) {
+      return '<button type="button" class="j-inv-op" data-inv="' + esc(x[0]) + '"' + (x[2] ? ' disabled' : '') + '><span>' + esc(x[1]) + '</span>' + (x[2] ? '<small>ya entró</small>' : '<small>Soy yo →</small>') + '</button>';
+    }).join('') : '<p class="hint" style="margin:8px 0 0">No encontré ese nombre.' + (invAbierto ? ' Si no estás en la lista, tocá "No estoy en la lista".' : ' Probá con tu apellido o avisale al conductor.') + '</p>';
+    box.querySelectorAll('[data-inv]').forEach(function (b) {
+      b.onclick = function () {
+        var nombre = b.querySelector('span').textContent;
+        box.innerHTML = '<div class="j-confirma"><p>¿Sos <b>' + esc(nombre) + '</b>?</p><div style="display:flex;gap:10px"><button type="button" class="btn btn-gold" id="siSoy" style="flex:1">Sí, entrar</button><button type="button" class="btn-mini" id="noSoy">No</button></div></div>';
+        $('siSoy').onclick = function () { entrar({ invitado: b.dataset.inv }, this); };
+        $('noSoy').onclick = function () { pintarBusqueda(true); };
+      };
+    });
+  }
+
+  // ---- Elegir temas para la playlist ----
+  var claveMus = '', temasLista = null, temasBusq = [], tBusq = null;
+  function misTemas() { return lsGet('mis-temas') || []; }
+  function renderMusicaJugador(yo) {
+    var box = $('jMusica'); if (!box) return;
+    var mu = V && V.musica;
+    var ver = !!(yo && mu && mu.modo !== 'apagado' && V.fase !== 'pregunta' && (mu.modo !== 'lista' || mu.n > 0));
+    box.hidden = !ver;
+    if (!ver) { claveMus = ''; return; }
+    var lleno = yo.tm >= mu.porJugador;
+    var k = [V.sesion, mu.modo, mu.porJugador, yo.tm, mu.n].join('|');
+    if (k === claveMus) return; claveMus = k;
+    var mios = misTemas();
+    var hechos = mios.length && yo.tm ? '<p class="j-mios">🎵 ' + mios.slice(-yo.tm).map(function (t) { return '<b>' + esc(t) + '</b>'; }).join(' · ') + '</p>' : '';
+    if (lleno) { box.innerHTML = '<div class="j-musica"><h3>🎶 ¡Tu tema está en la lista!</h3>' + hechos + '<p class="hint" style="margin:4px 0 0">Atento a la música: en cualquier momento suena.</p></div>'; return; }
+    var faltan = mu.porJugador - yo.tm;
+    box.innerHTML = '<div class="j-musica"><h3>🎵 Elegí ' + (mu.porJugador > 1 ? 'tus temas (te ' + (faltan === 1 ? 'queda 1' : 'quedan ' + faltan) + ')' : 'tu tema') + ' para la noche</h3>' + hechos +
+      '<input class="j-input" id="inTema" type="search" autocomplete="off" placeholder="' + (mu.modo === 'spotify' ? '🔎 Buscá un tema o artista en Spotify' : '🔎 Buscá en la lista') + '" aria-label="Buscar tema"><div id="temasRes" class="j-temas"></div></div>';
+    $('inTema').oninput = function () {
+      clearTimeout(tBusq);
+      if (mu.modo === 'spotify') tBusq = setTimeout(buscarSpotify, 550); else pintarTemas();
+    };
+    if (mu.modo === 'lista') { if (!temasLista || !$('inTema').value) pedirPublico('temas').then(function (d) { temasLista = d || []; pintarTemas(); }); else pintarTemas(); }
+    else $('temasRes').innerHTML = '<p class="hint" style="margin:8px 0 0">Escribí el nombre del tema o del artista.</p>';
+  }
+  function filaTema(t, i) {
+    return '<button type="button" class="j-tema" data-ti="' + i + '">' + (t.img ? '<img src="' + esc(t.img) + '" alt="">' : '<span class="ph">🎵</span>') + '<span class="tx"><b>' + esc(t.titulo) + (t.explicit ? ' <i class="exp">E</i>' : '') + '</b><small>' + esc(t.artista || '') + '</small></span></button>';
+  }
+  function pintarTemas() {
+    var box = $('temasRes'); if (!box || !temasLista) return;
+    var q = normNombre($('inTema').value);
+    var l = temasLista.filter(function (t) { return !q || normNombre(t.titulo + ' ' + t.artista).indexOf(q) >= 0; });
+    box.innerHTML = l.length ? l.map(filaTema).join('') : '<p class="hint" style="margin:8px 0 0">No hay temas con ese nombre.</p>';
+    activarTemas(box, l, function (t) { return { id: t.id }; });
+  }
+  function buscarSpotify() {
+    var box = $('temasRes'), q = $('inTema') ? $('inTema').value.trim() : ''; if (!box) return;
+    if (q.length < 2) { box.innerHTML = ''; return; }
+    box.innerHTML = '<p class="hint" style="margin:8px 0 0">Buscando…</p>';
+    socket.timeout(12000).emit('spotifyBuscar', q, function (err, r) {
+      if (!$('inTema') || $('inTema').value.trim() !== q) return;
+      if (err || !r || !r.ok) { box.innerHTML = '<p class="hint" style="margin:8px 0 0">' + esc((r && r.msg) || 'No se pudo buscar. Probá de nuevo.') + '</p>'; return; }
+      var sinExp = V && V.musica && V.musica.sinExplicitos;
+      temasBusq = r.temas.filter(function (t) { return !(sinExp && t.explicit); });
+      box.innerHTML = temasBusq.length ? temasBusq.map(filaTema).join('') : '<p class="hint" style="margin:8px 0 0">No encontré nada' + (r.temas.length ? ' apto (se ocultan los temas con letra explícita)' : '') + '.</p>';
+      activarTemas(box, temasBusq, function (t) { return { uri: t.uri, titulo: t.titulo, artista: t.artista, img: t.img, explicit: t.explicit }; });
+    });
+  }
+  function activarTemas(box, lista, datos) {
+    box.querySelectorAll('[data-ti]').forEach(function (b) {
+      b.onclick = function () {
+        var t = lista[Number(b.dataset.ti)];
+        box.innerHTML = '<div class="j-confirma">' + filaTema(t, 0).replace('<button', '<div').replace('</button>', '</div>') + '<div style="display:flex;gap:10px;margin-top:10px"><button type="button" class="btn btn-gold" id="siTema" style="flex:1">🎵 Elegir este</button><button type="button" class="btn-mini" id="noTema">Otro</button></div></div>';
+        $('noTema').onclick = function () { if (V.musica.modo === 'spotify') buscarSpotify(); else pintarTemas(); };
+        $('siTema').onclick = function () {
+          var btn = this; btn.disabled = true; btn.textContent = 'Enviando…';
+          enviarAccion({ tipo: 'tema', tema: datos(t) }).then(function (r) {
+            if (!r.ok) { toast(esc(r.msg), 5000); btn.disabled = false; btn.textContent = '🎵 Elegir este'; return; }
+            var mios = misTemas(); mios.push(t.titulo + (t.artista ? ' – ' + t.artista : '')); lsSet('mis-temas', mios.slice(-5));
+            toast('🎶 ¡Listo! Sumamos "' + esc(t.titulo) + '" a la música de la noche.', 5000);
+          });
+        };
+      };
+    });
+  }
+
   socket.on('disconnect', function () { if (role === 'jugador') toast('Se cortó la conexión. Reconectando…', 2500); });
   function renderJugador() {
     var eq = miEquipo(), yo = miJugador();
     var ti = $('jTeam'), te = $('jTesoro');
     document.body.classList.toggle('con-color', !!eq);
     if (eq) document.body.style.setProperty('--team', eq.color || '#0F5680');
-    ti.hidden = !eq;
-    if (eq) ti.innerHTML = '<div class="j-team"><div><b>' + esc(eq.nombre) + '</b><small>' + (yo ? esc(yo.nombre) + ' · ' : '') + 'Equipo #' + eq.pos + ' de ' + V.ranking.length + (yo ? ' · Vos #' + yo.pos : '') + '</small></div><div style="text-align:right"><div class="pts">' + fmt(eq.puntos) + '</div><small>' + (yo ? 'vos: ' + fmt(yo.puntos) : '') + '</small></div></div>';
+    pintarInstalar();
+    ti.hidden = !yo;
+    if (yo) ti.innerHTML = eq
+      ? '<div class="j-team"><div><b>' + esc(eq.nombre) + '</b><small>' + esc(yo.nombre) + ' · Equipo #' + eq.pos + ' de ' + V.ranking.length + ' · Vos #' + yo.pos + '</small></div><div style="text-align:right"><div class="pts">' + fmt(eq.puntos) + '</div><small>vos: ' + fmt(yo.puntos) + '</small></div></div>'
+      : '<div class="j-team"><div><b>' + esc(yo.nombre) + '</b><small>Equipo secreto 🤫 · Vos #' + yo.pos + ' · ' + fmt(yo.puntos) + ' pts</small></div></div>';
+    if (yo && yo.num) ti.firstChild.insertAdjacentHTML('beforeend', '<div class="j-num" title="Tu número para el sorteo"><small>Sorteo</small><b>' + yo.num + '</b></div>');
     var conTesoro = !!(V && V.qrActivo && eq);
     te.hidden = !conTesoro;
     if (conTesoro && !te.dataset.listo) {
@@ -1926,6 +2667,7 @@
     }
     if (!conTesoro) delete te.dataset.listo;
     if (conTesoro && $('jQrCuenta')) $('jQrCuenta').textContent = '(' + ((V.qrEquipo || {})[eq.id] || 0) + ' de ' + V.qrTotal + ')';
+    renderMusicaJugador(yo);
 
     var m = $('jMain');
     if (!V) {
@@ -1933,42 +2675,44 @@
       m.innerHTML = '<div class="j-card center"><div class="j-big">⏳</div><h2>Conectando con el juego…</h2><p class="muted">Si tarda mucho, avisale al conductor que abra la consola.</p></div>';
       return;
     }
-    var yaResp = !!(eq && V.respondieron && V.respondieron.indexOf(cliente) >= 0);
+    if (!yo) {
+      var kl = 'login|' + V.sesion + '|' + (listaInv ? listaInv.length : '?') + '|' + aMano;
+      if (claveJ !== kl) { claveJ = kl; pintarLogin(m); }
+      cargarInvitados().then(function (nueva) {
+        if (!nueva || claveJ.indexOf('login|') !== 0) return;
+        var k2 = 'login|' + V.sesion + '|' + (listaInv ? listaInv.length : '?') + '|' + aMano;
+        if (k2 !== claveJ && !($('inBuscarInv') && $('inBuscarInv').value) && !($('inPersona') && document.activeElement === $('inPersona'))) { claveJ = k2; pintarLogin(m); } else pintarBusqueda();
+      });
+      return;
+    }
+    var yaResp = !!(V.respondieron && V.respondieron.indexOf(cliente) >= 0);
     var foto = eq && V.fotosEstado ? (V.fotosEstado[eq.id] || '') : '';
-    var equiposLista = V.ranking.map(function (e) { return e.id + ':' + e.nombre; }).sort().join('|');
-    var k = [V.sesion, eq ? eq.id : 'x:' + equiposLista, V.fase, V.ronda && V.ronda.num, V.ronda && V.ronda.item, yaResp, foto].join('|');
+    var gane = V.sorteo && V.sorteo.c === cliente;
+    var k = [V.sesion, eq ? eq.id : 'x', V.fase, V.ronda && V.ronda.num, V.ronda && V.ronda.item, yaResp, foto, V.sorteo && V.sorteo.n, V.fase === 'equipos' ? JSON.stringify(V.equiposDet) : ''].join('|');
     if (eq && tesoroPendiente) { var tp = tesoroPendiente; tesoroPendiente = null; cargarTesoro(tp); }
     if (k === claveJ) return; claveJ = k;
 
-    if (!eq) {
-      var elegido = $('selEquipo') ? $('selEquipo').value : '';
-      var escrito = $('inPersona') ? $('inPersona').value : (lsGet('persona') || '');
-      var opciones = V.ranking.slice().sort(function (a, b) { return a.nombre.localeCompare(b.nombre, 'es'); });
-      if (!opciones.length) {
-        m.innerHTML = '<div class="j-card center"><div class="j-big">⏳</div><h2>¡Bienvenidos a la ' + esc(V.titulo) + '!</h2><p class="muted" style="line-height:1.5">El conductor todavía está cargando los equipos. En un ratito aparecen acá para que elijas el tuyo.</p></div>';
-        return;
-      }
-      m.innerHTML = '<div class="j-card"><h2>¡Bienvenidos a la ' + esc(V.titulo) + '!</h2><p class="muted" style="margin:0 0 14px;line-height:1.5">Elegí tu equipo y escribí tu nombre.</p>' +
-        '<form id="fUnion" style="display:flex;flex-direction:column;gap:12px">' +
-          '<label class="field" style="font-size:13px">Tu equipo<select class="j-input" id="selEquipo" required><option value="">Elegí tu equipo…</option>' +
-            opciones.map(function (e) { return '<option value="' + esc(e.id) + '"' + (e.id === elegido ? ' selected' : '') + '>' + esc(e.nombre) + '</option>'; }).join('') + '</select></label>' +
-          '<label class="field" style="font-size:13px">Tu nombre<input class="j-input" id="inPersona" maxlength="30" autocomplete="given-name" placeholder="Ej.: Sofía" value="' + esc(escrito) + '"></label>' +
-          '<button type="submit" class="btn btn-gold" style="width:100%;font-size:16px">Entrar a jugar</button></form></div>';
-      $('fUnion').onsubmit = function (ev) {
-        ev.preventDefault();
-        var eqId = $('selEquipo').value, persona = $('inPersona').value.trim();
-        if (!eqId) { toast('Elegí tu equipo de la lista.'); return; }
-        if (persona.length < 2) { toast('Escribí tu nombre.'); return; }
-        lsSet('persona', persona);
-        var btn = this.querySelector('button'); btn.disabled = true; btn.textContent = 'Entrando…';
-        enviarAccion({ tipo: 'unirse', equipoId: eqId, persona: persona }).then(function (r) { if (!r.ok) { toast(esc(r.msg)); btn.disabled = false; btn.textContent = 'Entrar a jugar'; } });
-      };
-      return;
-    }
     var r = V.ronda, pr = V.pregunta;
     if (V.fase === 'inicio') {
-      m.innerHTML = '<div class="j-card center"><div class="j-big">⏳</div><h2>¡Ya estás adentro!</h2><p class="muted" style="line-height:1.5">Esperá que arranque la próxima ronda. Dejá el celu a mano y con la pantalla prendida: se actualiza solo.</p><p class="hint"><button type="button" class="btn-mini" id="salir">Me equivoqué de equipo</button></p></div>';
-      $('salir').onclick = function () { enviarAccion({ tipo: 'salir' }); toast('Saliste del equipo'); };
+      m.innerHTML = '<div class="j-card center"><div class="j-big">' + (eq ? '⏳' : '🤫') + '</div><h2>¡Ya estás adentro, ' + esc(yo.nombre.split(' ')[0]) + '!</h2>' +
+        (eq ? '' : '<p style="margin:0 0 8px;font-weight:700">Tu equipo es secreto: lo vas a saber cuando el conductor lo devele.</p>') +
+        '<p class="muted" style="line-height:1.5">Esperá que arranque la próxima ronda. Dejá el celu a mano y con la pantalla prendida: se actualiza solo.</p>' +
+        (yo.num ? '<p class="hint">🎟️ Tu número para el sorteo es el <b>' + yo.num + '</b>.</p>' : '') + '</div>';
+    }
+    else if (V.fase === 'equipos') {
+      var mio = eq && (V.equiposDet || []).filter(function (e) { return e.nombre === eq.nombre; })[0];
+      m.innerHTML = eq ? '<div class="j-card center j-revela"><p class="muted" style="margin:0">🎭 Tu equipo es…</p><h2 class="j-eq-nombre">' + esc(eq.nombre) + '</h2>' +
+        (mio && mio.miembros.length > 1 ? '<p class="muted" style="margin:8px 0 4px">Jugás con</p><p style="margin:0;font-weight:700;line-height:1.5">' + mio.miembros.filter(function (x) { return x !== yo.nombre; }).map(esc).join(' · ') + '</p>' : '') +
+        '<p class="hint">¡Búsquense y júntense en la misma mesa!</p></div>'
+        : '<div class="j-card center"><div class="j-big">👀</div><h2>Miren la pantalla grande</h2><p class="muted">Todavía no tenés equipo: avisale al conductor.</p></div>';
+    }
+    else if (V.fase === 'sorteo' && V.sorteo) {
+      var listo = ahora() - V.sorteo.t > 3800;
+      m.innerHTML = gane
+        ? '<div class="j-card center j-gane"><div class="j-big">🎉</div><h2>¡Ganaste el sorteo!</h2><div class="ball-number" style="font-size:64px;color:var(--gold)">' + yo.num + '</div><p style="font-weight:700">Acercate al escenario a buscar tu premio.</p></div>'
+        : '<div class="j-card center"><div class="j-big">🎟️</div><h2>¡Sorteo!</h2><p class="muted">Tu número es el</p><div class="ball-number" style="font-size:54px;color:var(--panel-felt)">' + (yo.num || '—') + '</div><p class="muted">Mirá la pantalla grande' + (listo ? '. Esta vez salió el <b>' + V.sorteo.num + '</b>.' : '…') + '</p></div>';
+      if (gane && !listo) { m.innerHTML = '<div class="j-card center"><div class="j-big">🎟️</div><h2>¡Sorteo!</h2><p class="muted">Tu número es el</p><div class="ball-number" style="font-size:54px;color:var(--panel-felt)">' + yo.num + '</div><p class="muted">Mirá la pantalla grande…</p></div>'; setTimeout(function () { claveJ = ''; renderJugador(); }, 3900 - (ahora() - V.sorteo.t)); }
+      if (gane && listo && navigator.vibrate) { try { navigator.vibrate([200, 100, 200, 100, 400]); } catch (e) { } }
     }
     else if (V.fase === 'pregunta' && pr) {
       var titulo = pr.tipo === 'emoji' ? '¿Qué refrán es?' : pr.texto;
@@ -1983,13 +2727,16 @@
       }
     }
     else if (V.fase === 'revelado' && pr) {
-      var mios = (V.ultimosJ || {})[cliente] || 0, delEquipo = (V.ultimos || {})[eq.id] || 0;
+      var mios = (V.ultimosJ || {})[cliente] || 0, delEquipo = eq ? (V.ultimos || {})[eq.id] || 0 : 0;
       var correcta = pr.tipo === 'estimacion' ? fmt(pr.respuesta) + ' ' + esc(pr.unidad) : LETRAS[pr.correcta] + ' · ' + esc(pr.opciones[pr.correcta]);
       var cabeza = mios ? '<span class="j-result ok">¡Bien ahí!</span><h2 style="margin-top:8px">+' + fmt(mios) + ' para vos</h2>'
         : (yaResp ? '<span class="j-result no">' + (pr.tipo === 'estimacion' ? 'Lejos…' : 'No era') + '</span>' : '<span class="j-result no">Sin respuesta</span>');
       m.innerHTML = (pr.tipo === 'imagen' ? mediaJugador(pr, true) : '') + '<div class="j-card center">' + cabeza +
-        '<p style="margin:10px 0 0;font-weight:700">' + (delEquipo ? 'Tu equipo sumó +' + fmt(delEquipo) : 'Tu equipo no sumó en esta') + '</p>' +
+        (eq ? '<p style="margin:10px 0 0;font-weight:700">' + (delEquipo ? 'Tu equipo sumó +' + fmt(delEquipo) : 'Tu equipo no sumó en esta') + '</p>' : '<p class="muted" style="margin:10px 0 0">🤫 Lo que sumó tu equipo secreto lo vas a saber cuando se develen los equipos.</p>') +
         '<p class="muted" style="margin:14px 0 4px">Respuesta correcta</p><h2>' + correcta + '</h2>' + (pr.dato ? '<p class="hint">💡 ' + esc(pr.dato) + '</p>' : '') + '</div>';
+    }
+    else if (V.fase === 'desafio' && V.desafio && !eq) {
+      m.innerHTML = '<div class="j-card"><p class="hint" style="margin:0 0 6px">📸 Desafío · ' + fmt(V.desafio.puntos) + ' puntos</p><h2>' + esc(V.desafio.texto) + '</h2><p class="muted" style="margin:10px 0 0">Los desafíos son por equipo: vas a poder mandar la foto cuando se develen los equipos.</p></div>';
     }
     else if (V.fase === 'desafio' && V.desafio) {
       var txt = { pendiente: '⏳ Foto enviada. El conductor la está revisando.', ok: '✅ ¡Foto aprobada! Ya sumaron los puntos.', no: '❌ No fue aprobada. Prueben con otra.' };
@@ -2015,10 +2762,11 @@
     }
     else if (V.fase === 'ranking' || V.fase === 'fin') {
       var fin = V.fase === 'fin';
-      m.innerHTML = '<div class="j-card center"><div class="j-big">' + (eq.pos <= 3 ? ['🥇', '🥈', '🥉'][eq.pos - 1] : (fin ? '👏' : '📊')) + '</div><p class="muted" style="margin:0">' + (fin ? '¡Terminó la Noche de Genios!' : 'Así van') + '</p>' +
-        '<div style="display:grid;grid-template-columns:1fr 1fr;gap:12px;margin:12px 0">' +
-          '<div><p class="muted" style="margin:0;font-size:12px">Tu equipo</p><div class="ball-number" style="color:var(--panel-felt);font-size:42px">#' + eq.pos + '</div><b>' + fmt(eq.puntos) + ' pts</b></div>' +
-          '<div><p class="muted" style="margin:0;font-size:12px">Vos</p><div class="ball-number" style="color:var(--panel-felt);font-size:42px">#' + (yo ? yo.pos : '-') + '</div><b>' + fmt(yo ? yo.puntos : 0) + ' pts</b></div>' +
+      var podio = eq ? eq.pos : yo.pos;
+      m.innerHTML = '<div class="j-card center"><div class="j-big">' + (podio <= 3 ? ['🥇', '🥈', '🥉'][podio - 1] : (fin ? '👏' : '📊')) + '</div><p class="muted" style="margin:0">' + (fin ? '¡Terminó la Noche de Genios!' : 'Así van') + '</p>' +
+        '<div style="display:grid;grid-template-columns:' + (eq ? '1fr 1fr' : '1fr') + ';gap:12px;margin:12px 0">' +
+          (eq ? '<div><p class="muted" style="margin:0;font-size:12px">Tu equipo</p><div class="ball-number" style="color:var(--panel-felt);font-size:42px">#' + eq.pos + '</div><b>' + fmt(eq.puntos) + ' pts</b></div>' : '') +
+          '<div><p class="muted" style="margin:0;font-size:12px">Vos</p><div class="ball-number" style="color:var(--panel-felt);font-size:42px">#' + yo.pos + '</div><b>' + fmt(yo.puntos) + ' pts</b></div>' +
         '</div><p class="muted" style="margin:0">' + (fin ? '¡Gracias por jugar!' : 'Miren la pantalla para ver las tablas completas.') + '</p></div>';
     }
     else m.innerHTML = '<div class="j-card center"><div class="j-big">👀</div><h2>Miren la pantalla grande</h2></div>';

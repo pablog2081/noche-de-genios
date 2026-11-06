@@ -1,0 +1,17 @@
+{
+  "name": "Noche de Genios · Club GEI",
+  "short_name": "Noche de Genios",
+  "description": "Jugá la Noche de Genios del Club GEI desde tu celular.",
+  "start_url": "/jugar",
+  "scope": "/",
+  "display": "standalone",
+  "orientation": "portrait",
+  "background_color": "#0F5680",
+  "theme_color": "#0F5680",
+  "lang": "es",
+  "icons": [
+    { "src": "/icono-192.png", "sizes": "192x192", "type": "image/png", "purpose": "any" },
+    { "src": "/icono-512.png", "sizes": "512x512", "type": "image/png", "purpose": "any" },
+    { "src": "/icono-512.png", "sizes": "512x512", "type": "image/png", "purpose": "maskable" }
+  ]
+}

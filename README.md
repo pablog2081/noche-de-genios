@@ -43,12 +43,15 @@ Así cada uno juega con sus propios datos móviles y no dependés del wifi del c
 
 ## Cómo se juega
 
-1. **Equipos:** antes de empezar, cargá los equipos en la pestaña **👥 Equipos**. Cada uno recibe un color, que se puede cambiar, y ese color es el fondo del celular de sus jugadores.
-2. **Inicio:** abrí el proyector desde la consola. Cada persona escanea el QR, elige su equipo de la lista y escribe su nombre. En Inicio el proyector rota entre la tabla por equipos, la tabla individual, el buffet y los precios. Tocar la pestaña **🏠 Inicio** vuelve el proyector a esa cartelera.
-3. **Juego en vivo:** elegí la ronda y tocá **▶ Lanzar**. Arriba de la lista podés cambiar los **segundos para responder** y los **puntos a repartir** de la ronda. Responde **cada jugador** desde su celular.
-4. **Desafíos de foto:** los equipos sacan la foto desde el celu y te llega a la consola para aprobarla.
-5. **Tesoro:** escondé las tarjetas por el club (pestaña **Tesoro** → **🖨️ Abrir para imprimir**). Al escanear una tarjeta, el código se carga solo.
-6. **🏆 Podio** para cerrar la noche, con el mejor jugador.
+1. **📋 Invitados:** cargá la lista escribiendo los nombres o subiendo un **Excel (.xlsx) o CSV**, con los nombres en la primera columna. Si hay columnas "Nombre" y "Apellido", se juntan solas. En el celular, cada invitado busca su nombre y lo toca. Podés dejar entrar también a quien no está en la lista.
+2. **👥 Equipos:** cargá los equipos. Cada jugador que entra queda en el equipo con menos gente, **sin saber cuál es**. Cuando quieras, tocá **🎭 Develar los equipos**: aparecen en el proyector y cada celular se pinta con el color de su equipo. Podés mover jugadores a mano o **🔀 repartir de nuevo**.
+3. **Inicio:** abrí el proyector desde la consola. Cada persona escanea el QR y entra con su nombre. Desde el celular puede **📲 instalar la app** en su pantalla de inicio (en iPhone: Compartir → Agregar a inicio). En Inicio el proyector rota entre las tablas, el buffet y los precios.
+4. **Juego en vivo:** elegí la ronda y tocá **▶ Lanzar**. Arriba de la lista podés cambiar los **segundos para responder** y los **puntos a repartir** de la ronda. Responde **cada jugador** desde su celular.
+5. **Desafíos de foto:** los equipos sacan la foto desde el celu y te llega a la consola para aprobarla.
+6. **Tesoro:** escondé las tarjetas por el club (pestaña **Tesoro** → **🖨️ Abrir para imprimir**). Al escanear una tarjeta, el código se carga solo.
+7. **🎟️ Sorteo:** cada jugador recibe un número al azar cuando entra. **🎲 Sortear** hace girar el número en el proyector y el celular del ganador festeja. No se repiten ganadores.
+8. **🎵 Música:** cada jugador elige su tema desde el celular, de **tu lista** o **buscando en Spotify**. Con Spotify conectado, los temas se suman solos a la playlist del evento. Sin Spotify, quedan anotados en la consola.
+9. **🏆 Podio** para cerrar la noche, con el mejor jugador.
 
 ### Puntuación
 
@@ -72,6 +75,17 @@ Cada pregunta tiene puntos para repartir, 1000 por defecto y el doble en la rond
 Las imágenes que subís quedan guardadas en la compu de la consola y se vuelven a mandar al servidor solas si hace falta. Por eso conviene usar **siempre la misma compu y el mismo navegador** para la consola.
 
 Para ensayar sin celulares: pestaña **Equipos** → **🤖 Agregar 5 equipos de prueba**. Cada equipo tiene 3 jugadores simulados que responden solos.
+
+## Conectar Spotify (opcional)
+
+Hace falta una cuenta **Premium**: la del organizador, que es la dueña de la playlist.
+
+1. Entrá a [developer.spotify.com/dashboard](https://developer.spotify.com/dashboard) con esa cuenta y creá una app ("Create app").
+2. En **Redirect URIs** poné la dirección de Render seguida de `/spotify/callback`, por ejemplo `https://noche-de-genios.onrender.com/spotify/callback`. En "APIs used" marcá **Web API**.
+3. Copiá el **Client ID** y el **Client secret**. En Render: **Environment** → agregá `SPOTIFY_CLIENT_ID` y `SPOTIFY_CLIENT_SECRET`.
+4. En la consola, pestaña **🎵 Música** → **🟢 Conectar Spotify** → aceptá los permisos → **Crear playlist** o pegá el link de una tuya.
+
+La consola recuerda la conexión. Si Render se reinicia, al abrir la consola se vuelve a conectar sola.
 
 ## Editar las preguntas
 

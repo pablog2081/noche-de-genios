@@ -22,6 +22,8 @@ const qrcode = require('qrcode-generator');
 const PORT = process.env.PORT || 3000;
 const PIN = process.env.PIN || 'genio2026';
 const BASE_URL = (process.env.BASE_URL || process.env.RENDER_EXTERNAL_URL || '').replace(/\/$/, '');
+const SPOTIFY_ID = process.env.SPOTIFY_CLIENT_ID || '';
+const SPOTIFY_SECRET = process.env.SPOTIFY_CLIENT_SECRET || '';
 const DIR_DATOS = path.join(__dirname, 'datos');
 const DIR_FOTOS = path.join(DIR_DATOS, 'fotos');
 const DIR_IMAGENES = path.join(DIR_DATOS, 'imagenes');
@@ -71,11 +73,79 @@ const io = new Server(server, { maxHttpBufferSize: 6e6 });
 const pagina = (req, res) => res.sendFile(path.join(__dirname, 'public', 'index.html'));
 
 app.get(['/', '/pantalla', '/jugar'], pagina);
+app.get('/sw.js', (req, res) => { res.set('Cache-Control', 'no-cache'); res.sendFile(path.join(__dirname, 'public', 'sw.js')); });
 app.get('/vendor/qrcode.js', (req, res) => res.sendFile(require.resolve('qrcode-generator')));
 app.get('/api/info', (req, res) => res.json({ base: baseUrl(req) }));
 app.use('/fotos', express.static(DIR_FOTOS, { maxAge: '1d' }));
 app.use('/imagenes', express.static(DIR_IMAGENES, { maxAge: '7d' }));
 app.use(express.static(path.join(__dirname, 'public')));
+
+// ---------- Spotify: la cuenta del organizador, para sumar a la playlist los temas que eligen los jugadores ----------
+const sp = { refresh: '', access: '', vence: 0, usuario: '', playlist: null };
+const tickets = new Map();   // ticket de un solo uso que la consola pide para conectar Spotify
+const estados = new Map();   // "state" del login de Spotify → base para volver
+function spEstado() {
+  return { configurado: !!(SPOTIFY_ID && SPOTIFY_SECRET), conectado: !!sp.refresh, usuario: sp.usuario, playlist: sp.playlist };
+}
+function avisarConsola() { io.to('consola').emit('spotifyEstado', spEstado()); }
+async function spToken(form) {
+  const r = await fetch('https://accounts.spotify.com/api/token', {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/x-www-form-urlencoded', Authorization: 'Basic ' + Buffer.from(SPOTIFY_ID + ':' + SPOTIFY_SECRET).toString('base64') },
+    body: new URLSearchParams(form)
+  });
+  const d = await r.json().catch(() => ({}));
+  if (!r.ok || !d.access_token) throw new Error(d.error_description || d.error || ('HTTP ' + r.status));
+  sp.access = d.access_token; sp.vence = Date.now() + (d.expires_in || 3600) * 1000 - 60000;
+  if (d.refresh_token && d.refresh_token !== sp.refresh) { sp.refresh = d.refresh_token; io.to('consola').emit('spotifyRefresh', sp.refresh); }
+}
+async function spAcceso() {
+  if (!sp.refresh) throw new Error('Spotify no está conectado.');
+  if (!sp.access || Date.now() > sp.vence) await spToken({ grant_type: 'refresh_token', refresh_token: sp.refresh });
+  return sp.access;
+}
+async function spApi(metodo, ruta, cuerpo) {
+  const pedir = async () => fetch('https://api.spotify.com/v1' + ruta, {
+    method: metodo,
+    headers: Object.assign({ Authorization: 'Bearer ' + await spAcceso() }, cuerpo ? { 'Content-Type': 'application/json' } : {}),
+    body: cuerpo ? JSON.stringify(cuerpo) : undefined
+  });
+  let r = await pedir();
+  if (r.status === 401) { sp.access = ''; r = await pedir(); }
+  const d = r.status === 204 ? {} : await r.json().catch(() => ({}));
+  if (!r.ok) { const e = new Error((d.error && d.error.message) || ('HTTP ' + r.status)); e.status = r.status; throw e; }
+  return d;
+}
+async function spUsuario() { try { const me = await spApi('GET', '/me'); sp.usuario = me.display_name || me.id || ''; } catch (e) { } }
+
+app.get('/spotify/conectar', (req, res) => {
+  const t = String(req.query.t || '');
+  if (!tickets.has(t)) return res.status(403).send('El enlace venció. Volvé a la consola y tocá "Conectar Spotify" de nuevo.');
+  tickets.delete(t);
+  if (!SPOTIFY_ID || !SPOTIFY_SECRET) return res.send('Falta configurar SPOTIFY_CLIENT_ID y SPOTIFY_CLIENT_SECRET en el servidor.');
+  const state = crypto.randomBytes(12).toString('hex');
+  const base = baseUrl(req);
+  estados.set(state, base); setTimeout(() => estados.delete(state), 10 * 60000);
+  res.redirect('https://accounts.spotify.com/authorize?' + new URLSearchParams({
+    response_type: 'code', client_id: SPOTIFY_ID, state,
+    scope: 'playlist-modify-public playlist-modify-private', redirect_uri: base + '/spotify/callback'
+  }));
+});
+app.get('/spotify/callback', async (req, res) => {
+  const base = estados.get(String(req.query.state || ''));
+  const fin = (titulo, txt) => res.send(`<!doctype html><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>Spotify</title>
+    <body style="font-family:system-ui;display:grid;place-items:center;min-height:90vh;text-align:center"><div><h2>${esc(titulo)}</h2><p>${esc(txt)}</p></div></body>`);
+  if (!base) return fin('No se pudo conectar', 'El pedido venció. Volvé a la consola y probá de nuevo.');
+  estados.delete(String(req.query.state));
+  if (req.query.error || !req.query.code) return fin('No se conectó Spotify', 'Se canceló el permiso. Podés cerrar esta ventana.');
+  try {
+    sp.refresh = '';
+    await spToken({ grant_type: 'authorization_code', code: String(req.query.code), redirect_uri: base + '/spotify/callback' });
+    await spUsuario();
+    avisarConsola();
+    fin('✅ Spotify conectado', 'Ya podés cerrar esta ventana y volver a la consola.');
+  } catch (e) { fin('No se pudo conectar', String(e.message || e)); }
+});
 
 app.get('/tarjetas', (req, res) => {
   if (req.query.pin !== PIN) {
@@ -114,6 +184,8 @@ app.get('/tarjetas', (req, res) => {
 // ---------- Tiempo real ----------
 const pendientes = new Map(); // id de acción → callback del celular
 let proximoId = 1;
+const publicos = {};          // listas que la consola comparte a pedido (invitados, temas)
+const ID_TEMA = /^spotify:track:[A-Za-z0-9]{22}$/;
 
 function consolaActiva() {
   const sala = io.sockets.adapter.rooms.get('consola');
@@ -133,7 +205,7 @@ io.on('connection', socket => {
     if (String(pin) !== PIN) return cb({ ok: false });
     socket.data.admin = true;
     socket.join('consola');
-    cb({ ok: true, contenido, respaldo });
+    cb({ ok: true, contenido, respaldo, spotify: spEstado() });
   });
 
   // Consola → todos
@@ -177,6 +249,78 @@ io.on('connection', socket => {
   socket.on('faltan', (lista, cb) => {
     if (!socket.data.admin || typeof cb !== 'function' || !Array.isArray(lista)) return;
     cb(lista.filter(ruta => { const r = RUTA_IMG.exec(ruta || ''); return r && !fs.existsSync(path.join(DIR_IMAGENES, r[1] + '.' + r[2].toLowerCase())); }));
+  });
+
+  // Listas que los celulares piden cuando las necesitan (para no mandarlas en cada actualización)
+  socket.on('publico', m => { if (socket.data.admin && m && /^[a-z]{3,20}$/.test(m.clave || '')) publicos[m.clave] = m.datos; });
+  socket.on('pedirPublico', (clave, cb) => { if (typeof cb === 'function') cb(publicos[String(clave)] || null); });
+
+  // ---- Spotify ----
+  const soloAdmin = (cb) => typeof cb === 'function' ? (socket.data.admin ? cb : null) : (socket.data.admin ? () => {} : null);
+  socket.on('spotifyEstado', (_, cb) => { if (typeof cb === 'function') cb(socket.data.admin ? spEstado() : { conectado: !!sp.refresh }); });
+  socket.on('spotifyTicket', (_, cb) => {
+    const fin = soloAdmin(cb); if (!fin) return;
+    const t = crypto.randomBytes(12).toString('hex'); tickets.set(t, 1); setTimeout(() => tickets.delete(t), 5 * 60000);
+    fin({ ok: true, url: '/spotify/conectar?t=' + t });
+  });
+  socket.on('spotifyToken', async rt => {
+    if (!socket.data.admin || typeof rt !== 'string' || sp.refresh || !SPOTIFY_ID) return;
+    sp.refresh = rt;
+    try { await spAcceso(); await spUsuario(); } catch (e) { if (sp.refresh === rt) sp.refresh = ''; }
+    avisarConsola();
+  });
+  socket.on('spotifyDesconectar', () => { if (!socket.data.admin) return; Object.assign(sp, { refresh: '', access: '', vence: 0, usuario: '', playlist: null }); avisarConsola(); });
+  socket.on('spotifyRecordarPlaylist', pl => { if (socket.data.admin && pl && pl.id && !sp.playlist) { sp.playlist = { id: String(pl.id), nombre: String(pl.nombre || ''), url: String(pl.url || '') }; avisarConsola(); } });
+  socket.on('spotifyCrearPlaylist', async (nombre, cb) => {
+    const fin = soloAdmin(cb); if (!fin) return;
+    try {
+      const d = await spApi('POST', '/me/playlists', { name: String(nombre || 'Noche de Genios').slice(0, 90), public: true, description: 'Los temas que eligieron los jugadores de la Noche de Genios · Club GEI' });
+      sp.playlist = { id: d.id, nombre: d.name, url: (d.external_urls && d.external_urls.spotify) || '' };
+      avisarConsola(); fin({ ok: true, playlist: sp.playlist });
+    } catch (e) { fin({ ok: false, msg: e.message }); }
+  });
+  socket.on('spotifyUsarPlaylist', async (link, cb) => {
+    const fin = soloAdmin(cb); if (!fin) return;
+    const m = /playlist[/:]([A-Za-z0-9]{22})/.exec(String(link || '')) || /^([A-Za-z0-9]{22})$/.exec(String(link || '').trim());
+    if (!m) return fin({ ok: false, msg: 'Pegá el link de la playlist (Compartir → Copiar enlace).' });
+    try {
+      const d = await spApi('GET', '/playlists/' + m[1] + '?fields=id,name,external_urls');
+      sp.playlist = { id: d.id, nombre: d.name, url: (d.external_urls && d.external_urls.spotify) || '' };
+      avisarConsola(); fin({ ok: true, playlist: sp.playlist });
+    } catch (e) { fin({ ok: false, msg: e.status === 404 ? 'No encontré esa playlist.' : e.message }); }
+  });
+  socket.on('spotifyAgregar', async (m, cb) => {
+    const fin = soloAdmin(cb); if (!fin) return;
+    if (!m || !ID_TEMA.test(m.uri || '')) return fin({ ok: false, msg: 'Tema inválido.' });
+    if (!sp.playlist) return fin({ ok: false, msg: 'No hay playlist elegida.' });
+    try { await spApi('POST', '/playlists/' + sp.playlist.id + '/items', { uris: [m.uri] }); fin({ ok: true }); }
+    catch (e) { fin({ ok: false, msg: e.status === 403 ? 'Spotify no dejó agregar (¿la playlist es de otra cuenta?).' : e.message }); }
+  });
+  socket.on('spotifyQuitar', async (m, cb) => {
+    const fin = soloAdmin(cb); if (!fin) return;
+    if (!m || !ID_TEMA.test(m.uri || '') || !sp.playlist) return fin({ ok: false });
+    try { await spApi('DELETE', '/playlists/' + sp.playlist.id + '/items', { items: [{ uri: m.uri }] }); fin({ ok: true }); }
+    catch (e) { fin({ ok: false, msg: e.message }); }
+  });
+  // Búsqueda: la usan los celulares (y la consola para armar la lista)
+  let ultimaBusqueda = 0;
+  socket.on('spotifyBuscar', async (q, cb) => {
+    if (typeof cb !== 'function') return;
+    q = String(q || '').replace(/\s+/g, ' ').trim().slice(0, 60);
+    if (q.length < 2) return cb({ ok: true, temas: [] });
+    if (!sp.refresh) return cb({ ok: false, msg: 'La búsqueda en Spotify no está disponible ahora.' });
+    const ahora = Date.now();
+    if (ahora - ultimaBusqueda < 600) return cb({ ok: false, msg: 'Más despacio 🙂' });
+    ultimaBusqueda = ahora;
+    try {
+      const d = await spApi('GET', '/search?' + new URLSearchParams({ q, type: 'track', limit: '10' }));
+      const temas = ((d.tracks && d.tracks.items) || []).filter(Boolean).map(t => {
+        const imgs = (t.album && t.album.images) || [];
+        const img = imgs.length ? imgs[imgs.length - 1].url : '';
+        return { uri: t.uri, titulo: t.name, artista: (t.artists || []).map(a => a.name).join(', '), img, explicit: !!t.explicit };
+      });
+      cb({ ok: true, temas });
+    } catch (e) { cb({ ok: false, msg: e.status === 429 ? 'Spotify está ocupado, probá en unos segundos.' : 'No se pudo buscar en Spotify.' }); }
   });
 
   // Fotos de los desafíos
