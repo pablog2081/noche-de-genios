@@ -1506,8 +1506,13 @@
   }
   $('fLogin').onsubmit = function (ev) {
     ev.preventDefault();
-    var pin = $('inPin').value;
-    socket.emit('login', pin, function (r) {
+    var pin = $('inPin').value.trim();
+    var btn = this.querySelector('button'), txt = btn.textContent;
+    btn.disabled = true; btn.textContent = 'Entrando…';
+    if (!socket.connected) toast('⏳ Despertando el servidor… puede tardar hasta un minuto. No cierres la página.', 8000);
+    socket.timeout(75000).emit('login', pin, function (err, r) {
+      btn.disabled = false; btn.textContent = txt;
+      if (err) { toast('El servidor no responde. Recargá la página y probá de nuevo en un minuto.', 8000); return; }
       if (!r || !r.ok) { toast('PIN incorrecto'); return; }
       pinGuardado = pin; try { sessionStorage.setItem('ndg-pin', pin); } catch (e) { }
       if (!lsGet('contenido') && r.contenido) { contenido = migrarContenido(r.contenido); lsSet('contenido', contenido); }
